@@ -1,24 +1,3 @@
-# test
-
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+# 西二在线第二次合作轮考核
+## 二手游戏账号交易平台 ヾ(≧▽≦*)o
+## 闲猫MewStore 网页端
