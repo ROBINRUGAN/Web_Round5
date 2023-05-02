@@ -81,4 +81,5 @@ export default {
   color: #4a4a4a !important;
   font-size: 1.5rem !important;
 }
+
 </style>
