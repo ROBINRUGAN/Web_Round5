@@ -45,7 +45,7 @@
     />
 
     <!-- 轮播图 -->
-    <el-carousel interval=5000 trigger="click" style=" width:105rem;" height="41rem">
+    <el-carousel :interval=5000 trigger="click" style=" width:105rem;" height="41rem">
       <el-carousel-item v-for="item in 4" :key="item">
         <!-- 商品列表分页展示 -->
         <div class="goodslist" v-for="i in 4" :key="i">

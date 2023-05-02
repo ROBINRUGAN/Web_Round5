@@ -27,6 +27,7 @@
     />
     <!-- 轮播图 -->
     <el-carousel
+      effect="fade"
       indicator-position="none"
       trigger="click"
       style="width: 35rem; height: 24rem; margin-left: 4rem; margin-top: 5.5rem"
@@ -366,5 +367,8 @@ button:hover {
   margin-top: 1.1rem;
   display: block;
 }
+
+
+
 </style>
   

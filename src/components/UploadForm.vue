@@ -3,14 +3,14 @@
     <div style="width: 40rem">
       <el-form ref="form" :model="form" label-width="120px">
         <el-form-item label="标题">
-          <el-input v-model="form.name"></el-input>
+          <el-input v-model="form.title"></el-input>
         </el-form-item>
         <el-form-item label="简介">
-          <el-input type="textarea" v-model="form.desc"></el-input>
+          <el-input type="textarea" v-model="form.content"></el-input>
         </el-form-item>
 
         <el-form-item label="游戏类型">
-          <el-radio-group v-model="form.resource"
+          <el-radio-group v-model="form.type"
           style="
             margin-top: -0.3rem;
           ">
@@ -24,15 +24,15 @@
         </el-form-item>
 
         <el-form-item label="游戏账号">
-          <el-input v-model="form.name" style="
+          <el-input v-model="form.account" style="
             margin-top: -1.1rem;
           "></el-input>
         </el-form-item>
         <el-form-item label="游戏密码">
-          <el-input v-model="form.name"></el-input>
+          <el-input v-model="form.password"></el-input>
         </el-form-item>
         <el-form-item label="参考价格">
-          <el-input v-model="form.name"></el-input>
+          <el-input v-model="form.price"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit" style="
@@ -71,23 +71,22 @@ export default {
   data() {
     return {
       form: {
-        name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: "",
+        title: "",
+        content: "",
+        type: "",
+        account: "",
+        password: "",
+        price: "",
+        photo: [],
       },
       dialogImageUrl: "",
       dialogVisible: false,
-      fileList: [],
+
     };
   },
   methods: {
     onSubmit() {
-      console.log("submit!");
+      console.log(this.form);
     },
 
     handlePictureCardPreview(file) {
@@ -96,11 +95,11 @@ export default {
     },
 
     handleChange(file, fileList) {
-      if (fileList.length > this.fileList.length) {
-        this.fileList = fileList;
+      if (fileList.length > this.form.photo.length) {
+        this.form.photo = fileList;
       }
-      if (this.fileList.length >= 9) {
-        console.log(this.fileList);
+      if (this.form.photo.length >= 9) {
+        console.log(this.form.photo);
         const uploadCard = document.querySelector(".el-upload--picture-card");
         uploadCard.style.display = "none";
       }
@@ -111,7 +110,7 @@ export default {
         }
     },
     beforeRemove(file, fileList) {
-      this.fileList = fileList;
+      this.form.photo = fileList;
     },
   },
 };

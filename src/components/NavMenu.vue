@@ -6,7 +6,6 @@
       mode="horizontal"
       background-color="transparent"
       text-color="white"
-
       active-text-color="#F2ABA7"
       @select="handleSelect"
     >
@@ -47,9 +46,16 @@ export default {
     display: flex;   
     justify-content: center;
 }
+.el-menu
+{
+  margin: 1rem !important;
+  margin-top: 0rem !important;
+  margin-bottom: 0rem !important;
+}
 .el-menu-item{
+  height: 3rem;
     font-size: 1.7rem;
-
+    border-radius: 0.5rem;
 }
 .el-menu.el-menu--horizontal {
     border-bottom: solid 3px #ffffff;  
@@ -60,5 +66,9 @@ export default {
     height: 3rem;
     width: 10rem;
 
+}
+.el-menu-item:hover {
+  border-radius: 0.5rem !important;
+  background-color: rgba(82, 148, 210, 0.678)!important;
 }
 </style>
