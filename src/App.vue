@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import NavMenu from "./components/NavMenu.vue";
 import Hello from "./components/Hello.vue";
 export default {
