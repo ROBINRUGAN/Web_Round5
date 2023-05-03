@@ -15,17 +15,6 @@
     </div>
     <!-- 消息按钮 -->
     <button class="message"></button>
-    <!-- <div class="headTitle">
-        <div class="first">
-        账号资料填写
-      </div>
-      <div class="second">
-        账号图片展示
-      </div>
-      <div class="third">
-        完成商品发布
-      </div>
-    </div> -->
 
     <UploadForm class="uploadForm" />
   </div>

@@ -1,17 +1,18 @@
 <template>
   <div>
     <el-button type="primary" @click="showDialog">修改</el-button>
-    <el-dialog :visible.sync="dialogVisible" title="修改手机号" width="40rem"
-    style="margin-top: 10rem;"
+    <el-dialog
+      :visible.sync="dialogVisible"
+      title="修改手机号"
+      width="40rem"
+      style="margin-top: 10rem"
     >
       <el-form
         ref="form"
         :model="form"
         :rules="rules"
         label-width="140px"
-        style="font-size: 1rem;
-        "
-
+        style="font-size: 1rem"
       >
         <el-form-item label="新手机号" prop="phone">
           <el-input v-model="form.phone"></el-input>
@@ -22,11 +23,7 @@
             style="width: 14rem; display: inline-block"
           ></el-input>
           <el-button
-            style="
-              width: 14rem;
-              margin-left: 2%;
-              font-size: 1.3rem;
-            "
+            style="width: 14rem; margin-left: 2%; font-size: 1.3rem"
             :disabled="countdown > 0 || isCodeDisabled || form.phone === ''"
             @click="getCode"
             :loading="countdown > 0"
@@ -37,10 +34,12 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false" style="font-size: 1.3rem"
+        <el-button @click="cancelForm" style="font-size: 1.3rem"
           >取消</el-button
         >
-        <el-button type="primary" @click="submitForm" class="telephoneBtn">确定</el-button>
+        <el-button type="primary" @click="submitForm" class="telephoneBtn"
+          >确定</el-button
+        >
       </div>
     </el-dialog>
   </div>
@@ -50,11 +49,10 @@
 export default {
   data() {
     return {
-      isCodeDisabled : false,
+      isCodeDisabled: false,
       form: {
         phone: "",
         code: "",
-        
       },
       rules: {
         phone: [
@@ -79,13 +77,13 @@ export default {
     };
   },
   watch: {
-    'form.phone'(val) {
+    "form.phone"(val) {
       if (val && !/^1[3456789]\d{9}$/.test(val)) {
-        this.isCodeDisabled = true
+        this.isCodeDisabled = true;
       } else {
-        this.isCodeDisabled = false
+        this.isCodeDisabled = false;
       }
-    }
+    },
   },
   methods: {
     showDialog() {
@@ -108,8 +106,16 @@ export default {
           this.dialogVisible = false;
           // TODO: 提交表单的逻辑
           this.$message.success("手机号修改成功！");
+          this.form.code = "";
+          this.form.phone = "";
         }
       });
+    },
+    cancelForm() {
+      this.dialogVisible = false;
+      this.form.code = "";
+      this.form.phone = "";
+      this.$message.info("取消修改");
     },
   },
 };
