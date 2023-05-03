@@ -63,7 +63,7 @@ export default new VueRouter({
                     component: NotPassGoods
 
                 },
-            ]
+            ],redirect: 'userCenter/myInfo'
         },
         {
             path: '/sell',

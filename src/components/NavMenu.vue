@@ -29,12 +29,21 @@
 export default {
   data() {
     return {
-      activeIndex: "1",
+      activeIndex: "",
     };
   },
+  mounted() {
+    if(this.$cookies.get("activeNum")!=null)
+    {
+        this.activeIndex=this.$cookies.get("activeNum");
+    }
+  
+  },
+  
   methods: {
     handleSelect(key, keyPath) {
-      // console.log(key, keyPath);
+      this.$cookies.remove("activeNum");
+    this.$cookies.set("activeNum",key);
     },
   },
 };
