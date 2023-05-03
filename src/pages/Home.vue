@@ -45,11 +45,17 @@
     />
 
     <!-- 轮播图 -->
-    <el-carousel :interval=5000 trigger="click" style=" width:105rem;" height="41rem">
-      <el-carousel-item v-for="item in 4" :key="item">
+    <el-carousel
+      :interval="5000"
+      trigger="click"
+      style="width: 105rem"
+      height="41rem"
+    >
+      <el-carousel-item v-for="page in goods.length/4" :key="page">
         <!-- 商品列表分页展示 -->
-        <div class="goodslist" v-for="i in 4" :key="i">
-          <li @click="comein((item - 1) * 4 + i)">
+        <div class="goodslist" v-for="good in goods.slice((page-1)*4,page*4)" :key="good.id">
+
+          <li @click="comein(good.id)">
             <img
               src="../assets/homeImage/图层 8.png"
               alt=""
@@ -61,13 +67,11 @@
               "
             />
             <div class="content">
-              <div class="title">第{{ (item - 1) * 4 + i }}个商品</div>
+              <div class="title">{{ good.title }}</div>
               <div class="brief">
-                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o
-                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o
-                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o
+                {{ good.brief.substring(0, 175) + "..." }}
               </div>
-              <div class="price">￥114514</div>
+              <div class="price">￥{{ good.price }}</div>
             </div>
           </li>
         </div>
@@ -81,6 +85,100 @@ import NavMenu from "../components/NavMenu.vue";
 import Hello from "../components/Hello.vue";
 import router from "@/router";
 export default {
+  data() {
+    return {
+      goods: [
+        {
+          id: 1,
+          title: "第一个商品",
+          price: 100,
+          brief:
+            "这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o",
+        },
+        {
+          id: 2,
+          title: "第二个商品",
+          price: 100,
+          brief:
+            "这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o",
+        },
+        {
+          id: 3,
+          title: "第三个商品",
+          price: 100,
+          brief:
+          "这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o",
+        },
+        {
+          id: 4,
+          title: "第四个商品",
+          price: 100,
+          brief:
+          "这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o",
+        },
+        {
+          id: 5,
+          title: "第五个商品",
+          price: 100,
+          brief:
+          "这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o",
+        },
+        {
+          id: 6,
+          title: "第六个商品",
+          price: 100,
+          brief:
+          "这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o",
+        },
+        {
+          id: 7,
+          title: "第七个商品",
+          price: 100,
+          brief:
+          "这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o",
+        },
+        {
+          id: 8,
+          title: "第八个商品",
+          price: 100,
+          brief:
+          "这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
+                这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o",
+        },
+      ],
+    };
+  },
   components: {
     NavMenu,
     Hello,
@@ -88,9 +186,9 @@ export default {
   methods: {
     comein(id) {
       alert("进入商品详情页" + id);
-      var url = "/detail/"+id;
+      var url = "/detail/" + id;
       this.$router.push({
-         path: url
+        path: url,
       });
     },
   },

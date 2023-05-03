@@ -52,8 +52,10 @@
     <div class="order-menu">
       <el-tabs v-model="activeTab" @tab-click="handleTabClick">
         <el-tab-pane label="全部" name="all"></el-tab-pane>
-        <el-tab-pane label="审核通过" name="success"></el-tab-pane>
-        <el-tab-pane label="审核不通过" name="fail"></el-tab-pane>
+        <el-tab-pane label="未付款" name="notpay"></el-tab-pane>
+        <el-tab-pane label="未确认" name="unknown"></el-tab-pane>
+        <el-tab-pane label="已通过" name="success"></el-tab-pane>
+        <el-tab-pane label="已拒绝" name="fail"></el-tab-pane>
       </el-tabs>
     </div>
     <div class="order-table">
@@ -62,7 +64,7 @@
         <el-table-column prop="id" label="商品编号"></el-table-column>
         <el-table-column prop="price" label="价格"></el-table-column>
         <el-table-column prop="time" label="购买时间"></el-table-column>
-        <el-table-column prop="result" label="审核结果"></el-table-column>
+        <el-table-column prop="result" label="订单状态"></el-table-column>
       </el-table>
       <el-pagination
         v-if="pageCount > 1"
@@ -95,70 +97,70 @@ export default {
           id: "123456",
           price: 99,
           time: "2022-01-01",
-          result: "审核通过",
+          result: "未付款",
         },
         {
           name: "商品2",
           id: "234567",
           price: 199,
           time: "2022-01-02",
-          result: "审核不通过",
+          result: "未确认",
         },
         {
           name: "商品3",
           id: "345678",
           price: 299,
           time: "2022-01-03",
-          result: "审核通过",
+          result: "已通过",
         },
         {
           name: "商品4",
           id: "456789",
           price: 399,
           time: "2022-01-04",
-          result: "审核通过",
+          result: "已拒绝",
         },
         {
           name: "商品5",
           id: "567890",
           price: 499,
           time: "2022-01-05",
-          result: "审核不通过",
+          result: "已通过",
         },
         {
           name: "商品6",
           id: "123456",
           price: 99,
           time: "2022-01-01",
-          result: "审核通过",
+          result: "未确认",
         },
         {
           name: "商品7",
           id: "234567",
           price: 199,
           time: "2022-01-02",
-          result: "审核不通过",
+          result: "未确认",
         },
         {
           name: "商品8",
           id: "345678",
           price: 299,
           time: "2022-01-03",
-          result: "审核通过",
+          result: "未付款",
         },
         {
           name: "商品9",
           id: "456789",
           price: 399,
           time: "2022-01-04",
-          result: "审核通过",
+          result: "已拒绝",
         },
         {
           name: "商品10",
           id: "567890",
           price: 499,
           time: "2022-01-05",
-          result: "审核不通过",
+          result: "已通过",
         },
       ],
       pageSize: 5, // 每页显示的订单数量
@@ -170,9 +172,13 @@ export default {
       const filterFn = ({ result }) => {
         switch (this.activeTab) {
           case "success":
-            return result === "审核通过";
+            return result === "已通过";
           case "fail":
-            return result === "审核不通过";
+            return result === "已拒绝";
+            case "notpay":
+            return result === "未付款";
+          case "unknown":
+            return result === "未确认";
           default:
             return true;
         }
@@ -256,5 +262,12 @@ export default {
 {
     margin-top: 0.5rem;
     font-size: 1.4rem !important;
+}
+::v-deep .el-table th.el-table__cell {
+  background-color: rgb(252, 246, 233) ;
+}
+::v-deep .el-table--enable-row-transition .el-table__body td.el-table__cell {
+  background-color: rgb(252, 246, 233) ;
+  cursor: pointer;
 }
 </style>

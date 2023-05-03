@@ -1,101 +1,254 @@
 <template>
-    <div >
-      <div style="margin-left: 5rem; margin-bottom: 2rem;" class="avatar-wrapper" @click="showDialog">
-        <img class="avatar" :src="avatarUrl" alt="avatar">
-      </div>
-      <el-dialog :visible.sync="dialogVisible">
-        <img class="dialog-avatar" :src="avatarUrl" alt="avatar">
-      </el-dialog>
-      <el-upload
-      action="https://console-mock.apipost.cn/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/users/profile_photo"
-  :http-request="uploadImage"
-        :show-file-list="false"
-        :on-success="handleSuccess"
-        :on-error="handleError"
-        :headers="headers"
-        :before-upload="beforeUpload"
-        style="display:flex"
-      >
-        <el-button type="primary" style="font-size: 1.3rem; ">修改头像</el-button>
-        <div slot="tip" class="upload-tip">支持jpg、jpeg、png格式，文件小于2MB</div>
-      </el-upload>
+  <div class="order-list">
+    <div class="search-form">
+      <el-form :inline="true" :model="searchForm" style="display: flex">
+        <el-form-item label="时间筛选" style="display: flex">
+          <el-date-picker
+            v-model="searchForm.dateRange"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :picker-options="{
+              shortcuts: [
+                {
+                  text: '最近一周',
+                  onClick: () => {
+                    const end = new Date();
+                    const start = new Date();
+                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                    this.searchForm.dateRange = [start, end];
+                  },
+                },
+                {
+                  text: '最近一个月',
+                  onClick: () => {
+                    const end = new Date();
+                    const start = new Date();
+                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                    this.searchForm.dateRange = [start, end];
+                  },
+                },
+              ],
+            }"
+          ></el-date-picker>
+        </el-form-item>
+        <el-form-item label="搜索" style="display: flex">
+          <el-input
+            v-model="searchForm.keyword"
+            placeholder="请输入商品名称或编号"
+          ></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" icon="el-icon-search" @click="handleSearch"
+            >搜索</el-button
+          >
+          <el-button @click="handleReset" icon="el-icon-refresh-left"
+            >重置</el-button
+          >
+        </el-form-item>
+      </el-form>
     </div>
-  </template>
-  
-  <script>
 
-import axios from 'axios';
-  export default {
-    data() {
-      return {
-        avatarUrl: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F34fc045e-0952-4cb8-861c-6f9936449ec6%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1685639440&t=7d108f015d0ed608cd996984fffcb1ff',
-        dialogVisible: false,
-        actionUrl: 'https://console-mock.apipost.cn/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/users/profile_photo',
-        headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('token')
-        }
-      }
-    },
-    methods: {
-      beforeUpload(file) {
-        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
-        if (!isJpgOrPng) {
-          this.$message.error('只支持JPG、JPEG、PNG格式的图片')
-          return false
-        }
-        const isLt2M = file.size / 1024 / 1024 < 2
-        if (!isLt2M) {
-          this.$message.error('上传文件大小不能超过2MB')
-          return false
-        }
-        return true
+    <div class="order-table">
+      <el-table :data="pagedOrders" style="width: 100%"  @row-click="mewww">
+        <el-table-column prop="name" label="商品名称"></el-table-column>
+        <el-table-column prop="id" label="商品编号"></el-table-column>
+        <el-table-column prop="price" label="价格"></el-table-column>
+      </el-table>
+      <el-pagination
+        v-if="pageCount > 1"
+        :total="filteredOrders.length"
+        :page-size="pageSize"
+        :current-page="currentPage"
+        @current-change="handlePageChange"
+        style="
+          height: 70px;
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+        "
+      />
+    </div>
+  </div>
+</template>
+    <script>
+export default {
+  data() {
+    return {
+      searchForm: {
+        dateRange: [],
+        keyword: "",
       },
-      uploadImage(file) {
-    return axios({
-      method: 'put',
-      url: 'https://console-mock.apipost.cn/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/users/profile_photo',
-      data: file
-    });
+      activeTab: "all",
+      orders: [
+        {
+          name: "商品1",
+          id: "123456",
+          price: 99,
+          time: "2022-01-01",
+          result: "未付款",
+        },
+        {
+          name: "商品2",
+          id: "234567",
+          price: 199,
+          time: "2022-01-02",
+          result: "未确认",
+        },
+        {
+          name: "商品3",
+          id: "345678",
+          price: 299,
+          time: "2022-01-03",
+          result: "已通过",
+        },
+        {
+          name: "商品4",
+          id: "456789",
+          price: 399,
+          time: "2022-01-04",
+          result: "已拒绝",
+        },
+        {
+          name: "商品5",
+          id: "567890",
+          price: 499,
+          time: "2022-01-05",
+          result: "已通过",
+        },
+        {
+          name: "商品6",
+          id: "123456",
+          price: 99,
+          time: "2022-01-01",
+          result: "未确认",
+        },
+        {
+          name: "商品7",
+          id: "234567",
+          price: 199,
+          time: "2022-01-02",
+          result: "未确认",
+        },
+        {
+          name: "商品8",
+          id: "345678",
+          price: 299,
+          time: "2022-01-03",
+          result: "未付款",
+        },
+        {
+          name: "商品9",
+          id: "456789",
+          price: 399,
+          time: "2022-01-04",
+          result: "已拒绝",
+        },
+        {
+          name: "商品10",
+          id: "567890",
+          price: 499,
+          time: "2022-01-05",
+          result: "已通过",
+        },
+      ],
+      pageSize: 5, // 每页显示的订单数量
+      currentPage: 1, // 当前页码
+    };
   },
-      handleSuccess(response, file, fileList) {
-        console.log(file)
-        this.avatarUrl = response.data.data.url
-      },
-      handleError(error, file, fileList) {
-        this.$message.error('上传失败')
-        console.error(error)
-      },
-      showDialog() {
-        this.dialogVisible = true
-      }
-    }
-  }
-  </script>
+  computed: {
+    filteredOrders() {
+      const filterFn = ({ result }) => {
+        switch (this.activeTab) {
+          default:
+            return true;
+        }
+      };
+      const searchFn = ({ name, id }) => {
+        const { keyword } = this.searchForm;
+        if (keyword) {
+          return name.includes(keyword) || id.includes(keyword);
+        }
+        return true;
+      };
+      const dateFn = ({ time }) => {
+        const [start, end] = this.searchForm.dateRange;
+        if (start && end) {
+          const startTime = start.getTime();
+          const endTime = end.getTime() + 24 * 3600 * 1000; // 时间范围包含最后一天
+          const orderTime = new Date(time).getTime();
+          return orderTime >= startTime && orderTime <= endTime;
+        }
+        return true;
+      };
+      return this.orders.filter(filterFn).filter(searchFn).filter(dateFn);
+    },
+    pageCount() {
+      return Math.ceil(this.filteredOrders.length / this.pageSize);
+    },
+    pagedOrders() {
+      const startIndex = (this.currentPage - 1) * this.pageSize;
+      const endIndex = startIndex + this.pageSize;
+      return this.filteredOrders.slice(startIndex, endIndex);
+    },
+  },
+  methods: {
+    mewww(row) {
+      alert(row.name);
+    },
+    handleSearch() {
+      // 执行搜索
+    },
+    handleReset() {
+      this.searchForm.dateRange = [];
+      this.searchForm.keyword = "";
+    },
+    handleTabClick(tab) {
+      this.activeTab = tab.name;
+    },
+    handlePageChange(page) {
+      this.currentPage = page;
+    },
+  },
+};
+</script>
   
   <style scoped>
-  .avatar-wrapper {
-    width: 15rem;
-    height: 15rem;
-    border-radius: 50%;
-    overflow: hidden;
-    cursor: pointer;
-  }
-  .avatar {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .dialog-avatar {
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    display: block;
-  }
-  .upload-tip {
-    margin-left: 1rem;
-    margin-top:  0.8rem;
-    font-size: 1.3rem;
-    color: #666;
-  }
-  </style>
-  
+::v-deep * {
+  font-size: 1.2rem;
+}
+.order-list {
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+.search-form {
+  width: 80rem;
+
+  margin-left: -2.5rem;
+  padding-top: 4rem;
+}
+::v-deep .el-tabs__item {
+  font-size: 1.5rem;
+}
+
+::v-deep .el-input__inner {
+  height: 3rem !important;
+  font-size: 1.4rem !important;
+}
+::v-deep .el-date-editor .el-range-input {
+  font-size: 1.4rem !important;
+}
+::v-deep .el-date-editor .el-range-separator {
+  margin-top: 0.5rem;
+  font-size: 1.4rem !important;
+}
+::v-deep .el-table th.el-table__cell {
+  background-color: rgb(252, 246, 233) ;
+}
+::v-deep .el-table--enable-row-transition .el-table__body td.el-table__cell {
+  background-color: rgb(252, 246, 233) ;
+  cursor: pointer;
+}
+
+</style>

@@ -71,4 +71,5 @@ export default {
   border-radius: 0.5rem !important;
   background-color: rgba(82, 148, 210, 0.678)!important;
 }
+
 </style>
