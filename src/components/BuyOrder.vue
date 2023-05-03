@@ -59,7 +59,7 @@
       </el-tabs>
     </div>
     <div class="order-table">
-      <el-table :data="pagedOrders" style="width: 100%">
+      <el-table :data="pagedOrders" @row-click="mewww" style="width: 100%">
         <el-table-column prop="name" label="商品名称"></el-table-column>
         <el-table-column prop="id" label="商品编号"></el-table-column>
         <el-table-column prop="price" label="价格"></el-table-column>
@@ -83,6 +83,7 @@
   </div>
 </template>
   <script>
+  import router from '@/router';
 export default {
   data() {
     return {
@@ -212,6 +213,10 @@ export default {
     },
   },
   methods: {
+    mewww(row) {
+      alert("准备进入"+row.name+"的详情页");
+      router.push({ path: '/detail/'+row.id });
+    },
     handleSearch() {
       // 执行搜索
     },

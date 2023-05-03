@@ -73,6 +73,7 @@
     </div>
   </template>
       <script>
+      import router from '@/router';
   export default {
     data() {
       return {
@@ -194,9 +195,10 @@
       },
     },
     methods: {
-      mewww(row) {
-        alert(row.name);
-      },
+        mewww(row) {
+      alert("准备进入"+row.name+"的详情页");
+      router.push({ path: '/detail/'+row.id });
+    },
       handleSearch() {
         // 执行搜索
       },
