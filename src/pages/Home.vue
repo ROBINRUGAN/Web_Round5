@@ -51,7 +51,7 @@
 
     <!-- 轮播图 -->
     <el-carousel
-      :interval="5000"
+      :interval="3000"
       trigger="click"
       style="width: 105rem"
       height="41rem"
