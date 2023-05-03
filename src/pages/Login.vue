@@ -32,6 +32,6 @@ export default {
   width: 40rem;
   height: 20rem;
   margin-left: 57rem;
-  margin-top: 20rem; 
+  margin-top: 23rem; 
 }
 </style>

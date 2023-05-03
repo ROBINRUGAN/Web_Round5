@@ -1,4 +1,9 @@
 <template>
+        <div>
+        <div class="header">
+      <NavMenu class="navMenu" />
+      <hello class="hello" />
+    </div>
   <div class="root">
     <!-- 背景图片 -->
     <div class="background">
@@ -185,6 +190,7 @@
       </div>
     </div>
   </div>
+        </div>
 </template>
   
   <script>

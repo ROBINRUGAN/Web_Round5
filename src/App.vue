@@ -1,9 +1,5 @@
 <template>
   <div>
-    <div class="header">
-      <NavMenu class="navMenu" />
-      <hello class="hello" />
-    </div>
     <router-view></router-view>
   </div>
 </template>

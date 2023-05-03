@@ -1,5 +1,11 @@
 <template>
+      <div>
+        <div class="header">
+      <NavMenu class="navMenu" />
+      <hello class="hello" />
+    </div>
   <div class="root">
+
     <!-- 背景图片 -->
     <div class="background">
       <img
@@ -8,7 +14,6 @@
         height="100%"
       />
     </div>
-
     <!-- 消息按钮 -->
     <button class="message"></button>
 
@@ -78,6 +83,7 @@
       </el-carousel-item>
     </el-carousel>
   </div>
+      </div>
 </template>
 
 <script>

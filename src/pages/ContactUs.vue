@@ -1,4 +1,9 @@
 <template>
+        <div>
+        <div class="header">
+      <NavMenu class="navMenu" />
+      <hello class="hello" />
+    </div>
   <div class="root">
     <div class="background">
       <img src="../assets/Canvas(1).jpg" width="100%" height="100%" />
@@ -25,16 +30,20 @@
       </el-collapse-item>
     </el-collapse>
   </div>
+</div>
 </template>
 
 <script>
+import Hello from '@/components/Hello.vue';
+import NavMenu from '@/components/NavMenu.vue';
 export default {
   data() {
     return {
       activeName: "1",
     };
   },
-  components: {},
+  components: {Hello,
+    NavMenu},
 };
 </script>
 
