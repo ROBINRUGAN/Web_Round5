@@ -461,7 +461,7 @@ button:hover {
   bottom: 70px;
   right: 0;
   width: 30rem;
-  height: 39.2rem;
+  height: 40rem;
   background-color: #fff;
   border-radius: 5px;
   border: 1px solid #ccc;

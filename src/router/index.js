@@ -15,6 +15,7 @@ import Sell from "../pages/Sell"
 import Detail from "../pages/Detail"
 import ContactUs from "../pages/ContactUs"
 import Admin from "../pages/Admin"
+import Message from "../pages/Message"
 export default new VueRouter({
     routes: [{
             path: '/login',
@@ -81,6 +82,10 @@ export default new VueRouter({
         {
             path: '/admin',
             component: Admin
+        },
+        {
+            path: '/message',
+            component: Message
         }
     ]
 })

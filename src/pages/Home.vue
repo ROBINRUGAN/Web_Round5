@@ -14,8 +14,11 @@
         height="100%"
       />
     </div>
-    <!-- 消息按钮 -->
-    <button class="message"></button>
+    <router-link to="/message">
+         <!-- 消息按钮 -->
+    <button class="message" @click="onMessageBtn"></button>
+    </router-link>
+ 
 
     <!-- 搜索框 -->
     <div class="searchbox">
@@ -197,6 +200,10 @@ export default {
         path: url,
       });
     },
+    onMessageBtn()
+    {
+      this.$cookies.set("activeNum", "0");
+    }
   },
 };
 </script>
