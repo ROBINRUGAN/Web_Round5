@@ -12,7 +12,10 @@
       placeholder="请输入账号"
       v-show="!flag"
     />
-    <br /><br />
+    <br />
+    <span v-show="errorPhoneflag&flag" class="errorPhoneMsg">请输入正确的手机号码！</span>
+    <span v-show="errorUsernameflag&!flag" class="errorUsernameMsg">用户名不能为空！</span>
+<br />
     <input
       type="password"
       v-model="password"
@@ -27,6 +30,8 @@
     />
     <br />
     <a class="getCode" v-show="flag">获取验证码</a>
+    <span v-show="errorPasswordflag&!flag" class="errorPasswordMsg">密码不能为空！</span>
+    <span v-show="errorCodeflag&flag" class="errorCodeMsg">验证码为六位数字！</span>
     <br />
     <a @click="changeLoginWay()" class="changeLoginWay">{{ LoginType }}</a>
     <br /><br />
@@ -50,6 +55,10 @@ export default {
       code: "",
       LoginType: "手机验证码登录",
       flag: false,
+      errorPhoneflag: false,
+      errorCodeflag: false,
+      errorUsernameflag: false,
+      errorPasswordflag: false,
     };
   },
   methods: {
@@ -63,6 +72,46 @@ export default {
       immediate: true,
       handler(newValue) {
         this.LoginType = newValue ? "账号密码登录" : "手机验证码登录";
+      },
+    },
+    telephone: {
+      immediate: true,
+      handler(newValue) {
+        if (newValue && !/^1[3456789]\d{9}$/.test(newValue)) {
+          this.errorPhoneflag = true;
+        } else {
+          this.errorPhoneflag = false;
+        }
+      },
+    },
+    code: {
+      immediate: true,
+      handler(newValue) {
+        if (newValue && !/^\d{6}$/.test(newValue)) {
+          this.errorCodeflag = true;
+        } else {
+          this.errorCodeflag = false;
+        }
+      },
+    },
+    account: {
+      immediate: false,
+      handler(newValue) {
+        if (newValue) {
+          this.errorUsernameflag = false;
+        } else {
+          this.errorUsernameflag = true;
+        }
+      },
+    },
+    password: {
+      immediate: false,
+      handler(newValue) {
+        if (newValue) {
+          this.errorPasswordflag = false;
+        } else {
+          this.errorPasswordflag = true;
+        }
       },
     },
   },
@@ -80,7 +129,8 @@ input {
   width: 35rem;
   font-size: 1.7rem;
   padding: 0.7rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
   border-radius: 0.7rem;
   border-width: 0.01rem;
 }
@@ -93,6 +143,7 @@ button {
   font-size: 1.7rem;
   border-radius: 1rem;
   border-width: 0.01rem;
+  cursor: pointer;
 }
 button:hover {
   background-color: rgb(142, 196, 254);
@@ -102,6 +153,7 @@ button:hover {
   margin-right: 4rem;
   background-color: #5593cc;
   color: white;
+  cursor: pointer;
 }
 .changeLoginWay {
   text-decoration: underline;
@@ -115,10 +167,26 @@ button:hover {
 
   color: #5593cc;
   font-size: 1.4rem;
-  margin-top: -3.2rem;
+  margin-top: -2.7rem;
   margin-left: 27rem;
   width: 7rem;
   cursor: pointer;
   position: absolute;
+}
+.errorPhoneMsg
+{
+  color: rgb(223, 46, 46);
+}
+.errorCodeMsg
+{
+  color: rgb(223, 46, 46);
+}
+.errorUsernameMsg
+{
+  color: rgb(223, 46, 46);
+}
+.errorPasswordMsg
+{
+  color: rgb(223, 46, 46);
 }
 </style>

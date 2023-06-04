@@ -20,6 +20,10 @@
       <router-link to="/contactUs" style="text-decoration: none;">
          <el-menu-item index="3">关于我们</el-menu-item>
       </router-link>
+
+      <router-link v-if="adminShow" to="/admin" style="text-decoration: none;">
+         <el-menu-item index="4">管理后台</el-menu-item>
+      </router-link>
     </el-menu>
   
   </div>
@@ -30,6 +34,7 @@ export default {
   data() {
     return {
       activeIndex: "",
+      adminShow:false,
     };
   },
   mounted() {
@@ -37,9 +42,16 @@ export default {
     {
         this.activeIndex=this.$cookies.get("activeNum");
     }
-  
+    
   },
-  
+  watch: {
+    activeIndex(newValue) {
+      if(newValue==3)
+      {
+        this.adminShow=true;
+      }
+    },
+  },
   methods: {
     handleSelect(key, keyPath) {
       this.$cookies.remove("activeNum");
@@ -67,6 +79,8 @@ export default {
     border-radius: 0.5rem;
 }
 .el-menu.el-menu--horizontal {
+
+  width: 103rem;
     border-bottom: solid 3px #ffffff;  
     height: 3rem;
 }
