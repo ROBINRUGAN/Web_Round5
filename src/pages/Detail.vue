@@ -14,7 +14,7 @@
     </div>
 
     <!-- 消息按钮 -->
-    <button class="message"></button>
+    <button class="messageBtn"></button>
     <!-- 一个底部的挡板，使商品描述更清楚 -->
     <img
       src="../assets/detailImage/背景.png"
@@ -190,6 +190,32 @@
       </div>
     </div>
   </div>
+
+  <div class="chat-wrapper">
+    <div class="chat-button" @click="toggleChat">
+      <span class="chat-icon"></span>
+    </div>
+    <transition name="slide">
+      <div class="chat-box" v-if="showChat">
+        <div class="chat-header">
+          <h3>MewChat</h3>
+          <button class="close-button" @click="toggleChat">关闭</button>
+        </div>
+        <div class="message-list">
+          <div class="message" v-for="message in messages" :key="message.id" :class="[message.author === 'Me' ? 'me' : 'other']">
+            <div :class="[message.author === 'Me' ? 'message-bubble-blue' : 'message-bubble-white']">
+              <span class="message-text">{{ message.text }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="input-box">
+          <input type="text" v-model="newMessage" @keyup.enter="sendMessage" placeholder="输入消息..." />
+          <button @click="sendMessage">发送</button>
+        </div>
+      </div>
+    </transition>
+  </div>
+
         </div>
 </template>
   
@@ -199,6 +225,22 @@ import Hello from "../components/Hello.vue";
 export default {
   data() {
     return {
+      showChat: false,
+      messages: [
+        {
+          id: 0,
+          author:"Other",
+          text:"你好",
+        },
+        {
+          id: 0,
+          author:"Me",
+          text:"你好",
+        }
+      ],
+      newMessage: '',
+      nextMessageId: 1,
+
       isChange: true,
       goodsPrice: 310.03,
       goodsNumber: "121145143456789",
@@ -239,6 +281,19 @@ export default {
     comein(id) {
       alert("进入商品详情页" + id);
     },
+    toggleChat() {
+      this.showChat = !this.showChat;
+    },
+    sendMessage() {
+      if (this.newMessage.trim() !== '') {
+        this.messages.push({
+          id: this.nextMessageId++,
+          author: 'Me',
+          text: this.newMessage
+        });
+        this.newMessage = '';
+      }
+    }
   },
 };
 </script>
@@ -256,7 +311,7 @@ export default {
   position: absolute;
 }
 
-.message {
+.messageBtn {
   height: 3.2rem;
   margin-top: 3.5rem;
   margin-left: 96.55rem;
@@ -373,8 +428,146 @@ button:hover {
   margin-top: 1.1rem;
   display: block;
 }
+.chat-wrapper {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  border-radius: 100px;
+  z-index: 9999;
+}
 
+.chat-button {
+  width: 50px;
+  height: 50px;
+  background-color: #007bff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
 
+.chat-icon {
+  width: 30px;
+  height: 30px;
+  background-color: #fff;
+  border-radius: 50%;
+  display: block;
+}
+
+.chat-box {
+  position: absolute;
+  bottom: 70px;
+  right: 0;
+  width: 30rem;
+  height: 39.2rem;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.3s;
+}
+
+.slide-enter,
+.slide-leave-to {
+  transform: translateX(100%);
+}
+
+.chat-header {
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.close-button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  font-size: 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.message-list {
+  height: 30rem;
+  max-height: 30rem;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.message {
+  margin-bottom: 5px;
+}
+
+.input-box {
+  margin-top: 1.5rem;
+  padding: 10px;
+  padding-top: 0;
+  display: flex;
+  align-items: center;
+}
+
+.input-box input {
+  flex: 1;
+  padding: 8px;
+  font-size: 1.1rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  margin-right: 5px;
+}
+
+.input-box button {
+  padding: 6px 10px;
+  background-color: #007bff;
+  font-size: 1.1rem;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.message.me {
+  text-align: right;
+}
+
+.message.other {
+  text-align: left;
+}
+
+.message-bubble-blue {
+  display: inline-block;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 10px;
+  padding: 8px 12px;
+  max-width: 70%;
+}
+
+.message-bubble-white {
+  display: inline-block;
+  background-color: #dedede;
+  color: #000000;
+  border-radius: 10px;
+  padding: 8px 12px;
+  max-width: 70%;
+}
+
+.message-author {
+  font-weight: bold;
+}
+
+.message-text {
+  margin-top: 5px;
+}
 
 </style>
   

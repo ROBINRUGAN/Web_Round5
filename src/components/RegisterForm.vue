@@ -9,9 +9,7 @@
     <input type="text" v-model="code" placeholder="请输入验证码" />
     <a class="getCode">获取验证码</a>
     <br />
-    <span v-show="errorCodeflag" class="errorPhoneMsg"
-      >验证码为六位数字！</span
-    >
+    <span v-show="errorCodeflag" class="errorPhoneMsg">验证码为六位数字！</span>
 
     <input type="text" v-model="account" placeholder="请输入账号" /> <br />
     <span v-show="errorUsernameflag" class="errorPhoneMsg"
@@ -19,9 +17,7 @@
     >
 
     <input type="password" v-model="password" placeholder="请输入密码" /> <br />
-    <span v-show="errorPasswordflag" class="errorPhoneMsg"
-      >密码不能为空！</span
-    >
+    <span v-show="errorPasswordflag" class="errorPhoneMsg">密码不能为空！</span>
 
     <input type="password" v-model="rePassword" placeholder="请再次输入密码" />
     <br />

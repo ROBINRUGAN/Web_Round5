@@ -46,7 +46,7 @@ export default {
   },
   watch: {
     activeIndex(newValue) {
-      if(newValue==3)
+      if(newValue==3||newValue==4)
       {
         this.adminShow=true;
       }

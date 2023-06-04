@@ -14,6 +14,7 @@ import StarredGoods from "../components/StarredGoods"
 import Sell from "../pages/Sell"
 import Detail from "../pages/Detail"
 import ContactUs from "../pages/ContactUs"
+import Admin from "../pages/Admin"
 export default new VueRouter({
     routes: [{
             path: '/login',
@@ -76,6 +77,10 @@ export default new VueRouter({
         {
             path: '/contactUs',
             component: ContactUs
+        },
+        {
+            path: '/admin',
+            component: Admin
         }
     ]
 })
