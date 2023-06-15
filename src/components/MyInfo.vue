@@ -4,21 +4,21 @@
     <div style="margin-left: 5rem">
       <span>
         用户名：
-        <div class="username">闲猫吃咸鱼</div>
+        <div class="username">{{username}}</div>
         <el-button type="text" class="modifyUserName" @click="modifyUserName"
           >修改</el-button
         >
       </span>
       <span>
         昵称：
-        <div class="nickname">MEWWW</div>
+        <div class="nickname">{{nickname}}</div>
         <el-button type="text" class="modifyNickName" @click="modifyNickName"
           >修改</el-button
         >
       </span>
       <span
         >电话：
-        <div class="telephone">18859522606</div>
+        <div class="telephone">{{phone_number}}</div>
         <get-telephone-dialog class="modifyTelephone" />
       </span>
       <span
@@ -27,19 +27,19 @@
       </span>
       <span
         >身份证号：
-        <div class="id">3****************3</div>
+        <div class="id">{{id_card}}</div>
       </span>
       <span
         >真实姓名：
-        <div class="name">**榜</div>
+        <div class="name">{{name}}</div>
       </span>
       <span
         >余额：
-        <div class="money">￥114514.00</div>
+        <div class="money">￥{{money}}</div>
       </span>
       <span
         >帐号状态：
-        <div class="status">正常</div>
+        <div class="status">{{ accountStatus }}</div>
       </span>
     </div>
   </div>
@@ -51,15 +51,34 @@ import GetTelephoneDialog from "./getTelephoneDialog.vue";
 export default {
   data() {
     return {
-      username: "",
-      nickname: "",
+      id_card: "",
+      money: "114514.00",
+      name: "",
+      nickname: "昵称样例",
+      phone_number: "",
+      profile_photo: "",
+      accountStatus: "",
+      username: "用户名样例",
     };
   },
   components: {
     GetTelephoneDialog,
     UploadAvatar,
   },
+  mounted() {
+    const userInfoString = window.localStorage.getItem("userInfo");
+    if (userInfoString) {
+      const userInfo = JSON.parse(userInfoString);
+      this.nickname = userInfo.nickname;
+      this.username = userInfo.username;
+      this.money = userInfo.money;
+      this.id_card = userInfo.id_card;
+      this.name = userInfo.name;
+      this.phone_number = userInfo.phone_number;
+      this.accountStatus = userInfo.status;
 
+    }
+  },
   methods: {
     modifyUserName() {
       this.$prompt("请输入用户名", "修改用户名", {

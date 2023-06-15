@@ -34,6 +34,12 @@ export default {
         Authorization: 'Bearer ' + localStorage.getItem('token')
       }
     }
+  },  mounted() {
+    const userInfoString = window.localStorage.getItem("userInfo");
+    if (userInfoString) {
+      const userInfo = JSON.parse(userInfoString);
+      this.avatarUrl = userInfo.profile_photo;
+    }
   },
   methods: {
     beforeUpload(file) {
@@ -52,13 +58,14 @@ export default {
     uploadImage(file) {
   return axios({
     method: 'put',
-    url: 'https://console-mock.apipost.cn/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/users/profile_photo',
+    url: 'https://console-mock.apipost.cn/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/users/profile-photo',
     data: file
   });
 },
     handleSuccess(response, file, fileList) {
       console.log(file)
-      this.avatarUrl = response.data.data.url
+      this.avatarUrl = response.data.data.profile_photo
+      console.log(this.avatarUrl)
     },
     handleError(error, file, fileList) {
       this.$message.error('上传失败')

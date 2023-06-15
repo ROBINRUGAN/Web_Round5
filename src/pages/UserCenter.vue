@@ -1,125 +1,125 @@
 <template>
-        <div>
-        <div class="header">
+  <div>
+    <div class="header">
       <NavMenu class="navMenu" />
       <hello class="hello" />
     </div>
-  <div class="root">
-    <!-- 背景图片 -->
-    <div class="background">
-      <img
-        src="../assets/userCenterImage/新建组.png"
-        width="100%"
-        height="100%"
-      />
-    </div>
-    <!-- 消息按钮 -->
-    <button class="message"></button>
-    <!-- 左边的导航栏 -->
-    <div class="leftRec">
-      <br /><br />
-
-      <!-- 个人中心功能块 -->
-      <span style="display: flex">
-        <img src="../assets/userCenterImage/个人中心(1).png" alt="" />
-        个人中心
-      </span>
-
-      <router-link
-        to="/userCenter/myInfo"
-        class="leftRecText"
-        style="margin-bottom: 3rem; margin-top: 1rem"
-        active-class="active"
-        >个人信息</router-link
-      >
-      <!-- 买家中心功能块 -->
-      <span style="display: flex">
+    <div class="root">
+      <!-- 背景图片 -->
+      <div class="background">
         <img
-          src="../assets/userCenterImage/买家中心(1).png"
-          style="margin-top: -0.3rem"
-          alt=""
+          src="../assets/userCenterImage/新建组.png"
+          width="100%"
+          height="100%"
         />
-        买家中心
-      </span>
-
-      <router-link
-        to="/userCenter/buyOrder"
-        class="leftRecText"
-        style="margin-top: 1rem"
-        active-class="active"
-        >已购买订单</router-link
-      >
-
-      <router-link
-        to="/userCenter/starredGoods"
-        class="leftRecText"
-        active-class="active"
-        >已收藏商品</router-link
-      >
-
-      <router-link
-        to="/userCenter/buyerBidOrder"
-        class="leftRecText"
-        style="margin-bottom: 4rem"
-        active-class="active"
-        >已出价订单</router-link
-      >
-      <!-- 卖家中心功能块 -->
-      <span style="display: flex">
-        <img
-          src="../assets/userCenterImage/卖家中心(1).png"
-          style="margin-top: -0.3rem"
-          alt=""
-        />
-        卖家中心
-      </span>
-      <router-link
-        to="/userCenter/soldGoods"
-        class="leftRecText"
-        style="margin-top: 1rem"
-        active-class="active"
-        >已出售订单</router-link
-      >
-
-      <router-link
-        to="/userCenter/sellerBidOrder"
-        class="leftRecText"
-        active-class="active"
-        >买家的出价</router-link
-      >
-
-      <router-link
-        to="/userCenter/notSoldGoods"
-        class="leftRecText"
-        active-class="active"
-        >未出售商品</router-link
-      >
-
-      <router-link
-        to="/userCenter/notPassGoods"
-        class="leftRecText"
-        active-class="active"
-        >未通过商品</router-link
-      >
-    </div>
-    <!-- 上面的用户基本信息展示矩形 -->
-    <div class="upRec">
-      <big-user-photo class="avatar" />
-      <div>
-        <div class="username">用户名：用户名样例</div>
-        <div class="nickname">昵称：昵称样例</div>
       </div>
-      <div>
-        <div class="balance">余额：￥114514.00</div>
-        <el-button class="topup" @click="topup">充值</el-button>
-        <el-button class="withdraw" @click="withdraw">提现</el-button>
+      <!-- 消息按钮 -->
+      <button class="message"></button>
+      <!-- 左边的导航栏 -->
+      <div class="leftRec">
+        <br /><br />
+
+        <!-- 个人中心功能块 -->
+        <span style="display: flex">
+          <img src="../assets/userCenterImage/个人中心(1).png" alt="" />
+          个人中心
+        </span>
+
+        <router-link
+          to="/userCenter/myInfo"
+          class="leftRecText"
+          style="margin-bottom: 3rem; margin-top: 1rem"
+          active-class="active"
+          >个人信息</router-link
+        >
+        <!-- 买家中心功能块 -->
+        <span style="display: flex">
+          <img
+            src="../assets/userCenterImage/买家中心(1).png"
+            style="margin-top: -0.3rem"
+            alt=""
+          />
+          买家中心
+        </span>
+
+        <router-link
+          to="/userCenter/buyOrder"
+          class="leftRecText"
+          style="margin-top: 1rem"
+          active-class="active"
+          >已购买订单</router-link
+        >
+
+        <router-link
+          to="/userCenter/starredGoods"
+          class="leftRecText"
+          active-class="active"
+          >已收藏商品</router-link
+        >
+
+        <router-link
+          to="/userCenter/buyerBidOrder"
+          class="leftRecText"
+          style="margin-bottom: 4rem"
+          active-class="active"
+          >已出价订单</router-link
+        >
+        <!-- 卖家中心功能块 -->
+        <span style="display: flex">
+          <img
+            src="../assets/userCenterImage/卖家中心(1).png"
+            style="margin-top: -0.3rem"
+            alt=""
+          />
+          卖家中心
+        </span>
+        <router-link
+          to="/userCenter/soldGoods"
+          class="leftRecText"
+          style="margin-top: 1rem"
+          active-class="active"
+          >已出售订单</router-link
+        >
+
+        <router-link
+          to="/userCenter/sellerBidOrder"
+          class="leftRecText"
+          active-class="active"
+          >买家的出价</router-link
+        >
+
+        <router-link
+          to="/userCenter/notSoldGoods"
+          class="leftRecText"
+          active-class="active"
+          >未出售商品</router-link
+        >
+
+        <router-link
+          to="/userCenter/notPassGoods"
+          class="leftRecText"
+          active-class="active"
+          >未通过商品</router-link
+        >
+      </div>
+      <!-- 上面的用户基本信息展示矩形 -->
+      <div class="upRec">
+        <big-user-photo class="avatar" />
+        <div>
+          <div class="username">用户名：{{ username }}</div>
+          <div class="nickname">昵称：{{nickname}}</div>
+        </div>
+        <div>
+          <div class="balance">余额：￥{{money}}</div>
+          <el-button class="topup" @click="topup">充值</el-button>
+          <el-button class="withdraw" @click="withdraw">提现</el-button>
+        </div>
+      </div>
+
+      <div class="rightRec">
+        <router-view></router-view>
       </div>
     </div>
-
-    <div class="rightRec">
-      <router-view></router-view>
-    </div>
-  </div>
   </div>
 </template>
   
@@ -133,16 +133,27 @@ export default {
     Hello,
     BigUserPhoto,
   },
+  data() {
+    return {
+      id_card: "",
+      money: "114514.00",
+      name: "",
+      nickname: "昵称样例",
+      phone_number: "",
+      profile_photo: "",
+      accountStatus: "",
+      username: "用户名样例",
+    };
+  },
   methods: {
     topup() {
       this.$prompt("请输入充值金额", "充值mew币", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         confirmButtonClass: "topUpButton",
-        inputPattern:
-        /^(?:\d{1,8})(?:\.\d{1,2})?$/
-         ,
-        inputErrorMessage: "金额数额过大或者格式不正确，形如233、114.1或者122.45",
+        inputPattern: /^(?:\d{1,8})(?:\.\d{1,2})?$/,
+        inputErrorMessage:
+          "金额数额过大或者格式不正确，形如233、114.1或者122.45",
       })
         .then(({ value }) => {
           this.$message({
@@ -162,10 +173,9 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         confirmButtonClass: "withdrawButton",
-        inputPattern:
-        /^(?:\d{1,8})(?:\.\d{1,2})?$/
-         ,
-        inputErrorMessage: "金额数额过大或者格式不正确，形如233、114.1或者122.45",
+        inputPattern: /^(?:\d{1,8})(?:\.\d{1,2})?$/,
+        inputErrorMessage:
+          "金额数额过大或者格式不正确，形如233、114.1或者122.45",
       })
         .then(({ value }) => {
           this.$message({
@@ -180,6 +190,15 @@ export default {
           });
         });
     },
+  },
+  mounted() {
+    const userInfoString = window.localStorage.getItem("userInfo");
+    if (userInfoString) {
+      const userInfo = JSON.parse(userInfoString);
+      this.nickname = userInfo.nickname;
+      this.username = userInfo.username;
+      this.money = userInfo.money;
+    }
   },
 };
 </script>
@@ -276,7 +295,7 @@ button:hover {
   text-align: center;
 }
 .topup {
-  padding: .6rem;
+  padding: 0.6rem;
   margin-left: 20rem;
   margin-top: 1rem;
   width: 5rem;
@@ -284,10 +303,9 @@ button:hover {
   font-size: 1.2rem;
   background: #f29c7f;
   color: rgb(255, 255, 255);
-
 }
 .withdraw {
-  padding: .6rem;
+  padding: 0.6rem;
   margin-left: 1rem;
   margin-top: 1rem;
   width: 5rem;
@@ -296,6 +314,5 @@ button:hover {
   font-size: 1.2rem;
   color: rgb(255, 255, 255);
 }
-
 </style>
   
