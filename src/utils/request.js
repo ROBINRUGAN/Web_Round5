@@ -19,6 +19,8 @@ service.interceptors.request.use(
         if (token) {
             //我们headers里面的令牌取名叫token，后端也要对应
             config.headers.token = token
+            //一个补救办法，但是不太好，等待lrd修改后端接口
+            config.headers.Authorization = token;
         }
         return config;
     },

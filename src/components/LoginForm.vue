@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { LoginByUsername } from "@/api/api";
+import { LoginByTelephone, LoginByUsername, UserInfo } from "@/api/api";
 import { watch } from "vue";
 export default {
   data() {
@@ -86,14 +86,39 @@ export default {
       };
       if (this.flag) {
         //手机号登录
-        if (this.telephone && this.code) {
-          //
+        if (
+          this.telephone &&
+          this.code &&
+          !this.errorCodeflag &&
+          !this.errorPhoneflag
+        ) {
+          LoginByTelephone(loginByTelephoneData)
+            .then((res) => {
+              console.log(res);
+
+              //处理一下登录逻辑
+              if (res.code == 200) {
+                alert("登录成功！");
+                window.localStorage.setItem("token", res.token);
+                this.$router.push("/");
+              } else {
+                alert("手机号或验证码错误，请重新登录！");
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         } else {
           alert("请输入手机号和验证码！");
         }
       } else {
         //账号密码登录
-        if (this.account && this.password) {
+        if (
+          this.account &&
+          this.password &&
+          !this.errorUsernameflag &&
+          !this.errorPasswordflag
+        ) {
           LoginByUsername(loginByUsernameData)
             .then((res) => {
               console.log(res);
@@ -101,11 +126,23 @@ export default {
               //处理一下登录逻辑
               if (res.code == 200) {
                 alert("登录成功！");
+                window.localStorage.setItem("token", res.token);
+                
+                //获取用户信息并缓存，提升效率
+                UserInfo()
+                .then((res) => {
+                  console.log(res);
+                  if(res.code==200)
+                  {
+                    window.localStorage.setItem("userInfo", JSON.stringify(res.user));
+
+                  }
+                })
+
                 this.$router.push("/");
               } else {
                 alert("账号或密码错误，请重新登录！");
               }
-
             })
             .catch((err) => {
               console.log(err);
