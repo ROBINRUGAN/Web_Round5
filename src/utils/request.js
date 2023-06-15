@@ -1,9 +1,9 @@
 import axios from "axios";
 // 创建axios，赋给变量service
 const service = axios.create({
-    baseURL: 'https://console-mock.apipost.cn/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/', // http://192.168.0.106:8080/devApi/  == http://www.web-jshtml.cn/productapi/productapi
+    baseURL: `https://console-mock.apipost.cn/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/`, // http://192.168.0.106:8080/devApi/  == http://www.web-jshtml.cn/productapi/productapi
     timeout: 15000, // 超时
-    withCredentials: true,
+    withCredentials: false,
     crossDomain: true,
 });
 

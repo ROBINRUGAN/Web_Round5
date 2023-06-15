@@ -13,9 +13,13 @@
       v-show="!flag"
     />
     <br />
-    <span v-show="errorPhoneflag&flag" class="errorPhoneMsg">请输入正确的手机号码！</span>
-    <span v-show="errorUsernameflag&!flag" class="errorUsernameMsg">用户名不能为空！</span>
-<br />
+    <span v-show="errorPhoneflag & flag" class="errorPhoneMsg"
+      >请输入正确的手机号码！</span
+    >
+    <span v-show="errorUsernameflag & !flag" class="errorUsernameMsg"
+      >用户名不能为空！</span
+    >
+    <br />
     <input
       type="password"
       v-model="password"
@@ -30,14 +34,18 @@
     />
     <br />
     <a class="getCode" v-show="flag">获取验证码</a>
-    <span v-show="errorPasswordflag&!flag" class="errorPasswordMsg">密码不能为空！</span>
-    <span v-show="errorCodeflag&flag" class="errorCodeMsg">验证码为六位数字！</span>
+    <span v-show="errorPasswordflag & !flag" class="errorPasswordMsg"
+      >密码不能为空！</span
+    >
+    <span v-show="errorCodeflag & flag" class="errorCodeMsg"
+      >验证码为六位数字！</span
+    >
     <br />
     <a @click="changeLoginWay()" class="changeLoginWay">{{ LoginType }}</a>
     <br /><br />
-    <router-link to="/">
-      <button class="loginBtn">登录</button>
-    </router-link>
+
+    <button class="loginBtn" @click="loginBtn">登录</button>
+
     <router-link to="/register">
       <button class="registerBtn">注册</button>
     </router-link>
@@ -45,6 +53,7 @@
 </template>
 
 <script>
+import { LoginByUsername } from "@/api/api";
 import { watch } from "vue";
 export default {
   data() {
@@ -54,7 +63,7 @@ export default {
       password: "",
       code: "",
       LoginType: "手机验证码登录",
-      flag: false,
+      flag: false, //账号密码登录的时候是false，手机号登录的时候是true
       errorPhoneflag: false,
       errorCodeflag: false,
       errorUsernameflag: false,
@@ -65,6 +74,46 @@ export default {
     changeLoginWay() {
       this.flag = !this.flag;
       //console.log(this.flag)
+    },
+    loginBtn() {
+      let loginByUsernameData = {
+        account: this.account,
+        password: this.password,
+      };
+      let loginByTelephoneData = {
+        telephone: this.telephone,
+        code: this.code,
+      };
+      if (this.flag) {
+        //手机号登录
+        if (this.telephone && this.code) {
+          //
+        } else {
+          alert("请输入手机号和验证码！");
+        }
+      } else {
+        //账号密码登录
+        if (this.account && this.password) {
+          LoginByUsername(loginByUsernameData)
+            .then((res) => {
+              console.log(res);
+
+              //处理一下登录逻辑
+              if (res.code == 200) {
+                alert("登录成功！");
+                this.$router.push("/");
+              } else {
+                alert("账号或密码错误，请重新登录！");
+              }
+
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else {
+          alert("请输入账号和密码！");
+        }
+      }
     },
   },
   watch: {
@@ -173,20 +222,16 @@ button:hover {
   cursor: pointer;
   position: absolute;
 }
-.errorPhoneMsg
-{
+.errorPhoneMsg {
   color: rgb(223, 46, 46);
 }
-.errorCodeMsg
-{
+.errorCodeMsg {
   color: rgb(223, 46, 46);
 }
-.errorUsernameMsg
-{
+.errorUsernameMsg {
   color: rgb(223, 46, 46);
 }
-.errorPasswordMsg
-{
+.errorPasswordMsg {
   color: rgb(223, 46, 46);
 }
 </style>
