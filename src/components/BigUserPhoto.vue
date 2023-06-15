@@ -13,6 +13,14 @@ export default {
       circleUrl: image,
     };
   },
+  mounted() {
+    const userInfoString = window.localStorage.getItem("userInfo");
+    if (userInfoString) {
+      const userInfo = JSON.parse(userInfoString);
+      this.nickname = userInfo.username;
+      this.circleUrl = userInfo.profile_photo;
+    }
+  },
 };
 </script>
 <style scoped>
