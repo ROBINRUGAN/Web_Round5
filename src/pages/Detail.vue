@@ -40,11 +40,11 @@
         "
         height="22rem"
       >
-        <el-carousel-item v-for="item in 4" :key="item">
+        <el-carousel-item v-for="(item, index) in goodPhotos" :key="index">
           <!-- 商品的各个图片 -->
 
           <img
-            src="../assets/homeImage/已插入图像.png"
+            :src="item"
             alt=""
             style="
               width: 35rem;
@@ -120,12 +120,22 @@
           ></div>
           <div>平台保障</div>
         </span>
+
+        <div class="seller">
+          <img
+            :src="seller_profile_photo"
+            alt=""
+            style="width: 50px; height: 50px; border-radius: 50%"
+          />
+          <div style="padding: 12px">{{ seller_nickname }}</div>
+        </div>
       </div>
       <!-- 购买按钮 -->
       <div style="display: inline-flex; width: ">
-        <button class="buybtn">立即购买</button>
-        <button class="addbtn">加入心愿单</button>
+        <button class="buybtn" @click="buybtn">立即购买</button>
+        <button class="addbtn" @click="addbtn">加入心愿单</button>
       </div>
+
       <!-- 上架时间 -->
       <span
         style="
@@ -206,8 +216,8 @@
           <div class="message-list">
             <div
               class="message"
-              v-for="message in messages"
-              :key="message.id"
+              v-for="(message, index) in messages"
+              :key="index"
               :class="[message.author === 'Me' ? 'me' : 'other']"
             >
               <div
@@ -217,7 +227,7 @@
                     : 'message-bubble-white',
                 ]"
               >
-                <span class="message-text">{{ message.text }}</span>
+                <span class="message-text">{{ message.message }}</span>
               </div>
             </div>
           </div>
@@ -239,34 +249,27 @@
   <script>
 import NavMenu from "../components/NavMenu.vue";
 import Hello from "../components/Hello.vue";
-import Vue from 'vue';
-import { DetailInfo } from '@/api/api';
+import Vue from "vue";
+import { ChatHistory, DetailInfo, Like } from "@/api/api";
 export default {
   data() {
     return {
       showChat: false,
-      messages: [
-        {
-          id: 0,
-          author: "Other",
-          text: "你好",
-        },
-        {
-          id: 0,
-          author: "Me",
-          text: "你好",
-        },
-      ],
+      messages: [],
       newMessage: "",
       nextMessageId: 1,
 
       isChange: true, //是否已经实名认证
-      goodsPrice: 310.03,
-      goodsNumber: "121145143456789",
-      goodsTime: "2023-05-01 12:00:00",
-      likeNumber: 114514,
-      title: "这是标题",
-      content: "这是",
+      goodsPrice: null,
+      goodsNumber: "",
+      goodsTime: "",
+      likeNumber: null,
+      title: "",
+      content: "",
+      seller_nickname: "",
+      seller_id: "",
+      seller_profile_photo: "",
+      goodPhotos: null,
     };
   },
 
@@ -275,10 +278,10 @@ export default {
     Hello,
   },
   mounted() {
-    let detailParams={
+    let detailParams = {
       id: this.$route.query.id,
-    }
-    DetailInfo(detailParams).then((res)=>{
+    };
+    DetailInfo(detailParams).then((res) => {
       console.log(res.data);
       this.isChange = true;
       this.goodsPrice = res.data.price;
@@ -287,8 +290,29 @@ export default {
       this.likeNumber = res.data.view;
       this.title = res.data.title;
       this.content = res.data.content;
-
-    })
+      this.seller_id = res.data.seller_id;
+      this.seller_nickname = res.data.seller_nickname;
+      this.seller_profile_photo = res.data.seller_profile_photo;
+      this.goodPhotos = res.data.picture_url.split(",");
+    });
+    let ChatParams = {
+      send_id: this.seller_id,
+    };
+    ChatHistory(ChatParams).then((res) => {
+      console.log(res.data);
+      this.messages = res.data;
+      this.messages.forEach((message) => {
+        if(message.message_id === this.seller_id)
+        message.author = "Other";
+        else
+        {
+          console.log(message.message_id);
+          console.log(this.seller_id);
+           message.author = "Me";
+        }
+       
+      });
+    });
   },
   // created() {
   //   this.$bus.$on("detailInfo", (data) => {
@@ -315,12 +339,48 @@ export default {
     sendMessage() {
       if (this.newMessage.trim() !== "") {
         this.messages.push({
-          id: this.nextMessageId++,
           author: "Me",
-          text: this.newMessage,
+          message: this.newMessage,
         });
         this.newMessage = "";
       }
+    },
+    buybtn() {
+      this.$prompt("请在下面输入你想出价的金额", "发起出价", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        inputPattern: /^(?:\d{1,8})(?:\.\d{1,2})?$/,
+        inputErrorMessage:
+          "金额数额过大或者格式不正确，形如233、114.1或者122.45",
+        cancelButtonClass: "nicknameBtn",
+        confirmButtonClass: "nicknameBtn",
+      })
+        .then(({ value }) => {
+          this.nickname = value;
+          this.$message({
+            type: "success",
+            message: "出价成功，等待商家处理: " + value,
+          });
+        })
+        .catch(({ value }) => {
+          this.nickname = value;
+          this.$message({
+            type: "info",
+            message: "取消出价",
+          });
+        });
+    },
+    addbtn() {
+      let data = {
+        id: this.id,
+      };
+      Like(data).then((res) => {
+        console.log(res);
+      });
+      this.$message({
+        message: "收藏成功",
+        type: "success",
+      });
     },
   },
 };
@@ -438,6 +498,11 @@ button:hover {
   font-size: 1.5rem;
   display: flex;
   justify-content: flex-end;
+}
+.seller {
+  display: flex;
+  margin-left: 50rem;
+  margin-top: -10rem;
 }
 .label {
   height: 2.7rem;

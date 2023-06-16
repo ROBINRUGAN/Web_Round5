@@ -37,3 +37,28 @@ export function DetailInfo(queryParams){
         url:`/goods?${new URLSearchParams(queryParams).toString()}`,
     })
 }
+export function HomeSearch(queryParams){
+    console.log('我在api.js，获取首页搜索信息')
+    return service.request({
+        method:"get",
+        url:`/search?${new URLSearchParams(queryParams).toString()}`,
+    })
+}
+export function Like(data) {
+    console.log('我在api.js，获取加入心愿单信息');
+    return service.request({
+        method: "post",
+        url: `/users/favorites/add`,
+        data: JSON.stringify(data), // 将参数转换为JSON字符串
+        headers: {
+            'Content-Type': 'application/json' // 指定请求头的Content-Type为application/json
+        }
+    });
+}
+export function ChatHistory(queryParams){
+    console.log('我在api.js，获取首页搜索信息')
+    return service.request({
+        method:"get",
+        url:`/chat/history?${new URLSearchParams(queryParams).toString()}`,
+    })
+}

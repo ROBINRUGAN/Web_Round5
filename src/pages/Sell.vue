@@ -1,24 +1,26 @@
 <template>
-        <div>
-        <div class="header">
+  <div>
+    <div class="header">
       <NavMenu class="navMenu" />
       <hello class="hello" />
     </div>
-  <div class="root">
-    <!-- 背景图片 -->
-    <div class="background">
-      <img
-        src="../assets/sellImage/商品发布页1.jpg"
-        width="100%"
-        height="100%"
-      />
-    </div>
-    <!-- 消息按钮 -->
-    <button class="message"></button>
+    <div class="root">
+      <!-- 背景图片 -->
+      <div class="background">
+        <img
+          src="../assets/sellImage/商品发布页1.jpg"
+          width="100%"
+          height="100%"
+        />
+      </div>
+      <router-link to="/message">
+        <!-- 消息按钮 -->
+        <button class="message" @click="onMessageBtn"></button>
+      </router-link>
 
-    <UploadForm class="uploadForm" />
+      <UploadForm class="uploadForm" />
+    </div>
   </div>
-        </div>
 </template>
     
     <script>
@@ -33,8 +35,11 @@ export default {
     BigUserPhoto,
     UploadForm,
   },
-  methods: {},
-
+  methods: {
+    onMessageBtn() {
+      this.$cookies.set("activeNum", "0");
+    },
+  },
 };
 </script>
     
@@ -75,9 +80,13 @@ export default {
 .second {
   padding-right: 3rem;
 }
+button:hover {
+  opacity: 92%;
+  cursor: pointer;
+}
 .uploadForm {
-margin-left: 15rem;
-margin-top: 5rem;
+  margin-left: 15rem;
+  margin-top: 5rem;
   display: flex;
   position: absolute;
 }
