@@ -240,6 +240,7 @@
 import NavMenu from "../components/NavMenu.vue";
 import Hello from "../components/Hello.vue";
 import Vue from 'vue';
+import { DetailInfo } from '@/api/api';
 export default {
   data() {
     return {
@@ -273,23 +274,39 @@ export default {
     NavMenu,
     Hello,
   },
-  created() {
-    this.$bus.$on("detailInfo", (data) => {
-           console.log("meww"); // 使用 Vue.set() 更新数据
-      Vue.set(this, "isChange", false);
-      Vue.set(this, "goodsPrice", data.price);
-      Vue.set(this, "goodsNumber", data.id);
-      Vue.set(this, "goodsTime", data.add_time);
-      Vue.set(this, "likeNumber", data.view);
-      Vue.set(this, "title", data.title);
-      Vue.set(this, "content", data.content);
-      console.log(this.content);
+  mounted() {
+    let detailParams={
+      id: this.$route.query.id,
+    }
+    DetailInfo(detailParams).then((res)=>{
+      console.log(res.data);
+      this.isChange = true;
+      this.goodsPrice = res.data.price;
+      this.goodsNumber = res.data.id;
+      this.goodsTime = res.data.add_time;
+      this.likeNumber = res.data.view;
+      this.title = res.data.title;
+      this.content = res.data.content;
 
-    });
+    })
   },
-  beforeDestroy() {
-    this.$bus.$off("detailInfo");
-  },
+  // created() {
+  //   this.$bus.$on("detailInfo", (data) => {
+  //          console.log("meww"); // 使用 Vue.set() 更新数据
+  //     Vue.set(this, "isChange", false);
+  //     Vue.set(this, "goodsPrice", data.price);
+  //     Vue.set(this, "goodsNumber", data.id);
+  //     Vue.set(this, "goodsTime", data.add_time);
+  //     Vue.set(this, "likeNumber", data.view);
+  //     Vue.set(this, "title", data.title);
+  //     Vue.set(this, "content", data.content);
+  //     console.log(this.content);
+
+  //   });
+  // },
+  // beforeDestroy() {
+  //   this.$bus.$off("detailInfo");
+  // },
 
   methods: {
     toggleChat() {

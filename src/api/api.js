@@ -30,3 +30,10 @@ export function HomeInfo(queryParams){
         url:`/home-page?${new URLSearchParams(queryParams).toString()}`,
     })
 }
+export function DetailInfo(queryParams){
+    console.log('我在api.js，获取详情页信息')
+    return service.request({
+        method:"get",
+        url:`/goods?${new URLSearchParams(queryParams).toString()}`,
+    })
+}
