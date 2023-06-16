@@ -63,7 +63,7 @@
         <!-- 商品列表分页展示 -->
         <div class="goodslist" v-for="good in goods.slice((page-1)*4,page*4)" :key="good.id">
 
-          <li @click="comein(good.id)">
+          <li @click="comein(good)">
             <img
               src="../assets/homeImage/图层 8.png"
               alt=""
@@ -121,7 +121,8 @@ export default {
         //         这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o",
         // },
       ],
-    };
+      good:null
+      };
   },
   components: {
     NavMenu,
@@ -137,12 +138,19 @@ export default {
       this.goods = res.data;
     })
   },
+  beforeDestroy()
+  {
+    this.$bus.$emit("detailInfo", this.good);
+  },
   methods: {
-    comein(id) {
-      alert("进入商品详情页" + id);
-      var url = "/detail/" + id;
+    comein(good) {
+      alert("进入商品详情页" + good.id);
+      this.$bus.$emit("detailInfo", good);
+      this.good = good;
+      var url = "/detail/" + good.id;
       this.$router.push({
         path: url,
+
       });
     },
     onMessageBtn()

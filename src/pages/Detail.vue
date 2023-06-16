@@ -1,227 +1,245 @@
 <template>
-        <div>
-        <div class="header">
+  <div>
+    <div class="header">
       <NavMenu class="navMenu" />
       <hello class="hello" />
     </div>
-  <div class="root">
-    <!-- 背景图片 -->
-    <div class="background">
+    <div class="root">
+      <!-- 背景图片 -->
+      <div class="background">
+        <img src="../assets/detailImage/加长版背景.jpg" width="100%" />
+      </div>
+
+      <!-- 消息按钮 -->
+      <button class="messageBtn"></button>
+      <!-- 一个底部的挡板，使商品描述更清楚 -->
       <img
-        src="../assets/detailImage/加长版背景.jpg"
-        width="100%"
+        src="../assets/detailImage/背景.png"
+        style="
+          z-index: -1;
+          width: 100.5rem;
+          height: 25rem;
+          margin-top: 15rem;
+          margin-left: 2rem;
+          opacity: 70%;
+          left: 0;
+          top: 0;
+          position: absolute;
+        "
       />
-    </div>
+      <!-- 轮播图 -->
+      <el-carousel
+        effect="fade"
+        indicator-position="none"
+        trigger="click"
+        style="
+          width: 35rem;
+          height: 24rem;
+          margin-left: 4rem;
+          margin-top: 5.5rem;
+        "
+        height="22rem"
+      >
+        <el-carousel-item v-for="item in 4" :key="item">
+          <!-- 商品的各个图片 -->
 
-    <!-- 消息按钮 -->
-    <button class="messageBtn"></button>
-    <!-- 一个底部的挡板，使商品描述更清楚 -->
-    <img
-      src="../assets/detailImage/背景.png"
-      style="
-        z-index: -1;
-        width: 100.5rem;
-        height: 25rem;
-        margin-top: 15rem;
-        margin-left: 2rem;
-        opacity: 70%;
-        left: 0;
-        top: 0;
-        position: absolute;
-      "
-    />
-    <!-- 轮播图 -->
-    <el-carousel
-      effect="fade"
-      indicator-position="none"
-      trigger="click"
-      style="width: 35rem; height: 24rem; margin-left: 4rem; margin-top: 5.5rem"
-      height="22rem"
-    >
-      <el-carousel-item v-for="item in 4" :key="item">
-        <!-- 商品的各个图片 -->
+          <img
+            src="../assets/homeImage/已插入图像.png"
+            alt=""
+            style="
+              width: 35rem;
+              height: 22rem;
+              max-height: fit-content;
+              max-width: fit-content;
+              position: relative;
+              border-radius: 1rem;
+              z-index: 0;
+            "
+          />
+        </el-carousel-item>
+      </el-carousel>
 
+      <!-- 上方的文字提示，长得像按钮 -->
+      <div
+        style="
+          border-radius: 1rem;
+          padding: 0.65rem;
+          width: 6rem;
+          font-size: 1.5rem;
+          color: white;
+          background-color: #5593cc;
+          display: flex;
+          margin-left: 41rem;
+          margin-top: -24rem;
+          margin-bottom: 1.2rem;
+          position: relative;
+        "
+      >
+        游戏账号
+      </div>
+
+      <div class="likeNumber">
+        <img src="../assets/detailImage/火.png" style="margin-right: 0.5rem" />
+        有{{ likeNumber }}人已收藏
+      </div>
+
+      <!-- 商品的一些信息 -->
+      <div class="goodsForm">
+        <span style="width: fit-content; display: flex">
+          售价：
+          <div class="price">￥{{ goodsPrice }}</div>
+        </span>
+        <br />
+        <span style="width: fit-content; display: flex; margin-top: 0.8rem">
+          商品编号：
+          <div>{{ goodsNumber }}</div>
+        </span>
+        <br />
+        <span style="width: fit-content; display: flex; margin-top: 1rem">
+          服务保障：
+          <div
+            class="light"
+            :style="{
+              'background-color': isChange ? 'rgb(0,255,0)' : 'rgb(255,0,0)',
+            }"
+            style="margin-left: 0rem"
+          ></div>
+          <div>已投保</div>
+          <div
+            class="light"
+            :style="{
+              'background-color': isChange ? 'rgb(0,255,0)' : 'rgb(255,0,0)',
+            }"
+          ></div>
+          <div>已实名认证</div>
+          <div
+            class="light"
+            :style="{
+              'background-color': isChange ? 'rgb(0,255,0)' : 'rgb(255,0,0)',
+            }"
+          ></div>
+          <div>平台保障</div>
+        </span>
+      </div>
+      <!-- 购买按钮 -->
+      <div style="display: inline-flex; width: ">
+        <button class="buybtn">立即购买</button>
+        <button class="addbtn">加入心愿单</button>
+      </div>
+      <!-- 上架时间 -->
+      <span
+        style="
+          width: fit-content;
+          display: flex;
+          width: 25rem;
+          font-size: 1.5rem;
+          margin-left: 77rem;
+        "
+      >
+        上架时间：
+        <div class="goodsTime">{{ goodsTime }}</div>
+      </span>
+
+      <!-- 一个底部的挡板，使商品描述更清楚 -->
+      <img
+        src="../assets/detailImage/背景.png"
+        style="
+          z-index: -1;
+          width: 100.5rem;
+          height: 41.46rem;
+          margin-top: 41rem;
+          margin-left: 2rem;
+          opacity: 70%;
+          left: 0;
+          top: 0;
+          position: absolute;
+        "
+      />
+      <!-- 商品描述 -->
+      <div
+        style="
+          font-size: 3rem;
+          color: #fe9e9a;
+          text-decoration: underline;
+          margin-top: 4rem;
+          margin-left: 3rem;
+        "
+      >
+        商品详情
+      </div>
+      <!-- 两个长得像按钮的东西 -->
+
+      <div style="display: inline-flex">
         <img
-          src="../assets/homeImage/已插入图像.png"
+          src="../assets/homeImage/标题.png"
           alt=""
-          style="
-            width: 35rem;
-            height: 22rem;
-            max-height: fit-content;
-            max-width: fit-content;
-            position: relative;
-            border-radius: 1rem;
-            z-index: 0;
-          "
+          class="label"
+          style="margin-left: 3rem"
         />
-      </el-carousel-item>
-    </el-carousel>
-
-    <!-- 上方的文字提示，长得像按钮 -->
-    <div
-      style="
-        border-radius: 1rem;
-        padding: 0.65rem;
-        width: 6rem;
-        font-size: 1.5rem;
-        color: white;
-        background-color: #5593cc;
-        display: flex;
-        margin-left: 41rem;
-        margin-top: -24rem;
-        margin-bottom: 1.2rem;
-        position: relative;
-      "
-    >
-      游戏账号
-    </div>
-
-    <div class="likeNumber">
-      <img src="../assets/detailImage/火.png" style="margin-right: 0.5rem" />
-      有{{ likeNumber }}人已收藏
-    </div>
-
-    <!-- 商品的一些信息 -->
-    <div class="goodsForm">
-      <span style="width: fit-content; display: flex">
-        售价：
-        <div class="price">￥{{ goodsPrice }}</div>
-      </span>
+        <div class="title">{{ title }}</div>
+      </div>
       <br />
-      <span style="width: fit-content; display: flex; margin-top: 0.8rem">
-        商品编号：
-        <div>{{ goodsNumber }}</div>
-      </span>
-      <br />
-      <span style="width: fit-content; display: flex; margin-top: 1rem">
-        服务保障：
-        <div
-          class="light"
-          :style="{
-            'background-color': isChange ? 'rgb(0,255,0)' : 'rgb(255,0,0)',
-          }"
-          style="margin-left: 0rem"
-        ></div>
-        <div>已投保</div>
-        <div
-          class="light"
-          :style="{
-            'background-color': isChange ? 'rgb(0,255,0)' : 'rgb(255,0,0)',
-          }"
-        ></div>
-        <div>已实名认证</div>
-        <div
-          class="light"
-          :style="{
-            'background-color': isChange ? 'rgb(0,255,0)' : 'rgb(255,0,0)',
-          }"
-        ></div>
-        <div>平台保障</div>
-      </span>
-    </div>
-    <!-- 购买按钮 -->
-    <div style="display: inline-flex; width: ">
-      <button class="buybtn">立即购买</button>
-      <button class="addbtn">加入心愿单</button>
-    </div>
-    <!-- 上架时间 -->
-    <span
-      style="
-        width: fit-content;
-        display: flex;
-        width: 25rem;
-        font-size: 1.5rem;
-        margin-left: 77rem;
-      "
-    >
-      上架时间：
-      <div class="goodsTime">{{ goodsTime }}</div>
-    </span>
 
-    <!-- 一个底部的挡板，使商品描述更清楚 -->
-    <img
-      src="../assets/detailImage/背景.png"
-      style="
-        z-index: -1;
-        width: 100.5rem;
-        height: 41.46rem;
-        margin-top: 41rem;
-        margin-left: 2rem;
-        opacity: 70%;
-        left: 0;
-        top: 0;
-        position: absolute;
-      "
-    />
-    <!-- 商品描述 -->
-    <div
-      style="
-        font-size: 3rem;
-        color: #fe9e9a;
-        text-decoration: underline;
-        margin-top: 4rem;
-        margin-left: 3rem;
-      "
-    >
-      商品详情
-    </div>
-    <!-- 两个长得像按钮的东西 -->
-
-    <div style="display: inline-flex">
-      <img
-        src="../assets/homeImage/标题.png"
-        alt=""
-        class="label"
-        style="margin-left: 3rem"
-      />
-      <div class="title">{{title}}</div>
-    </div>
-    <br />
-
-    <div style="display: inline-flex">
-      <img
-        src="../assets/homeImage/简要标题.png"
-        alt=""
-        class="label"
-        style="margin-left: 3rem"
-      />
-      <div class="content">
-        {{ content }}
+      <div style="display: inline-flex">
+        <img
+          src="../assets/homeImage/简要标题.png"
+          alt=""
+          class="label"
+          style="margin-left: 3rem"
+        />
+        <div class="content">
+          {{ content }}
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="chat-wrapper">
-    <div class="chat-button" @click="toggleChat">
-      <span class="chat-icon"></span>
-    </div>
-    <transition name="slide">
-      <div class="chat-box" v-if="showChat">
-        <div class="chat-header">
-          <h3>MewChat</h3>
-          <button class="close-button" @click="toggleChat">关闭</button>
-        </div>
-        <div class="message-list">
-          <div class="message" v-for="message in messages" :key="message.id" :class="[message.author === 'Me' ? 'me' : 'other']">
-            <div :class="[message.author === 'Me' ? 'message-bubble-blue' : 'message-bubble-white']">
-              <span class="message-text">{{ message.text }}</span>
+    <div class="chat-wrapper">
+      <div class="chat-button" @click="toggleChat">
+        <span class="chat-icon"></span>
+      </div>
+      <transition name="slide">
+        <div class="chat-box" v-if="showChat">
+          <div class="chat-header">
+            <h3>MewChat</h3>
+            <button class="close-button" @click="toggleChat">关闭</button>
+          </div>
+          <div class="message-list">
+            <div
+              class="message"
+              v-for="message in messages"
+              :key="message.id"
+              :class="[message.author === 'Me' ? 'me' : 'other']"
+            >
+              <div
+                :class="[
+                  message.author === 'Me'
+                    ? 'message-bubble-blue'
+                    : 'message-bubble-white',
+                ]"
+              >
+                <span class="message-text">{{ message.text }}</span>
+              </div>
             </div>
           </div>
+          <div class="input-box">
+            <input
+              type="text"
+              v-model="newMessage"
+              @keyup.enter="sendMessage"
+              placeholder="输入消息..."
+            />
+            <button @click="sendMessage">发送</button>
+          </div>
         </div>
-        <div class="input-box">
-          <input type="text" v-model="newMessage" @keyup.enter="sendMessage" placeholder="输入消息..." />
-          <button @click="sendMessage">发送</button>
-        </div>
-      </div>
-    </transition>
+      </transition>
+    </div>
   </div>
-
-        </div>
 </template>
   
   <script>
 import NavMenu from "../components/NavMenu.vue";
 import Hello from "../components/Hello.vue";
+import Vue from 'vue';
 export default {
   data() {
     return {
@@ -229,47 +247,25 @@ export default {
       messages: [
         {
           id: 0,
-          author:"Other",
-          text:"你好",
+          author: "Other",
+          text: "你好",
         },
         {
           id: 0,
-          author:"Me",
-          text:"你好",
-        }
+          author: "Me",
+          text: "你好",
+        },
       ],
-      newMessage: '',
+      newMessage: "",
       nextMessageId: 1,
 
-      isChange: true,
+      isChange: true, //是否已经实名认证
       goodsPrice: 310.03,
       goodsNumber: "121145143456789",
       goodsTime: "2023-05-01 12:00:00",
       likeNumber: 114514,
-      title: "这是标题样例",
-      content:
-        "这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
-        这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
-        这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
-        这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
-        这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
-        这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
-        这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
-        这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
-        这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
-        这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
-        这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
-        这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
-        这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
-        这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
-        这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
-        这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
-        这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
-        这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
-        这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
-        这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
-        这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o\
-        这是一条简要介绍，欢迎光临MewStore!!!!!ヾ(≧▽≦*)o",
+      title: "这是标题",
+      content: "这是",
     };
   },
 
@@ -277,23 +273,38 @@ export default {
     NavMenu,
     Hello,
   },
+  created() {
+    this.$bus.$on("detailInfo", (data) => {
+           console.log("meww"); // 使用 Vue.set() 更新数据
+      Vue.set(this, "isChange", false);
+      Vue.set(this, "goodsPrice", data.price);
+      Vue.set(this, "goodsNumber", data.id);
+      Vue.set(this, "goodsTime", data.add_time);
+      Vue.set(this, "likeNumber", data.view);
+      Vue.set(this, "title", data.title);
+      Vue.set(this, "content", data.content);
+      console.log(this.content);
+
+    });
+  },
+  beforeDestroy() {
+    this.$bus.$off("detailInfo");
+  },
+
   methods: {
-    comein(id) {
-      alert("进入商品详情页" + id);
-    },
     toggleChat() {
       this.showChat = !this.showChat;
     },
     sendMessage() {
-      if (this.newMessage.trim() !== '') {
+      if (this.newMessage.trim() !== "") {
         this.messages.push({
           id: this.nextMessageId++,
-          author: 'Me',
-          text: this.newMessage
+          author: "Me",
+          text: this.newMessage,
         });
-        this.newMessage = '';
+        this.newMessage = "";
       }
-    }
+    },
   },
 };
 </script>
@@ -568,6 +579,5 @@ button:hover {
 .message-text {
   margin-top: 5px;
 }
-
 </style>
   
