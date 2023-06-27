@@ -194,6 +194,10 @@ export default {
         });
     },
   },
+  beforeCreate()
+  {
+    this.$cookies.set("activeNum", "0");
+  },
   mounted() {
     const userInfoString = window.localStorage.getItem("userInfo");
     if (userInfoString) {

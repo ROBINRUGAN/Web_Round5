@@ -69,7 +69,10 @@ export function LoginGetCode(data)
     return service.request({
         method:"post",
         url:`/users/sms/login`,
-        data
+        data: JSON.stringify(data), // 将参数转换为JSON字符串
+        headers: {
+            'Content-Type': 'application/json' // 指定请求头的Content-Type为application/json
+        }
     })
 }
 export function RegisterGetCode(data)
@@ -79,6 +82,35 @@ export function RegisterGetCode(data)
     return service.request({
         method:"post",
         url:`/users/sms/register`,
-        data
+        data: JSON.stringify(data), // 将参数转换为JSON字符串
+        headers: {
+            'Content-Type': 'application/json' // 指定请求头的Content-Type为application/json
+        }
+    })
+}
+export function ModifyGetCode(data)
+{
+    console.log('我在api.js，修改手机号获取验证码')
+
+    return service.request({
+        method:"post",
+        url:`/users/sms/modify`,
+        data: JSON.stringify(data), // 将参数转换为JSON字符串
+        headers: {
+            'Content-Type': 'application/json' // 指定请求头的Content-Type为application/json
+        }
+    })
+}
+export function Register(data)
+{
+    console.log('我在api.js，注册')
+
+    return service.request({
+        method:"post",
+        url:`/users/register`,
+        data: JSON.stringify(data), // 将参数转换为JSON字符串
+        headers: {
+            'Content-Type': 'application/json' // 指定请求头的Content-Type为application/json
+        }
     })
 }

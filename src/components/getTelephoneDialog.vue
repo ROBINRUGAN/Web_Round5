@@ -46,6 +46,7 @@
 </template>
   
   <script >
+import { ModifyGetCode, modifyGetCode } from '@/api/api';
 export default {
   data() {
     return {
@@ -89,14 +90,33 @@ export default {
     showDialog() {
       this.dialogVisible = true;
     },
-    getCode() {
-      // TODO: 发送验证码的逻辑
+    async getCode() {
+      if (this.countdown > 0) {
+        return;
+      }
+      if (!/^1[3456789]\d{9}$/.test(this.form.phone)) {
+        this.errorPhoneflag = true;
+        return;
+      }
+      //TODO：这里就写获取验证码的逻辑
+      let modifyGetCodeData = {
+        type: 'modify',
+        phone_number: this.form.phone,
+      };
+      ModifyGetCode(modifyGetCodeData)
+      .then((res) => {
+        console.log(res);
+        alert(res.data.code);
+      })
+
+
+
+      this.errorPhoneflag = false;
       this.countdown = 60;
       const timer = setInterval(() => {
-        if (this.countdown === 0) {
+        this.countdown--;
+        if (this.countdown <= 0) {
           clearInterval(timer);
-        } else {
-          this.countdown--;
         }
       }, 1000);
     },

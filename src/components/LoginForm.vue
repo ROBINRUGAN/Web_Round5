@@ -167,6 +167,7 @@ export default {
               //处理一下登录逻辑
               if (res.code == 200) {
                 alert("登录成功！");
+                this.$cookies.set("activeNum", "1");
                 window.localStorage.setItem("token", res.token);
                 
                 //获取用户信息并缓存，提升效率

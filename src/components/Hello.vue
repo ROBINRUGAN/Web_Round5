@@ -9,12 +9,12 @@
     </div>
 
     <el-dropdown-menu slot="dropdown" class="menu">
-      <router-link to="/userCenter" style="text-decoration: none;">
-              <el-dropdown-item icon="el-icon-user" >个人中心</el-dropdown-item>
+      <router-link to="/userCenter" style="text-decoration: none;" >
+              <el-dropdown-item icon="el-icon-user">个人中心</el-dropdown-item>
       </router-link>
 
       <router-link to="/login" style="text-decoration: none;">
-              <el-dropdown-item icon="el-icon-switch-button">退出登录</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-switch-button" >退出登录</el-dropdown-item>
       </router-link>
 
     </el-dropdown-menu>
@@ -31,7 +31,6 @@ export default {
     return {};
   },
   methods:{
-
   }
 };
 </script>
