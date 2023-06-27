@@ -39,13 +39,13 @@
       <button class="loginBtn">返回登录</button>
     </router-link>
 
-    <button class="registerBtn">注册</button>
+    <button class="registerBtn" @click="submit">注册</button>
   </div>
 </template>
 
 <script>
 import { watch } from "vue";
-import { RegisterGetCode } from '@/api/api';
+import { Register, RegisterGetCode } from '@/api/api';
 export default {
   data() {
     return {
@@ -97,6 +97,42 @@ export default {
         }
       }, 1000);
     },
+    submit()
+    {
+      if (!/^1[3456789]\d{9}$/.test(this.telephone)) {
+        this.errorPhoneflag = true;
+        return;
+      }
+      if (!/^\d{6}$/.test(this.code)) {
+        this.errorCodeflag = true;
+        return;
+      }
+      if (!this.account) {
+        this.errorUsernameflag = true;
+        return;
+      }
+      if (!this.password) {
+        this.errorPasswordflag = true;
+        return;
+      }
+      if (this.rePassword != this.password) {
+        this.errorRePasswordflag = true;
+        return;
+      }
+      //TODO：这里就写注册的逻辑
+      let registerData = {
+        phone_number: this.telephone,
+        password: this.password,
+        code: this.code,
+        username: this.account,
+        check_password: this.rePassword,
+      };
+      Register(registerData)
+      .then((res) => {
+        console.log(res);
+        alert(res.message);
+      })
+    }
   },
   watch: {
     telephone: {

@@ -16,6 +16,7 @@
             <el-radio label="原神"></el-radio>
             <el-radio label="绝地求生"></el-radio>
             <el-radio label="和平精英"></el-radio>
+            <el-radio label="崩坏：星穹铁道"></el-radio>
             <el-radio label="第五人格"></el-radio>
           </el-radio-group>
         </el-form-item>
@@ -50,14 +51,12 @@
     </div>
     <div style="margin-left: 2rem; width: 45rem">
       <el-upload
-        action="https://console-mock.apipost.cn/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/users/profile_photo"
+        action="https://console-mock.apipost.cn/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/users/login/username"
         list-type="picture-card"
         :http-request="uploadImage"
         :auto-upload="true"
         :on-preview="handlePictureCardPreview"
         :on-change="handleChange"
-        :before-remove="beforeRemove"
-        :before-upload="beforeUpload"
         class="my-upload"
       >
         <i class="el-icon-plus" style="margin-top: 5rem"></i>
@@ -88,6 +87,7 @@ export default {
     };
   },
   methods: {
+    //检查一下图片的格式和大小
     beforeUpload(file) {
       console.log(file);
       const isJpgOrPng =
@@ -105,8 +105,9 @@ export default {
     },
     uploadImage(file) {
       return axios({
-        method: "put",
-        url: "https://console-mock.apipost.cn/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/users/profile_photo",
+        method: "post",
+        //这里使用了聊天室的假mock捏
+        url: "https://console-mock.apipost.cn/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/users/login/username",
         data: file,
       });
     },

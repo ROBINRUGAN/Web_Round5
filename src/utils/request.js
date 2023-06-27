@@ -1,8 +1,8 @@
 import axios from "axios";
 // 创建axios，赋给变量service
 const service = axios.create({
-    baseURL: `https://console-mock.apipost.cn/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/`, // http://192.168.0.106:8080/devApi/  == http://www.web-jshtml.cn/productapi/productapi
-    timeout: 15000, // 超时
+    baseURL: `http://localhost:5000/`, // http://192.168.0.106:8080/devApi/  == http://www.web-jshtml.cn/productapi/productapi
+    timeout: 150000, // 超时
     withCredentials: false,
     crossDomain: true,
 });
@@ -26,7 +26,7 @@ service.interceptors.request.use(
     },
     function (error) {
         //返回一个被拒绝的 Promise 对象，并将错误 error 作为拒绝的原因
-        return Promise.reject(error);
+        return Promise.resolve(error.response.data);
     }
 );
 //添加响应拦截器
@@ -42,7 +42,7 @@ service.interceptors.response.use(
     },
     function (error) {
         //返回一个被拒绝的 Promise 对象，并将错误 error 作为拒绝的原因
-        return Promise.reject(error);
+        return Promise.resolve(error.response.data);
     }
 );
 // 将service 导出

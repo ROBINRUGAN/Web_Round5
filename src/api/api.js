@@ -1,47 +1,53 @@
 import service from "@/utils/request";
 
-export function LoginByUsername(data){
+export function LoginByUsername(data) {
     console.log('我在api.js，用户名登录表单发送', data)
     return service.request({
-        method:"post",
-        url:`/users/login/username`,
-        data
+        method: "post",
+        url: `/users/login/username`,
+        data: JSON.stringify(data), // 将参数转换为JSON字符串
+        headers: {
+            'Content-Type': 'application/json' // 指定请求头的Content-Type为application/json
+        }
     })
 }
-export function LoginByTelephone(data){
+export function LoginByTelephone(data) {
     console.log('我在api.js，手机号登录表单发送', data)
     return service.request({
-        method:"post",
-        url:`/users/login/phone`,
-        data
+        method: "post",
+        url: `/users/login/phone`,
+        data: JSON.stringify(data), // 将参数转换为JSON字符串
+        headers: {
+            'Content-Type': 'application/json' // 指定请求头的Content-Type为application/json
+        }
     })
 }
-export function UserInfo(){
+export function UserInfo() {
     console.log('我在api.js，获取用户中心信息')
     return service.request({
-        method:"get",
-        url:`/users/info`,
+        method: "get",
+        url: `/users`,
     })
 }
-export function HomeInfo(queryParams){
+export function HomeInfo(queryParams) {
     console.log('我在api.js，获取首页商品列表')
     return service.request({
-        method:"get",
-        url:`/home-page?${new URLSearchParams(queryParams).toString()}`,
+        method: "get",
+        url: `/home-page?${new URLSearchParams(queryParams).toString()}`,
     })
 }
-export function DetailInfo(queryParams){
+export function DetailInfo(queryParams) {
     console.log('我在api.js，获取详情页信息')
     return service.request({
-        method:"get",
-        url:`/goods?${new URLSearchParams(queryParams).toString()}`,
+        method: "get",
+        url: `/goods?${new URLSearchParams(queryParams).toString()}`,
     })
 }
-export function HomeSearch(queryParams){
+export function HomeSearch(queryParams) {
     console.log('我在api.js，获取首页搜索信息')
     return service.request({
-        method:"get",
-        url:`/search?${new URLSearchParams(queryParams).toString()}`,
+        method: "get",
+        url: `/search?${new URLSearchParams(queryParams).toString()}`,
     })
 }
 export function Like(data) {
@@ -55,62 +61,68 @@ export function Like(data) {
         }
     });
 }
-export function ChatHistory(queryParams){
+export function ChatHistory(queryParams) {
     console.log('我在api.js，获取悬浮聊天室历史记录')
     return service.request({
-        method:"get",
-        url:`/chat/history?${new URLSearchParams(queryParams).toString()}`,
+        method: "get",
+        url: `/chat/history?${new URLSearchParams(queryParams).toString()}`,
     })
 }
-export function LoginGetCode(data)
-{
+export function LoginGetCode(data) {
     console.log('我在api.js，登录获取验证码')
 
     return service.request({
-        method:"post",
-        url:`/users/sms/login`,
+        method: "post",
+        url: `/users/sms/login`,
         data: JSON.stringify(data), // 将参数转换为JSON字符串
         headers: {
             'Content-Type': 'application/json' // 指定请求头的Content-Type为application/json
         }
     })
 }
-export function RegisterGetCode(data)
-{
+export function RegisterGetCode(data) {
     console.log('我在api.js，注册获取验证码')
 
     return service.request({
-        method:"post",
-        url:`/users/sms/register`,
+        method: "post",
+        url: `/users/sms/register`,
         data: JSON.stringify(data), // 将参数转换为JSON字符串
         headers: {
             'Content-Type': 'application/json' // 指定请求头的Content-Type为application/json
         }
     })
 }
-export function ModifyGetCode(data)
-{
+export function ModifyGetCode(data) {
     console.log('我在api.js，修改手机号获取验证码')
 
     return service.request({
-        method:"post",
-        url:`/users/sms/modify`,
+        method: "post",
+        url: `/users/sms/modify`,
         data: JSON.stringify(data), // 将参数转换为JSON字符串
         headers: {
             'Content-Type': 'application/json' // 指定请求头的Content-Type为application/json
         }
     })
 }
-export function Register(data)
-{
+export function Register(data) {
     console.log('我在api.js，注册')
 
     return service.request({
-        method:"post",
-        url:`/users/register`,
+        method: "post",
+        url: `/users/register`,
         data: JSON.stringify(data), // 将参数转换为JSON字符串
         headers: {
             'Content-Type': 'application/json' // 指定请求头的Content-Type为application/json
         }
     })
+}
+export function AddGood(data) {
+    console.log("我在api.js，添加商品")
+
+    return service.request({
+        method: "post",
+        url: `/goods/add`,
+        data
+    })
+
 }

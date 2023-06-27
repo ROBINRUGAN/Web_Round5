@@ -12,7 +12,7 @@ module.exports = {
     hot: true, // 开启热加载
     proxy: {
       "/devApi": {
-        target: "https://console-mock.apipost.cn/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/", //API服务器的地址
+        target: "http://localhost:5000/", //API服务器的地址
         changeOrigin: true,
         pathRewrite: {
           "^/devApi": ''

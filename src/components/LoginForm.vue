@@ -34,15 +34,19 @@
     />
     <br />
     <el-button
-            style="width: 14rem; margin-left: 22rem; font-size: 1.3rem; margin-top: -3.56rem;position: absolute;"
-            :disabled="countdown > 0"
-            @click="getCode"
-            :loading="countdown > 0"
-            v-show="flag"
-            >{{
-              countdown > 0 ? `${countdown} 秒后重新获取` : "获取验证码"
-            }}
-            </el-button>
+      style="
+        width: 14rem;
+        margin-left: 22rem;
+        font-size: 1.3rem;
+        margin-top: -3.56rem;
+        position: absolute;
+      "
+      :disabled="countdown > 0"
+      @click="getCode"
+      :loading="countdown > 0"
+      v-show="flag"
+      >{{ countdown > 0 ? `${countdown} 秒后重新获取` : "获取验证码" }}
+    </el-button>
 
     <span v-show="errorPasswordflag & !flag" class="errorPasswordMsg"
       >密码不能为空！</span
@@ -63,7 +67,12 @@
 </template>
 
 <script>
-import { LoginByTelephone, LoginByUsername, LoginGetCode, UserInfo } from "@/api/api";
+import {
+  LoginByTelephone,
+  LoginByUsername,
+  LoginGetCode,
+  UserInfo,
+} from "@/api/api";
 import { watch } from "vue";
 export default {
   data() {
@@ -92,16 +101,13 @@ export default {
       }
       //TODO：这里就写获取验证码的逻辑
       let loginGetCodeData = {
-        type: 'login',
+        type: "login",
         phone_number: this.telephone,
       };
-      LoginGetCode(loginGetCodeData)
-      .then((res) => {
+      LoginGetCode(loginGetCodeData).then((res) => {
         console.log(res);
         alert(res.data.code);
-      })
-
-
+      });
 
       this.errorPhoneflag = false;
       this.countdown = 60;
@@ -118,11 +124,11 @@ export default {
     },
     loginBtn() {
       let loginByUsernameData = {
-        account: this.account,
+        username: this.account,
         password: this.password,
       };
       let loginByTelephoneData = {
-        telephone: this.telephone,
+        phone_number: this.telephone,
         code: this.code,
       };
       if (this.flag) {
@@ -150,7 +156,7 @@ export default {
               console.log(err);
             });
         } else {
-          alert("请输入手机号和验证码！")
+          alert("请输入手机号和验证码！");
         }
       } else {
         //账号密码登录
@@ -166,22 +172,25 @@ export default {
 
               //处理一下登录逻辑
               if (res.code == 200) {
-                alert("登录成功！");
                 this.$cookies.set("activeNum", "1");
                 window.localStorage.setItem("token", res.token);
-                
+
                 //获取用户信息并缓存，提升效率
                 UserInfo()
-                .then((res) => {
-                  console.log(res);
-                  if(res.code==200)
-                  {
-                    window.localStorage.setItem("userInfo", JSON.stringify(res.user));
-
-                  }
-                })
-
-                this.$router.push("/");
+                  .then((userRes) => {
+                    console.log(userRes);
+                    if (userRes.code == 200) {
+                      window.localStorage.setItem(
+                        "userInfo",
+                        JSON.stringify(userRes.user)
+                      );
+                      alert("登录成功！");
+                      this.$router.push("/");
+                    }
+                  })
+                  .catch((userErr) => {
+                    console.log(userErr);
+                  });
               } else {
                 alert("账号或密码错误，请重新登录！");
               }
