@@ -20,8 +20,17 @@
 
       <!-- 搜索框 -->
       <div class="searchbox">
-        <input class="search" type="text" v-model="keyword" @keyup.enter="search" />
-        <img src="../assets/homeImage/搜索.png" class="searchbtn" @click="search" />
+        <input
+          class="search"
+          type="text"
+          v-model="keyword"
+          @keyup.enter="search"
+        />
+        <img
+          src="../assets/homeImage/搜索.png"
+          class="searchbtn"
+          @click="search"
+        />
       </div>
       <!-- 一些顶部的标题图片 -->
       <div style="display: flex">
@@ -143,11 +152,7 @@ export default {
     Hello,
   },
   mounted() {
-    let homeParams = {
-      page: 1,
-      size: 114514,
-    };
-    HomeInfo(homeParams).then((res) => {
+    HomeInfo(1, 114514).then((res) => {
       console.log(res.data);
       this.goods = res.data;
     });
@@ -158,24 +163,27 @@ export default {
   methods: {
     comein(good) {
       // alert("进入商品详情页" + good.id);
+      window.localStorage.setItem("goodId", good.id);
       this.$bus.$emit("detailInfo", good);
       this.good = good;
-      var url = "/detail/" + good.id;
+      var url = "/detail";
       this.$router.push({
         path: url,
+        query: {
+          id: good.id,
+        },
       });
     },
-    search()
-    {
-      let homeParams = {
-        page: 1,
-        size: 114514,
-        keyword: this.keyword,
-        apipost_id:"d7f83c"
-      };
-      HomeSearch(homeParams).then((res) => {
-        console.log(res.data);
-        this.goods = res.data;
+    search() {
+      HomeSearch(1, 114514, this.keyword).then((res) => {
+        if (res.data) {
+          console.log(res.data);
+          this.goods = res.data;
+        }
+        else 
+        {
+          alert("没有找到相关商品");
+        }
       });
     },
     onMessageBtn() {

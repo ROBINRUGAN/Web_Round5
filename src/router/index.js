@@ -72,7 +72,7 @@ export default new VueRouter({
             component: Sell
         },
         {
-            path: '/detail/:id',
+            path: '/detail',
             component: Detail
         },
         {

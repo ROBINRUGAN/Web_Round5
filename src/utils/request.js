@@ -32,6 +32,8 @@ service.interceptors.request.use(
 //添加响应拦截器
 service.interceptors.response.use(
     function (response) {
+        console.log("调试中：")
+        console.log(response)
         //使用响应数据返回响应；
         const data = response;
         // 如果data有东西，就返回data.data，如果没有就返回response

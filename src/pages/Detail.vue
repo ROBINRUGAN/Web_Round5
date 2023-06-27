@@ -278,10 +278,8 @@ export default {
     Hello,
   },
   mounted() {
-    let detailParams = {
-      id: this.$route.query.id,
-    };
-    DetailInfo(detailParams).then((res) => {
+    console.log("精度确认"+this.$route.query.id)
+    DetailInfo(this.$route.query.id).then((res) => {
       console.log(res.data);
       this.isChange = true;
       this.goodsPrice = res.data.price;

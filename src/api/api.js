@@ -29,25 +29,25 @@ export function UserInfo() {
         url: `/users`,
     })
 }
-export function HomeInfo(queryParams) {
+export function HomeInfo(page,size) {
     console.log('我在api.js，获取首页商品列表')
     return service.request({
         method: "get",
-        url: `/home-page?${new URLSearchParams(queryParams).toString()}`,
+        url: `/home-page?page=${page}&size=${size}`,
     })
 }
 export function DetailInfo(queryParams) {
     console.log('我在api.js，获取详情页信息')
     return service.request({
         method: "get",
-        url: `/goods?${new URLSearchParams(queryParams).toString()}`,
+        url: `/goods?id=${queryParams}`,
     })
 }
-export function HomeSearch(queryParams) {
+export function HomeSearch(page,size,keywords) {
     console.log('我在api.js，获取首页搜索信息')
     return service.request({
         method: "get",
-        url: `/search?${new URLSearchParams(queryParams).toString()}`,
+        url: `/search?page=${page}&size=${size}&keywords=${keywords}`,
     })
 }
 export function Like(data) {
