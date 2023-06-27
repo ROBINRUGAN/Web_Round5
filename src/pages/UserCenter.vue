@@ -13,8 +13,11 @@
           height="100%"
         />
       </div>
-      <!-- 消息按钮 -->
+      <router-link to="/message">
+             <!-- 消息按钮 -->
       <button class="message"></button>
+      </router-link>
+ 
       <!-- 左边的导航栏 -->
       <div class="leftRec">
         <br /><br />

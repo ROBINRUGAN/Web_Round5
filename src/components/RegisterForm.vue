@@ -7,7 +7,16 @@
     >
 
     <input type="text" v-model="code" placeholder="请输入验证码" />
-    <a class="getCode">获取验证码</a>
+    <el-button
+            style="width: 14rem; margin-left: -14.5rem; font-size: 1.3rem; margin-top: 0.59rem;position: absolute;"
+            :disabled="countdown > 0"
+            @click="getCode"
+            :loading="countdown > 0"
+            v-show="!flag"
+            >{{
+              countdown > 0 ? `${countdown} 秒后重新获取` : "获取验证码"
+            }}
+            </el-button>
     <br />
     <span v-show="errorCodeflag" class="errorPhoneMsg">验证码为六位数字！</span>
 
@@ -36,6 +45,7 @@
 
 <script>
 import { watch } from "vue";
+import { RegisterGetCode } from '@/api/api';
 export default {
   data() {
     return {
@@ -51,12 +61,41 @@ export default {
       errorUsernameflag: false,
       errorPasswordflag: false,
       errorRePasswordflag: false,
+      countdown: 0,
     };
   },
   methods: {
     changeLoginWay() {
       this.flag = !this.flag;
       //console.log(this.flag)
+    },
+    async getCode() {
+      if (this.countdown > 0) {
+        return;
+      }
+      if (!/^1[3456789]\d{9}$/.test(this.telephone)) {
+        this.errorPhoneflag = true;
+        return;
+      }
+      //TODO：这里就写获取验证码的逻辑
+      let registerGetCodeData = {
+        type: 'register',
+        phone_number: this.telephone,
+      };
+      RegisterGetCode(registerGetCodeData)
+      .then((res) => {
+        console.log(res);
+        alert(res.data.code);
+      })
+
+      this.errorPhoneflag = false;
+      this.countdown = 60;
+      const timer = setInterval(() => {
+        this.countdown--;
+        if (this.countdown <= 0) {
+          clearInterval(timer);
+        }
+      }, 1000);
     },
   },
   watch: {

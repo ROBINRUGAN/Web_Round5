@@ -33,7 +33,17 @@
       v-show="flag"
     />
     <br />
-    <a class="getCode" v-show="flag">获取验证码</a>
+    <el-button
+            style="width: 14rem; margin-left: 22rem; font-size: 1.3rem; margin-top: -3.56rem;position: absolute;"
+            :disabled="countdown > 0"
+            @click="getCode"
+            :loading="countdown > 0"
+            v-show="flag"
+            >{{
+              countdown > 0 ? `${countdown} 秒后重新获取` : "获取验证码"
+            }}
+            </el-button>
+
     <span v-show="errorPasswordflag & !flag" class="errorPasswordMsg"
       >密码不能为空！</span
     >
@@ -53,7 +63,7 @@
 </template>
 
 <script>
-import { LoginByTelephone, LoginByUsername, UserInfo } from "@/api/api";
+import { LoginByTelephone, LoginByUsername, LoginGetCode, UserInfo } from "@/api/api";
 import { watch } from "vue";
 export default {
   data() {
@@ -68,9 +78,40 @@ export default {
       errorCodeflag: false,
       errorUsernameflag: false,
       errorPasswordflag: false,
+      countdown: 0,
     };
   },
   methods: {
+    async getCode() {
+      if (this.countdown > 0) {
+        return;
+      }
+      if (!/^1[3456789]\d{9}$/.test(this.telephone)) {
+        this.errorPhoneflag = true;
+        return;
+      }
+      //TODO：这里就写获取验证码的逻辑
+      let loginGetCodeData = {
+        type: 'login',
+        phone_number: this.telephone,
+      };
+      LoginGetCode(loginGetCodeData)
+      .then((res) => {
+        console.log(res);
+        alert(res.data.code);
+      })
+
+
+
+      this.errorPhoneflag = false;
+      this.countdown = 60;
+      const timer = setInterval(() => {
+        this.countdown--;
+        if (this.countdown <= 0) {
+          clearInterval(timer);
+        }
+      }, 1000);
+    },
     changeLoginWay() {
       this.flag = !this.flag;
       //console.log(this.flag)
@@ -109,7 +150,7 @@ export default {
               console.log(err);
             });
         } else {
-          alert("请输入手机号和验证码！");
+          alert("请输入手机号和验证码！")
         }
       } else {
         //账号密码登录

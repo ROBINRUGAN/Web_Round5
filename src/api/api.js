@@ -1,7 +1,7 @@
 import service from "@/utils/request";
 
 export function LoginByUsername(data){
-    console.log('我在api.js，用户名登录数据', data)
+    console.log('我在api.js，用户名登录表单发送', data)
     return service.request({
         method:"post",
         url:`/users/login/username`,
@@ -9,7 +9,7 @@ export function LoginByUsername(data){
     })
 }
 export function LoginByTelephone(data){
-    console.log('我在api.js，手机号登录数据', data)
+    console.log('我在api.js，手机号登录表单发送', data)
     return service.request({
         method:"post",
         url:`/users/login/phone`,
@@ -17,14 +17,14 @@ export function LoginByTelephone(data){
     })
 }
 export function UserInfo(){
-    console.log('我在api.js，获取用户信息')
+    console.log('我在api.js，获取用户中心信息')
     return service.request({
         method:"get",
         url:`/users/info`,
     })
 }
 export function HomeInfo(queryParams){
-    console.log('我在api.js，获取首页信息')
+    console.log('我在api.js，获取首页商品列表')
     return service.request({
         method:"get",
         url:`/home-page?${new URLSearchParams(queryParams).toString()}`,
@@ -56,9 +56,29 @@ export function Like(data) {
     });
 }
 export function ChatHistory(queryParams){
-    console.log('我在api.js，获取首页搜索信息')
+    console.log('我在api.js，获取悬浮聊天室历史记录')
     return service.request({
         method:"get",
         url:`/chat/history?${new URLSearchParams(queryParams).toString()}`,
+    })
+}
+export function LoginGetCode(data)
+{
+    console.log('我在api.js，登录获取验证码')
+
+    return service.request({
+        method:"post",
+        url:`/users/sms/login`,
+        data
+    })
+}
+export function RegisterGetCode(data)
+{
+    console.log('我在api.js，注册获取验证码')
+
+    return service.request({
+        method:"post",
+        url:`/users/sms/register`,
+        data
     })
 }

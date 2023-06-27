@@ -29,8 +29,8 @@
             :loading="countdown > 0"
             >{{
               countdown > 0 ? `${countdown} 秒后重新获取` : "获取验证码"
-            }}</el-button
-          >
+            }}
+            </el-button>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

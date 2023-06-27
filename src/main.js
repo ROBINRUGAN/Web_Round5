@@ -6,10 +6,20 @@ import '@/assets/font/font.css'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import VueCookies from 'vue-cookies'
+import { VueNativeSock } from 'vue-native-websocket'
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(VueCookies)
+// Vue.use(VueNativeSock, 'ws://127.0.0.1:5000/chat', {
+//   reconnection: true,
+//   reconnectionAttempts: 5,
+//   reconnectionDelay: 3000,
+//   format: 'json',
+//   query: {
+//     token: window.localStorage.getItem("token") // 替换为你的实际token值
+//   },
+// });
 new Vue({
   render: h => h(App),
   beforeCreate() {
