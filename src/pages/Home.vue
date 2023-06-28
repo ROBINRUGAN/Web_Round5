@@ -32,6 +32,9 @@
           @click="search"
         />
       </div>
+
+      <el-button type="primary" icon="el-icon-s-opportunity" class="guess">猜你喜欢</el-button>
+
       <!-- 一些顶部的标题图片 -->
       <div style="display: flex">
         <img
@@ -200,6 +203,16 @@ export default {
   width: 106.5rem;
   height: 56.96rem;
   z-index: -1;
+  position: absolute;
+}
+
+.guess
+{
+  font-size: 1.5rem;
+  border-radius: 3rem;
+  background-color: #E3BFC2 !important;;
+  margin-left: 53rem;
+  margin-top: -3rem;
   position: absolute;
 }
 

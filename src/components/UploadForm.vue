@@ -10,7 +10,7 @@
         </el-form-item>
 
         <el-form-item label="游戏类型">
-          <el-radio-group v-model="form.type" style="margin-top: -0.3rem">
+          <el-radio-group v-model="form.game" style="margin-top: -0.3rem">
             <el-radio label="王者荣耀"></el-radio>
             <el-radio label="英雄联盟"></el-radio>
             <el-radio label="原神"></el-radio>
@@ -70,17 +70,20 @@
 </template>
   <script>
 import axios from "axios";
+import { AddGood } from "@/api/api";
 export default {
   data() {
     return {
       form: {
+            game: "",
         title: "",
         content: "",
-        type: "",
+    
         account: "",
         password: "",
-        price: "",
-        photo: [],
+        price: null,
+        picture: [],
+        status: 0,
       },
       dialogImageUrl: "",
       dialogVisible: false,
@@ -112,7 +115,16 @@ export default {
       });
     },
     onSubmit() {
+
       console.log(this.form);
+      AddGood(this.form)
+        .then((res) => {
+          console.log(res);
+          alert(res.message)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
 
     handlePictureCardPreview(file) {
@@ -121,11 +133,11 @@ export default {
     },
 
     handleChange(file, fileList) {
-      if (fileList.length > this.form.photo.length) {
-        this.form.photo = fileList;
+      if (fileList.length > this.form.picture.length) {
+        this.form.picture.push(file.raw);
       }
-      if (this.form.photo.length >= 9) {
-        console.log(this.form.photo);
+      if (this.form.picture.length >= 9) {
+        console.log(this.form.picture);
         const uploadCard = document.querySelector(".el-upload--picture-card");
         uploadCard.style.display = "none";
       } else {
@@ -134,7 +146,7 @@ export default {
       }
     },
     beforeRemove(file, fileList) {
-      this.form.photo = fileList;
+      this.form.picture.delete(file);
     },
   },
 };

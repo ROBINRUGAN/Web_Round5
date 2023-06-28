@@ -106,7 +106,7 @@ export default {
       };
       LoginGetCode(loginGetCodeData).then((res) => {
         console.log(res);
-        alert(res.data.code);
+        alert(res.message);
       });
 
       this.errorPhoneflag = false;

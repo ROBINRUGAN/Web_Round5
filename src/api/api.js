@@ -73,19 +73,19 @@ export function LoginGetCode(data) {
 
     return service.request({
         method: "post",
-        url: `/users/sms/login`,
+        url: `/users/sms`,
         data: JSON.stringify(data), // 将参数转换为JSON字符串
         headers: {
             'Content-Type': 'application/json' // 指定请求头的Content-Type为application/json
         }
     })
 }
-export function RegisterGetCode(data) {
+export function RegisterGetCode(data) {  
     console.log('我在api.js，注册获取验证码')
 
     return service.request({
         method: "post",
-        url: `/users/sms/register`,
+        url: `/users/sms`,
         data: JSON.stringify(data), // 将参数转换为JSON字符串
         headers: {
             'Content-Type': 'application/json' // 指定请求头的Content-Type为application/json
@@ -104,6 +104,7 @@ export function ModifyGetCode(data) {
         }
     })
 }
+//raw传参
 export function Register(data) {
     console.log('我在api.js，注册')
 
@@ -116,13 +117,15 @@ export function Register(data) {
         }
     })
 }
+//form-data传参
 export function AddGood(data) {
-    console.log("我在api.js，添加商品")
-
+    console.log("我在api.js，添加商品");
     return service.request({
         method: "post",
-        url: `/goods/add`,
-        data
-    })
-
+        url: "/goods",
+        data: data,
+        headers: {
+            "Content-Type": "multipart/form-data"
+        }
+    });
 }

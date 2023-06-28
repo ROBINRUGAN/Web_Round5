@@ -14,10 +14,10 @@
         />
       </div>
       <router-link to="/message">
-             <!-- 消息按钮 -->
-      <button class="message"></button>
+        <!-- 消息按钮 -->
+        <button class="message"></button>
       </router-link>
- 
+
       <!-- 左边的导航栏 -->
       <div class="leftRec">
         <br /><br />
@@ -110,10 +110,10 @@
         <big-user-photo class="avatar" />
         <div>
           <div class="username">用户名：{{ username }}</div>
-          <div class="nickname">昵称：{{nickname}}</div>
+          <div class="nickname">昵称：{{ nickname }}</div>
         </div>
         <div>
-          <div class="balance">余额：￥{{money}}</div>
+          <div class="balance">余额：￥{{ money }}</div>
           <el-button class="topup" @click="topup">充值</el-button>
           <el-button class="withdraw" @click="withdraw">提现</el-button>
         </div>
@@ -130,6 +130,7 @@
 import NavMenu from "../components/NavMenu.vue";
 import Hello from "../components/Hello.vue";
 import BigUserPhoto from "../components/BigUserPhoto.vue";
+import { UserInfo } from "@/api/api";
 export default {
   components: {
     NavMenu,
@@ -194,11 +195,27 @@ export default {
         });
     },
   },
-  beforeCreate()
-  {
+  beforeCreate() {
     this.$cookies.set("activeNum", "0");
   },
   mounted() {
+    //获取用户信息并缓存，提升效率
+    UserInfo()
+      .then((userRes) => {
+        console.log(userRes);
+        if (userRes.code == 200) {
+          window.localStorage.setItem("userInfo", JSON.stringify(userRes.user));
+        } else {
+          alert("登录已过期，请重新登录...");
+          window.localStorage.removeItem("token");
+          window.localStorage.removeItem("userInfo");
+          this.$router.push("/login");
+        }
+      })
+      .catch((userErr) => {
+        console.log(userErr);
+        alert(userErr.message);
+      });
     const userInfoString = window.localStorage.getItem("userInfo");
     if (userInfoString) {
       const userInfo = JSON.parse(userInfoString);
