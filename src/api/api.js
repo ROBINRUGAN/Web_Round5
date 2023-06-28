@@ -1,4 +1,4 @@
-import service from "@/utils/request";
+import {service,javaService} from "@/utils/request";
 
 export function LoginByUsername(data) {
     console.log('我在api.js，用户名登录表单发送', data)
@@ -16,10 +16,7 @@ export function LoginByTelephone(data) {
     return service.request({
         method: "post",
         url: `/users/login/phone`,
-        data: JSON.stringify(data), // 将参数转换为JSON字符串
-        headers: {
-            'Content-Type': 'application/json' // 指定请求头的Content-Type为application/json
-        }
+        data
     })
 }
 export function UserInfo() {
@@ -128,4 +125,14 @@ export function AddGood(data) {
             "Content-Type": "multipart/form-data"
         }
     });
+}
+
+export function Money(data)
+{
+    console.log("我在api.js，充值或提现金额");
+    return service.request({
+        method:"put",
+        url:"users/money",
+        data,
+    })
 }

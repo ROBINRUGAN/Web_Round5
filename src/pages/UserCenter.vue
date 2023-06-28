@@ -130,7 +130,7 @@
 import NavMenu from "../components/NavMenu.vue";
 import Hello from "../components/Hello.vue";
 import BigUserPhoto from "../components/BigUserPhoto.vue";
-import { UserInfo } from "@/api/api";
+import { Money, UserInfo } from "@/api/api";
 export default {
   components: {
     NavMenu,
@@ -160,9 +160,17 @@ export default {
           "金额数额过大或者格式不正确，形如233、114.1或者122.45",
       })
         .then(({ value }) => {
-          this.$message({
-            type: "success",
-            message: "充值成功，你充值的金额是: " + value,
+          let moneyData = {
+            type: "recharge",
+            money: value,
+          };
+          Money(moneyData).then((res) => {
+            console.log(res);
+            alert(res.message);
+            this.$message({
+              type: "success",
+              message: "充值成功，你充值的金额是: " + value,
+            });
           });
         })
         .catch(() => {

@@ -25,12 +25,14 @@
       v-model="password"
       placeholder="请输入密码"
       v-show="!flag"
+      @keyup.enter="loginBtn"
     />
     <input
       type="text"
       v-model="code"
       placeholder="请输入验证码"
       v-show="flag"
+      @keyup.enter="loginBtn"
     />
     <br />
     <el-button
@@ -58,7 +60,7 @@
     <a @click="changeLoginWay()" class="changeLoginWay">{{ LoginType }}</a>
     <br /><br />
 
-    <button class="loginBtn" @click="loginBtn">登录</button>
+    <button class="loginBtn" @click="loginBtn" >登录</button>
 
     <router-link to="/register">
       <button class="registerBtn">注册</button>
@@ -104,6 +106,7 @@ export default {
         type: "login",
         phone_number: this.telephone,
       };
+      console.log(loginGetCodeData)
       LoginGetCode(loginGetCodeData).then((res) => {
         console.log(res);
         alert(res.message);
