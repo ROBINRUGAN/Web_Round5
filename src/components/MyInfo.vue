@@ -4,21 +4,21 @@
     <div style="margin-left: 5rem">
       <span>
         用户名：
-        <div class="username">{{username}}</div>
+        <div class="username">{{ username }}</div>
         <el-button type="text" class="modifyUserName" @click="modifyUserName"
           >修改</el-button
         >
       </span>
       <span>
         昵称：
-        <div class="nickname">{{nickname}}</div>
+        <div class="nickname">{{ nickname }}</div>
         <el-button type="text" class="modifyNickName" @click="modifyNickName"
           >修改</el-button
         >
       </span>
       <span
         >电话：
-        <div class="telephone">{{phone_number}}</div>
+        <div class="telephone">{{ phone_number }}</div>
         <get-telephone-dialog class="modifyTelephone" />
       </span>
       <span
@@ -27,15 +27,15 @@
       </span>
       <span
         >身份证号：
-        <div class="id">{{id_card}}</div>
+        <div class="id">{{ id_card }}</div>
       </span>
       <span
         >真实姓名：
-        <div class="name">{{name}}</div>
+        <div class="name">{{ name }}</div>
       </span>
       <span
         >余额：
-        <div class="money">￥{{money}}</div>
+        <div class="money">￥{{ money }}</div>
       </span>
       <span
         >帐号状态：
@@ -48,6 +48,7 @@
 <script>
 import UploadAvatar from "./UploadAvatar.vue";
 import GetTelephoneDialog from "./getTelephoneDialog.vue";
+import { ModifyUsername, ModifyNickname, UserInfo } from "@/api/api";
 export default {
   data() {
     return {
@@ -76,7 +77,6 @@ export default {
       this.name = userInfo.name;
       this.phone_number = userInfo.phone_number;
       this.accountStatus = userInfo.status;
-
     }
   },
   methods: {
@@ -91,12 +91,41 @@ export default {
       })
         .then(({ value }) => {
           this.username = value;
-          this.$message({
-            type: "success",
-            message: "你的新用户名是: " + value,
+          let modifyData = {
+            username: this.username,
+          };
+          ModifyUsername(modifyData).then((res) => {
+            alert(res.message);
+            if (res.code == 401) {
+              this.$router.push("/login");
+            }
+            //获取用户信息并缓存，提升效率
+            UserInfo()
+              .then((userRes) => {
+                console.log(userRes);
+                if (userRes.code == 200) {
+                  window.localStorage.setItem(
+                    "userInfo",
+                    JSON.stringify(userRes.user)
+                  );
+                } else {
+                  alert("登录已过期，请重新登录...");
+                  window.localStorage.removeItem("token");
+                  window.localStorage.removeItem("userInfo");
+                  this.$router.push("/login");
+                }
+              })
+              .catch((userErr) => {
+                console.log(userErr);
+                alert(userErr.message);
+              });
+            this.$message({
+              type: "success",
+              message: "你的新用户名是: " + value,
+            });
           });
         })
-        .catch(({value}) => {
+        .catch(({ value }) => {
           this.username = value;
           this.$message({
             type: "info",
@@ -116,12 +145,41 @@ export default {
       })
         .then(({ value }) => {
           this.nickname = value;
-          this.$message({
-            type: "success",
-            message: "你的新昵称是: " + value,
+          let modifyData = {
+            nickname: this.nickname,
+          };
+          ModifyNickname(modifyData).then((res) => {
+            alert(res.message);
+            if (res.code == 401) {
+              this.$router.push("/login");
+            }
+            //获取用户信息并缓存，提升效率
+            UserInfo()
+              .then((userRes) => {
+                console.log(userRes);
+                if (userRes.code == 200) {
+                  window.localStorage.setItem(
+                    "userInfo",
+                    JSON.stringify(userRes.user)
+                  );
+                } else {
+                  alert("登录已过期，请重新登录...");
+                  window.localStorage.removeItem("token");
+                  window.localStorage.removeItem("userInfo");
+                  this.$router.push("/login");
+                }
+              })
+              .catch((userErr) => {
+                console.log(userErr);
+                alert(userErr.message);
+              });
+            this.$message({
+              type: "success",
+              message: "你的新昵称是: " + value,
+            });
           });
         })
-        .catch(({value}) => {
+        .catch(({ value }) => {
           this.nickname = value;
           this.$message({
             type: "info",
