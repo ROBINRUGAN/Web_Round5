@@ -3,6 +3,7 @@ import axios from "axios";
 export const service = axios.create({
     //baseURL: `http://7602941z7e.goho.co:43483/`, // http://192.168.0.106:8080/devApi/  == http://www.web-jshtml.cn/productapi/productapi
     baseURL: `http://26.30.247.224:5000/`,
+    // baseURL: `http://localhost:5000/`,
     timeout: 150000, // 超时
     crossDomain: true,
 });

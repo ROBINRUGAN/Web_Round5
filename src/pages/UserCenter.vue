@@ -190,9 +190,26 @@ export default {
           "金额数额过大或者格式不正确，形如233、114.1或者122.45",
       })
         .then(({ value }) => {
-          this.$message({
-            type: "success",
-            message: "提现成功！你提现的金额是: " + value,
+          let moneyData = {
+            type: "withdrawal",
+            money: value,
+          };
+          Money(moneyData).then((res) => {
+            console.log(res);
+            alert(res.message);
+            if (res.code == 400) {
+              this.$message({
+                type: "error",
+                message: "提现失败，你没有这么多的mew币！ ",
+              });
+            }
+            if(res.code==200)
+            {
+              this.$message({
+                type: "success",
+                message: "提现成功，你提现的金额是: " + value,
+              });
+            }
           });
         })
         .catch(() => {

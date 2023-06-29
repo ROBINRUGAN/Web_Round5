@@ -8,18 +8,35 @@
 </template>
 <script>
 import image from "../assets/homeImage/用户中心.png";
+import { UserInfo } from "@/api/api";
 export default {
   data() {
     return {
       circleUrl: image,
-      nickname: "MEWWW",
+      nickname: "游客用户",
     };
   },
   mounted() {
 
     console.log("你好")
 
-        const userInfoString = window.localStorage.getItem("userInfo");
+    UserInfo()
+      .then((userRes) => {
+        console.log(userRes);
+        if (userRes.code == 200) {
+          window.localStorage.setItem("userInfo", JSON.stringify(userRes.user));
+        } else {
+          alert("登录已过期，请重新登录...");
+          window.localStorage.removeItem("token");
+          window.localStorage.removeItem("userInfo");
+          this.$router.push("/login");
+        }
+      })
+      .catch((userErr) => {
+        console.log(userErr);
+        alert(userErr.message);
+      });
+    const userInfoString = window.localStorage.getItem("userInfo");
     
     if (userInfoString) {
       const userInfo = JSON.parse(userInfoString);

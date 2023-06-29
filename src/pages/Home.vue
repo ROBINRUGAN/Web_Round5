@@ -33,7 +33,7 @@
         />
       </div>
 
-      <el-button type="primary" icon="el-icon-s-opportunity" class="guess">猜你喜欢</el-button>
+      <el-button type="primary" @click="guess" icon="el-icon-s-opportunity" class="guess">猜你喜欢</el-button>
 
       <!-- 一些顶部的标题图片 -->
       <div style="display: flex">
@@ -118,7 +118,7 @@
 import NavMenu from "../components/NavMenu.vue";
 import Hello from "../components/Hello.vue";
 import router from "@/router";
-import { HomeInfo, HomeSearch } from "@/api/api";
+import { Guess, HomeInfo, HomeSearch } from "@/api/api";
 export default {
   data() {
     return {
@@ -165,7 +165,7 @@ export default {
   },
   methods: {
     comein(good) {
-      // alert("进入商品详情页" + good.id);
+      // aert("进入商品详情页" + good.id);
       window.localStorage.setItem("goodId", good.id);
       this.$bus.$emit("detailInfo", good);
       this.good = good;
@@ -192,6 +192,13 @@ export default {
     onMessageBtn() {
       this.$cookies.set("activeNum", "0");
     },
+    guess()
+    {
+      Guess().then((res)=>{
+        alert(res.message);
+        this.goods = res.data;
+      })
+    }
   },
 };
 </script>

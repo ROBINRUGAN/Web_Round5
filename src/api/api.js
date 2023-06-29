@@ -136,3 +136,41 @@ export function Money(data)
         data,
     })
 }
+
+export function Guess()
+{
+    console.log("我在api.js,准备猜你喜欢");
+    return service.request({
+        method:"get",
+        url:"guess"
+    })
+}
+
+export function ModifyPhoto()
+{
+    console.log("我在api.js，准备修改头像")
+    return service.request({
+        method:"put",
+        url:"users/profile-photo"
+    })
+}
+
+export function ModifyNickname(data)
+{
+    console.log("我在api.js，准备修改昵称")
+    return service.request({
+        method:"put",
+        url:"users/nickname",
+        data,
+    })
+}
+
+export function ModifyUsername(data)
+{
+    console.log("我在api.js，准备修改用户名")
+    return service.request({
+        method:"put",
+        url:"users/username",
+        data,
+    })
+}
