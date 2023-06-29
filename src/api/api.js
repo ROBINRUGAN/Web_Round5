@@ -94,7 +94,7 @@ export function ModifyGetCode(data) {
 
     return service.request({
         method: "post",
-        url: `/users/sms/modify`,
+        url: `/users/sms`,
         data: JSON.stringify(data), // 将参数转换为JSON字符串
         headers: {
             'Content-Type': 'application/json' // 指定请求头的Content-Type为application/json
@@ -171,6 +171,16 @@ export function ModifyUsername(data)
     return service.request({
         method:"put",
         url:"users/username",
+        data,
+    })
+}
+
+export function ModifyTelephone(data)
+{
+    console.log("我在api.js，准备修改手机号")
+    return service.request({
+        method:"put",
+        url:"users/phone-number",
         data,
     })
 }

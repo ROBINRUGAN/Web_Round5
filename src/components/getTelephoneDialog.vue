@@ -27,10 +27,8 @@
             :disabled="countdown > 0 || isCodeDisabled || form.phone === ''"
             @click="getCode"
             :loading="countdown > 0"
-            >{{
-              countdown > 0 ? `${countdown} 秒后重新获取` : "获取验证码"
-            }}
-            </el-button>
+            >{{ countdown > 0 ? `${countdown} 秒后重新获取` : "获取验证码" }}
+          </el-button>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -46,7 +44,7 @@
 </template>
   
   <script >
-import { ModifyGetCode, modifyGetCode } from '@/api/api';
+import { ModifyGetCode, modifyGetCode, ModifyTelephone } from "@/api/api";
 export default {
   data() {
     return {
@@ -100,16 +98,13 @@ export default {
       }
       //TODO：这里就写获取验证码的逻辑
       let modifyGetCodeData = {
-        type: 'modify',
+        type: "modify",
         phone_number: this.form.phone,
       };
-      ModifyGetCode(modifyGetCodeData)
-      .then((res) => {
+      ModifyGetCode(modifyGetCodeData).then((res) => {
         console.log(res);
-        alert(res.data.code);
-      })
-
-
+        alert(res.message);
+      });
 
       this.errorPhoneflag = false;
       this.countdown = 60;
@@ -124,10 +119,16 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           this.dialogVisible = false;
-          // TODO: 提交表单的逻辑
-          this.$message.success("手机号修改成功！");
-          this.form.code = "";
-          this.form.phone = "";
+          let data = {
+            phone_number: this.form.phone,
+            code: this.form.code,
+          };
+          ModifyTelephone(data).then((res) => {
+            alert(res.message);
+            this.$message.success("手机号修改成功！");
+            this.form.code = "";
+            this.form.phone = "";
+          });
         }
       });
     },
