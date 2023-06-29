@@ -51,12 +51,13 @@
     </div>
     <div style="margin-left: 2rem; width: 45rem">
       <el-upload
-        action="https://console-mock.apipost.cn/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/users/login/username"
+        action="http://26.30.247.224:5000/picture"
         list-type="picture-card"
         :http-request="uploadImage"
         :auto-upload="true"
         :on-preview="handlePictureCardPreview"
         :on-change="handleChange"
+        :on-success="onSuccess"
         class="my-upload"
       >
         <i class="el-icon-plus" style="margin-top: 5rem"></i>
@@ -70,7 +71,7 @@
 </template>
   <script>
 import axios from "axios";
-import { AddGood } from "@/api/api";
+import { AddGood, GetPictureUrl } from "@/api/api";
 export default {
   data() {
     return {
@@ -82,9 +83,10 @@ export default {
         account: "",
         password: "",
         price: null,
-        picture: [],
+        picture: "",
         status: 0,
       },
+      length:0,
       dialogImageUrl: "",
       dialogVisible: false,
     };
@@ -106,13 +108,25 @@ export default {
       }
       return true;
     },
-    uploadImage(file) {
-      return axios({
-        method: "post",
-        //这里使用了聊天室的假mock捏
-        url: "https://console-mock.apipost.cn/mock/b7ca8ff5-3391-413f-8a97-396bb15dc1f7/users/login/username",
-        data: file,
-      });
+    uploadImage(file,fileList) {
+      console.log("我要上传的照片文件：")
+      console.log(file.file)
+      let data = new FormData();
+      data.append("picture",file.file);
+      return GetPictureUrl(data);
+    },
+    onSuccess(res){
+      console.log("我成功了");
+      console.log(res);
+      if(this.form.picture)
+      {
+        this.form.picture+=',';
+        this.form.picture+=res.data;
+      }
+      else {
+        this.form.picture=res.data;
+      }
+      console.log(this.form.picture)
     },
     onSubmit() {
 
@@ -133,10 +147,11 @@ export default {
     },
 
     handleChange(file, fileList) {
-      if (fileList.length > this.form.picture.length) {
-        this.form.picture.push(file.raw);
+      if (fileList.length > this.length) {
+       // this.form.picture.push(file.raw);
+       this.length++;
       }
-      if (this.form.picture.length >= 9) {
+      if (this.length >= 9) {
         console.log(this.form.picture);
         const uploadCard = document.querySelector(".el-upload--picture-card");
         uploadCard.style.display = "none";
@@ -146,7 +161,6 @@ export default {
       }
     },
     beforeRemove(file, fileList) {
-      this.form.picture.delete(file);
     },
   },
 };

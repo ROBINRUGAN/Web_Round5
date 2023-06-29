@@ -184,3 +184,16 @@ export function ModifyTelephone(data)
         data,
     })
 }
+
+export function GetPictureUrl(data)
+{
+    console.log("我在api.js，发送图片文件获取对应url")
+    return service.request({
+        method:"post",
+        url:"picture",
+        data,
+        headers: {
+            "Content-Type": "multipart/form-data"
+        }
+    })
+}
