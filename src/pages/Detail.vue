@@ -227,7 +227,7 @@
                     : 'message-bubble-white',
                 ]"
               >
-                <div class="message-text">{{ message.message }}</div>
+                <span class="message-text">{{ message.message }}</span>
               </div>
             </div>
           </div>
@@ -278,9 +278,8 @@ export default {
     Hello,
   },
   mounted() {
-    console.log("精度确认" + this.$route.query.id);
+    console.log("精度确认"+this.$route.query.id)
     DetailInfo(this.$route.query.id).then((res) => {
-      console.log("666")
       console.log(res.data);
       this.isChange = true;
       this.goodsPrice = res.data.price;
@@ -294,7 +293,24 @@ export default {
       this.seller_profile_photo = res.data.seller_profile_photo;
       this.goodPhotos = res.data.picture_url.split(",");
     });
-    
+    let ChatParams = {
+      send_id: this.seller_id,
+    };
+    ChatHistory(ChatParams).then((res) => {
+      console.log(res.data);
+      this.messages = res.data;
+      this.messages.forEach((message) => {
+        if(message.message_id === this.seller_id)
+        message.author = "Other";
+        else
+        {
+          console.log(message.message_id);
+          console.log(this.seller_id);
+           message.author = "Me";
+        }
+       
+      });
+    });
   },
   // created() {
   //   this.$bus.$on("detailInfo", (data) => {
@@ -317,17 +333,6 @@ export default {
   methods: {
     toggleChat() {
       this.showChat = !this.showChat;
-      ChatHistory(this.seller_id).then((res) => {
-      console.log("历史记录捏"+this.seller_id)
-      console.log(res);
-      this.messages = res.data;
-      this.messages.forEach((message) => {
-        if (message.send_id === this.seller_id) message.author = "Other";
-        else {
-          message.author = "Me";
-        }
-      });
-    });
     },
     sendMessage() {
       if (this.newMessage.trim() !== "") {
@@ -365,20 +370,14 @@ export default {
     },
     addbtn() {
       let data = {
-        good_id: this.$route.query.id,
+        id: this.id,
       };
       Like(data).then((res) => {
         console.log(res);
-
-        if(typeof(res.message)==string)
-        {
-          alert(res.message);
-        }
-        else alert(JSON.stringify(res.message));
-        this.$message({
-          message: "收藏成功",
-          type: "success",
-        });
+      });
+      this.$message({
+        message: "收藏成功",
+        type: "success",
       });
     },
   },
@@ -659,7 +658,6 @@ button:hover {
 
 .message-text {
   margin-top: 5px;
-  word-break: break-all;
 }
 </style>
   

@@ -51,18 +51,18 @@ export function Like(data) {
     console.log('我在api.js，获取加入心愿单信息');
     return service.request({
         method: "post",
-        url: `/users/favorites`,
-        data, // 将参数转换为JSON字符串
+        url: `/users/favorites/add`,
+        data: JSON.stringify(data), // 将参数转换为JSON字符串
         headers: {
             'Content-Type': 'application/json' // 指定请求头的Content-Type为application/json
         }
     });
 }
-export function ChatHistory(send_id) {
+export function ChatHistory(queryParams) {
     console.log('我在api.js，获取悬浮聊天室历史记录')
     return service.request({
         method: "get",
-        url: `/chat/history?send_id=${send_id}`,
+        url: `/chat/history?${new URLSearchParams(queryParams).toString()}`,
     })
 }
 export function LoginGetCode(data) {

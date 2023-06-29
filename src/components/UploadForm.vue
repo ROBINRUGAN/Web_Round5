@@ -116,6 +116,7 @@ export default {
       return GetPictureUrl(data);
     },
     onSuccess(res){
+      console.log("我成功了");
       console.log(res);
       if(this.form.picture)
       {
@@ -134,12 +135,6 @@ export default {
         .then((res) => {
           console.log(res);
           alert(res.message)
-          this.$router.push({
-            path:"detail",
-            query:{
-              id: res.data.id
-            }
-          })
         })
         .catch((err) => {
           console.log(err);
