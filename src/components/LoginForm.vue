@@ -60,7 +60,7 @@
     <a @click="changeLoginWay()" class="changeLoginWay">{{ LoginType }}</a>
     <br /><br />
 
-    <button class="loginBtn" @click="loginBtn" >登录</button>
+    <button class="loginBtn" @click="loginBtn">登录</button>
 
     <router-link to="/register">
       <button class="registerBtn">注册</button>
@@ -106,7 +106,7 @@ export default {
         type: "login",
         phone_number: this.telephone,
       };
-      console.log(loginGetCodeData)
+      console.log(loginGetCodeData);
       LoginGetCode(loginGetCodeData).then((res) => {
         console.log(res);
         alert(res.message);
@@ -148,9 +148,24 @@ export default {
 
               //处理一下登录逻辑
               if (res.code == 200) {
-                alert("登录成功！");
                 window.localStorage.setItem("token", res.token);
-                this.$router.push("/");
+                //获取用户信息并缓存，提升效率
+                UserInfo()
+                  .then((userRes) => {
+                    console.log(userRes);
+                    if (userRes.code == 200) {
+                      window.localStorage.setItem(
+                        "userInfo",
+                        JSON.stringify(userRes.user)
+                      );
+                      window.localStorage.setItem("userId", userRes.user.id);
+                      alert("登录成功！");
+                      this.$router.push("/");
+                    }
+                  })
+                  .catch((userErr) => {
+                    console.log(userErr);
+                  });
               } else {
                 alert("手机号或验证码错误，请重新登录！");
               }
@@ -187,6 +202,7 @@ export default {
                         "userInfo",
                         JSON.stringify(userRes.user)
                       );
+                      window.localStorage.setItem("userId", userRes.user.id);
                       alert("登录成功！");
                       this.$router.push("/");
                     }

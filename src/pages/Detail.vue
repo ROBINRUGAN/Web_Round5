@@ -132,8 +132,8 @@
       </div>
       <!-- 购买按钮 -->
       <div style="display: inline-flex; width: ">
-        <button class="buybtn" @click="buybtn">立即购买</button>
-        <button class="addbtn" @click="addbtn">加入心愿单</button>
+        <button class="buybtn" @click="buybtn" v-show="!isMyself">立即购买</button>
+        <button class="addbtn" @click="addbtn" v-show="!isMyself">加入心愿单</button>
       </div>
 
       <!-- 上架时间 -->
@@ -171,7 +171,7 @@
           font-size: 3rem;
           color: #fe9e9a;
           text-decoration: underline;
-          margin-top: 4rem;
+          margin-top: 8rem;
           margin-left: 3rem;
         "
       >
@@ -204,7 +204,7 @@
     </div>
 
     <div class="chat-wrapper">
-      <div class="chat-button" @click="toggleChat">
+      <div class="chat-button" @click="toggleChat" ref="chatroom">
         <span class="chat-icon"></span>
       </div>
       <transition name="slide">
@@ -218,13 +218,21 @@
               class="message"
               v-for="(message, index) in messages"
               :key="index"
-              :class="[message.author === 'Me' ? 'me' : 'other']"
+              :class="[
+                message.author === 'Me'
+                  ? 'me'
+                  : message.author === 'Other'
+                  ? 'other'
+                  : 'system',
+              ]"
             >
               <div
                 :class="[
                   message.author === 'Me'
                     ? 'message-bubble-blue'
-                    : 'message-bubble-white',
+                    : message.author === 'Other'
+                    ? 'message-bubble-white'
+                    : 'message-bubble-system',
                 ]"
               >
                 <span class="message-text">{{ message.message }}</span>
@@ -250,7 +258,7 @@
 import NavMenu from "../components/NavMenu.vue";
 import Hello from "../components/Hello.vue";
 import Vue from "vue";
-import { ChatHistory, DetailInfo, Like } from "@/api/api";
+import { BidOrder, ChatHistory, DetailInfo, Like } from "@/api/api";
 export default {
   data() {
     return {
@@ -258,7 +266,7 @@ export default {
       messages: [],
       newMessage: "",
       nextMessageId: 1,
-
+      tempMessage: "",
       isChange: true, //是否已经实名认证
       goodsPrice: null,
       goodsNumber: "",
@@ -270,6 +278,7 @@ export default {
       seller_id: "",
       seller_profile_photo: "",
       goodPhotos: null,
+      isMyself:false,
     };
   },
 
@@ -278,16 +287,7 @@ export default {
     Hello,
   },
   mounted() {
-    
-      this.$socket.open() // 开始连接socket
-   
-      this.$socket.emit('Mytext','收到没')
-    
-      this.$socket.on("response",(msg)=>{
-        console.log(msg)
-      })
-    
-    console.log("精度确认"+this.$route.query.id)
+    console.log("精度确认" + this.$route.query.id);
     DetailInfo(this.$route.query.id).then((res) => {
       console.log(res.data);
       this.isChange = true;
@@ -301,9 +301,31 @@ export default {
       this.seller_nickname = res.data.seller_nickname;
       this.seller_profile_photo = res.data.seller_profile_photo;
       this.goodPhotos = res.data.picture_url.split(",");
+
+      // 获取要删除的元素的引用
+      const chatroom = this.$refs.chatroom;
+      // 检查元素是否存在
+      if (chatroom&&window.localStorage.getItem("userId")===this.seller_id) {
+        // 通过父节点调用 removeChild 方法删除元素
+        chatroom.parentNode.removeChild(chatroom);
+        this.isMyself=true;
+      }
+
+      ChatHistory(res.data.seller_id).then((chatRes) => {
+        console.log(chatRes);
+        if (chatRes.data) {
+          this.messages = chatRes.data;
+          this.messages.forEach((message) => {
+            if (message.send_id === window.localStorage.getItem("userId")) message.author = "Me";
+            else {
+              console.log(message.seller_id);
+              console.log(this.seller_id);
+              message.author = "Other";
+            }
+          });
+        }
+      });
     });
-
-
   },
   // created() {
   //   this.$bus.$on("detailInfo", (data) => {
@@ -322,25 +344,42 @@ export default {
   // beforeDestroy() {
   //   this.$bus.$off("detailInfo");
   // },
-
+  sockets: {
+    connecting() {
+      console.log("正在连接");
+    },
+    disconnect() {
+      console.log("Socket 断开");
+    },
+    connect_failed() {
+      console.log("连接失败");
+    },
+    connect() {
+      console.log("socket connected");
+    },
+    response: (data) => {
+      console.log(data);
+    },
+  },
   methods: {
     toggleChat() {
       this.showChat = !this.showChat;
-      ChatHistory(this.seller_id).then((res) => {
-      console.log(this.seller_id);
-      this.messages = res.data;
-      this.messages.forEach((message) => {
-        if(message.send_id === this.seller_id)
-        message.author = "Other";
-        else
-        {
-          console.log(message.seller_id);
+
+      this.$socket.open(); // 开始连接socket
+      this.sockets.subscribe("response", (msg) => {
+        this.tempMessage = msg;
+        console.log("我要接受未读消息了！");
+        if (this.tempMessage.send_id === window.localStorage.getItem("userId"))
+          this.tempMessage.author = "Me";
+        else {
+          console.log(this.tempMessage.seller_id);
           console.log(this.seller_id);
-           message.author = "Me";
+          this.tempMessage.author = "Other";
         }
-       
+        if (this.tempMessage.code === 1 || this.tempMessage.send_id === 6)
+          this.tempMessage.author = "System";
+        this.messages.push(this.tempMessage);
       });
-    });
     },
     sendMessage() {
       if (this.newMessage.trim() !== "") {
@@ -348,6 +387,13 @@ export default {
           author: "Me",
           message: this.newMessage,
         });
+
+        let sendData = {
+          type: 0,
+          receive_id: this.seller_id,
+          message: this.newMessage,
+        };
+        this.$socket.send(JSON.stringify(sendData));
         this.newMessage = "";
       }
     },
@@ -362,14 +408,24 @@ export default {
         confirmButtonClass: "nicknameBtn",
       })
         .then(({ value }) => {
-          this.nickname = value;
-          this.$message({
-            type: "success",
-            message: "出价成功，等待商家处理: " + value,
-          });
+          let orderData = {
+            good_id: this.$route.query.id,
+            money: value,
+          };
+          BidOrder(orderData)
+            .then((res) => {
+              alert(res.msg);
+              console.log(res);
+              this.$message({
+                type: "success",
+                message: "出价成功，等待商家处理: " + value,
+              });
+            })
+            .catch((res) => {
+              alert(res.msg);
+            });
         })
         .catch(({ value }) => {
-          this.nickname = value;
           this.$message({
             type: "info",
             message: "取消出价",
@@ -378,7 +434,7 @@ export default {
     },
     addbtn() {
       let data = {
-        id: this.id,
+        good_id: this.goodsNumber,
       };
       Like(data).then((res) => {
         console.log(res);
@@ -476,6 +532,7 @@ button:hover {
   margin-left: 42rem;
   margin-top: 1rem;
   border-width: 0;
+  position: absolute;
 }
 .buybtn:hover {
   background-color: #ff9523;
@@ -488,9 +545,11 @@ button:hover {
   background-color: #ff8400;
   color: white;
   font-size: 2rem;
-  margin-left: 3rem;
+  margin-left: 55rem;
   margin-top: 1rem;
   border-width: 0;
+  position: absolute;
+
 }
 .addbtn:hover {
   background-color: #ff9523;
@@ -637,7 +696,9 @@ button:hover {
 .message.me {
   text-align: right;
 }
-
+.message.system {
+  text-align: center;
+}
 .message.other {
   text-align: left;
 }
@@ -659,6 +720,14 @@ button:hover {
   padding: 8px 12px;
   max-width: 70%;
 }
+.message-bubble-system {
+  display: inline-block;
+  background-color: #bfe5a6;
+  color: #000000;
+  border-radius: 10px;
+  padding: 8px 12px;
+  width: 90%;
+}
 
 .message-author {
   font-weight: bold;
@@ -666,6 +735,7 @@ button:hover {
 
 .message-text {
   margin-top: 5px;
+  word-break: break-all;
 }
 </style>
   

@@ -25,10 +25,14 @@ export default {
         console.log(userRes);
         if (userRes.code == 200) {
           window.localStorage.setItem("userInfo", JSON.stringify(userRes.user));
+          window.localStorage.setItem("userId", userRes.user.id);
+
         } else {
           alert("登录已过期，请重新登录...");
           window.localStorage.removeItem("token");
           window.localStorage.removeItem("userInfo");
+          window.localStorage.removeItem("userId");
+
           this.$router.push("/login");
         }
       })

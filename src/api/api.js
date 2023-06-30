@@ -51,11 +51,8 @@ export function Like(data) {
     console.log('我在api.js，获取加入心愿单信息');
     return service.request({
         method: "post",
-        url: `/users/favorites/add`,
-        data: JSON.stringify(data), // 将参数转换为JSON字符串
-        headers: {
-            'Content-Type': 'application/json' // 指定请求头的Content-Type为application/json
-        }
+        url: `/users/favorites`,
+        data, 
     });
 }
 export function ChatHistory(cid) {
@@ -195,5 +192,19 @@ export function GetPictureUrl(data)
         headers: {
             "Content-Type": "multipart/form-data"
         }
+    })
+}
+
+export function BidOrder(data)
+{
+    console.log("我在api.js，准备生成订单")
+    return javaService.request({
+        method:"post",
+        url:"order/bid",
+        data,
+        headers: {
+            "Content-Type": "multipart/form-data"
+        }
+
     })
 }

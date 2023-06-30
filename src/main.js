@@ -37,22 +37,6 @@ new Vue({
   beforeCreate() {
     Vue.prototype.$bus = this //安装全局事件总线
   },
-  sockets: {
-    connecting() {
-      console.log('正在连接')
-    },
-    disconnect() {
-      console.log('Socket 断开')
-    },
-    connect_failed() {
-      console.log('连接失败')
-    },
-    connect() {
-      console.log('socket connected')
-    },
-    response: data=>{
-      console.log(data)
-    }
-  },
+
   router,
 }).$mount('#app')

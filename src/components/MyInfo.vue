@@ -108,10 +108,14 @@ export default {
                     "userInfo",
                     JSON.stringify(userRes.user)
                   );
+                  window.localStorage.setItem("userId", userRes.user.id);
+
                 } else {
                   alert("登录已过期，请重新登录...");
                   window.localStorage.removeItem("token");
                   window.localStorage.removeItem("userInfo");
+                  window.localStorage.removeItem("userId");
+
                   this.$router.push("/login");
                 }
               })
@@ -162,10 +166,14 @@ export default {
                     "userInfo",
                     JSON.stringify(userRes.user)
                   );
+                  window.localStorage.setItem("userId", userRes.user.id);
+
                 } else {
                   alert("登录已过期，请重新登录...");
                   window.localStorage.removeItem("token");
                   window.localStorage.removeItem("userInfo");
+                  window.localStorage.removeItem("userId");
+
                   this.$router.push("/login");
                 }
               })
