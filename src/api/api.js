@@ -58,11 +58,11 @@ export function Like(data) {
         }
     });
 }
-export function ChatHistory(queryParams) {
-    console.log('我在api.js，获取悬浮聊天室历史记录')
+export function ChatHistory(cid) {
+    console.log('我在api.js，获取悬浮聊天室历史记录'+cid)
     return service.request({
         method: "get",
-        url: `/chat/history?${new URLSearchParams(queryParams).toString()}`,
+        url: `/chat/history?send_id=${cid}`,
     })
 }
 export function LoginGetCode(data) {

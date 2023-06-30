@@ -20,6 +20,7 @@ module.exports = {
         pathRewrite: {
           "^/devApi": ''
         },
+        ws:true
       }
     }
   }
