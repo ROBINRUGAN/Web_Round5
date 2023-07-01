@@ -43,7 +43,7 @@
         </div>
       </div>
       <div class="chat-room" v-if="selectedChat">
-        <div  :key="length">
+        <div :key="length">
           <div class="chat-header">
             <h2>{{ selectedChat.person_nickname }}</h2>
           </div>
@@ -91,7 +91,7 @@
   <script>
 import NavMenu from "@/components/NavMenu.vue";
 import Hello from "@/components/Hello.vue";
-import { GetChatList, ChatHistory } from "@/api/api";
+import { GetChatList, ChatHistory, ReadMessage } from "@/api/api";
 
 export default {
   components: { NavMenu, Hello },
@@ -143,6 +143,7 @@ export default {
         if (this.tempMessage.code === 1 || this.tempMessage.send_id === 6)
           this.tempMessage.author = "System";
 
+        //遍历聊天列表，如果有这个人，就更新一下
         this.chats.forEach((chat) => {
           //要么好友发消息我收，要么就是我发消息，好友收
           if (
@@ -158,12 +159,24 @@ export default {
             chat.last_message_time = this.tempMessage.send_time; //这里有个问题，如果我发消息，那么这个时间就是我发的时间，而不是对方收到的时间
           }
 
-          //确认一下如果当前选中的聊天是这个人，那么就更新一下
+          //确认一下如果当前选中的聊天室是这个人，那么就更新一下
           if (this.person_id === chat.person_id) {
             console.log("检查一下更新情况");
             this.selectedChat = chat;
             this.length = chat.messages.length;
             this.scrollToBottom(); // 滚动到底部
+
+            //这里将收到的消息设置为已读
+            //还得是别人发过来的消息，不然我自己发的消息也会被设置为已读
+            if (this.tempMessage.send_id === this.person_id) {
+              let readMessageData = {
+                send_id: this.tempMessage.send_id,
+                message_id: this.tempMessage.message_id,
+              };
+              ReadMessage(readMessageData).then((res) => {
+                console.log(res);
+              });
+            }
           }
         });
       });
@@ -192,17 +205,18 @@ export default {
       this.selectedChat = chat;
       this.person_id = chat.person_id;
       this.scrollToBottom();
-      // ChatHistory(chat.person_id).then((chatRes) => {
-      //   console.log(chatRes);
-
-      //   if (chatRes.data) {
-      //     this.messages = chatRes.data;
-      //     this.messages.forEach((message) => {
-      //       if (message.send_id === window.localStorage.getItem("userId"))
-      //         message.author = "Me";
-      //       else {
-      //         message.author = "Other";
-      //       }
+      // chat.messages.forEach((message) => {
+      //   //这里将收到的消息设置为已读
+      //   //还得是别人发过来的消息，不然我自己发的消息也会被设置为已读
+      //   if (message.send_id === this.person_id) {
+      //     let readMessageData = {
+      //       send_id: message.send_id,
+      //       message_id: message.message_id,
+      //     };
+      //     console.log("你好")
+      //     console.log(readMessageData)
+      //     ReadMessage(readMessageData).then((res) => {
+      //       console.log(res);
       //     });
       //   }
       // });
@@ -404,8 +418,7 @@ export default {
   border-radius: 10px;
   cursor: pointer;
 }
-.chat-message
-{
+.chat-message {
   display: inline-block;
   max-width: 8rem;
   overflow: hidden;

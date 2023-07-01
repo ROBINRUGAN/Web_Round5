@@ -220,7 +220,7 @@
             <h3>MewChat</h3>
             <button class="close-button" @click="toggleChat">关闭</button>
           </div>
-          <div class="message-list">
+          <div class="message-list" id="chat-container">
             <div
               class="message"
               v-for="(message, index) in messages"
@@ -265,7 +265,7 @@
 import NavMenu from "../components/NavMenu.vue";
 import Hello from "../components/Hello.vue";
 import Vue from "vue";
-import { BidOrder, ChatHistory, DetailInfo, Like } from "@/api/api";
+import { BidOrder, ChatHistory, DetailInfo, Like,ReadMessage } from "@/api/api";
 export default {
   data() {
     return {
@@ -329,60 +329,25 @@ export default {
             if (message.send_id === window.localStorage.getItem("userId"))
               message.author = "Me";
             else {
-              console.log(message.seller_id);
-              console.log(this.seller_id);
               message.author = "Other";
             }
           });
         }
       });
+      this.$socket.open(); // 开始连接socket
     });
   },
-  // beforeDestroy()
-  // {
-  //   this.$socket.close();
-  // },
-  // created() {
-  //   this.$bus.$on("detailInfo", (data) => {
-  //          console.log("meww"); // 使用 Vue.set() 更新数据
-  //     Vue.set(this, "isChange", false);
-  //     Vue.set(this, "goodsPrice", data.price);
-  //     Vue.set(this, "goodsNumber", data.id);
-  //     Vue.set(this, "goodsTime", data.add_time);
-  //     Vue.set(this, "likeNumber", data.view);
-  //     Vue.set(this, "title", data.title);
-  //     Vue.set(this, "content", data.content);
-  //     console.log(this.content);
-
-  //   });
-  // },
-  // beforeDestroy() {
-  //   this.$bus.$off("detailInfo");
-  // },
-  sockets: {
-    connecting() {
-      console.log("正在连接");
-    },
-    disconnect() {
-      console.log("Socket 断开");
-    },
-    connect_failed() {
-      console.log("连接失败");
-    },
-    connect() {
-      console.log("socket connected");
-    },
-    response: (data) => {
-      console.log("我是App")
-      console.log(data);
-    },
-  },
   methods: {
+    scrollToBottom() {
+      this.$nextTick(() => {
+        const container = this.$el.querySelector("#chat-container");
+        container.scrollTop = container.scrollHeight;
+      });
+    },
     toggleChat() {
       this.showChat = !this.showChat;
 
-      this.$socket.open(); // 开始连接socket
-      this.sockets.subscribe("response", (msg) => {
+      this.sockets.listener.subscribe("response", (msg) => {
         this.tempMessage = msg;
         console.log("我要接受未读消息了！");
         if (this.tempMessage.send_id === window.localStorage.getItem("userId"))
@@ -393,7 +358,22 @@ export default {
         if (this.tempMessage.code === 1 || this.tempMessage.send_id === 6)
           this.tempMessage.author = "System";
         this.messages.push(this.tempMessage);
+        if (this.showChat == true) {
+          this.scrollToBottom(); // 滚动到底部
+          //这里将收到的消息设置为已读
+          //还得是别人发过来的消息，不然我自己发的消息也会被设置为已读
+          if (this.tempMessage.send_id === this.seller_id) {
+            let readMessageData = {
+              send_id: this.tempMessage.send_id,
+              message_id: this.tempMessage.message_id,
+            };
+            ReadMessage(readMessageData).then((res) => {
+              console.log(res);
+            });
+          }
+        }
       });
+      this.scrollToBottom(); // 滚动到底部
     },
     sendMessage() {
       if (this.newMessage.trim() !== "") {
@@ -408,6 +388,7 @@ export default {
           message: this.newMessage,
         };
         this.$socket.send(JSON.stringify(sendData));
+        this.scrollToBottom(); // 滚动到底部
         this.newMessage = "";
       }
     },

@@ -51,7 +51,7 @@
     </div>
     <div style="margin-left: 2rem; width: 45rem">
       <el-upload
-        action="http://26.30.247.224:5000/picture"
+        action="http://api.mewtopia.cn:5000/picture"
         list-type="picture-card"
         :http-request="uploadImage"
         :auto-upload="true"
@@ -135,6 +135,14 @@ export default {
         .then((res) => {
           console.log(res);
           alert(res.message)
+          this.$router.push({
+            path: "/detail",
+            query:
+            {
+              id: res.data.id
+            }
+
+          });
         })
         .catch((err) => {
           console.log(err);

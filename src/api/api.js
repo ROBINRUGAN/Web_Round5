@@ -217,3 +217,13 @@ export function GetChatList()
         url:"chat/list"
     })
 }
+
+export function ReadMessage(data)
+{
+    console.log("我在api.js,我要把消息置为已读")
+    return service.request({
+        method:"put",
+        url:"chat/read",
+        data,
+    })
+}

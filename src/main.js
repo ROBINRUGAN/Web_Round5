@@ -17,7 +17,7 @@ Vue.use(VueCookies)
 const token = window.localStorage.getItem('token');
 Vue.use(new VueSocketIO({
   debug: true,
-  connection: SocketIO('ws://26.30.247.224:5000/chat', {
+  connection: SocketIO('ws://api.mewtopia.cn:5000/chat', {
     autoConnect: false,
     extraHeaders:{
       'Access-Control-Allow-Origin': '*',

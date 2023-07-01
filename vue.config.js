@@ -14,7 +14,7 @@ module.exports = {
       "/socket.io": {
         
         //target: "http://7602941z7e.goho.co:43483/", //API服务器的地址
-        target:"http://26.30.247.224:5000/",
+        target:"http://api.mewtopia.cn:5000/",
         // target:"http://localhost:5000/",
         changeOrigin: true,
         pathRewrite: {
