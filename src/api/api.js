@@ -208,3 +208,12 @@ export function BidOrder(data)
 
     })
 }
+
+export function GetChatList()
+{
+    console.log("我在api.js，准备获取聊天列表")
+    return service.request({
+        method:"get",
+        url:"chat/list"
+    })
+}

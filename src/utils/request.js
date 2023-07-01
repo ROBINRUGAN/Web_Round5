@@ -59,7 +59,6 @@ export default service;
 export const javaService = axios.create({
     baseURL: `http://api.mewtopia.cn:5001`, // http://192.168.0.106:8080/devApi/  == http://www.web-jshtml.cn/productapi/productapi
     timeout: 150000, // 超时
-    withCredentials: false,
     crossDomain: true,
 });
 

@@ -11,16 +11,15 @@ module.exports = {
     https: false, // 编译失败时刷新页面
     hot: true, // 开启热加载
     proxy: {
-      "/devApi": {
+      "/socket.io": {
         
         //target: "http://7602941z7e.goho.co:43483/", //API服务器的地址
         target:"http://26.30.247.224:5000/",
         // target:"http://localhost:5000/",
         changeOrigin: true,
         pathRewrite: {
-          "^/devApi": ''
-        },
-        ws:true
+          "^/socket.io": ''
+        }
       }
     }
   }

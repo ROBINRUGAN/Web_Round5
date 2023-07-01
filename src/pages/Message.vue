@@ -6,14 +6,18 @@
     </div>
     <!-- 背景图片 -->
     <div class="background">
-      <img src="../assets/userCenterImage/新建组.png" width="100%" height="100%" />
+      <img
+        src="../assets/userCenterImage/新建组.png"
+        width="100%"
+        height="100%"
+      />
     </div>
-        <!-- 消息按钮 -->
-        <button class="messageBtn"></button>
+    <!-- 消息按钮 -->
+    <button class="messageBtn"></button>
     <div class="inbox-wrapper">
       <!-- 旁边的聊天列表 -->
       <div class="sidebar">
-        <h2 style="color: #ff8400;">收信箱</h2>
+        <h2 style="color: #ff8400">MewChat</h2>
         <div class="chat-list">
           <div
             class="chat-item"
@@ -23,34 +27,50 @@
           >
             <!-- 头像 -->
             <div class="chat-avatar">
-              <img :src="chat.avatar" alt="Avatar" />
+              <img :src="chat.person_profile_photo" alt="Avatar" />
             </div>
             <!-- 对方的名字、时间、最近一条消息 -->
             <div class="chat-details">
               <div class="chat-info">
-                <h3>{{ chat.name }}</h3>
-                <span class="chat-timestamp">{{ chat.timestamp }}</span>
+                <h3>{{ chat.person_nickname }}</h3>
+                <span class="chat-timestamp">{{ chat.last_message_time }}</span>
               </div>
               <div class="chat-message">
-                <span>{{ chat.lastMessage }}</span>
+                <span>{{ chat.last_message }}</span>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="chat-room" v-if="selectedChat">
-        <div class="chat-header">
-          <h2>{{ selectedChat.name }}</h2>
-        </div>
-        <div class="message-list">
-          <div
-            class="message"
-            v-for="message in selectedChat.messages"
-            :key="message.id"
-            :class="[message.fromMe ? 'from-me' : 'from-other']"
-          >
-            <div :class="[message.fromMe ? 'message-bubble-blue' : 'message-bubble-white']">
-              <span>{{ message.text }}</span>
+        <div  :key="length">
+          <div class="chat-header">
+            <h2>{{ selectedChat.person_nickname }}</h2>
+          </div>
+          <div class="message-list" id="chat-container">
+            <div
+              class="message"
+              v-for="message in selectedChat.messages"
+              :key="message.message_id"
+              :class="[
+                message.author === 'Me'
+                  ? 'from-me'
+                  : message.author === 'Other'
+                  ? 'from-other'
+                  : 'from-system',
+              ]"
+            >
+              <div
+                :class="[
+                  message.author === 'Me'
+                    ? 'message-bubble-blue'
+                    : message.author === 'Other'
+                    ? 'message-bubble-white'
+                    : 'message-bubble-system',
+                ]"
+              >
+                <span>{{ message.message }}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -61,7 +81,7 @@
             @keyup.enter="sendMessage"
             placeholder="输入消息..."
           />
-          <button @click="sendMessage">发送</button>
+          <button @click="sendMessage" @keyup.enter="sendMessage">发送</button>
         </div>
       </div>
     </div>
@@ -71,58 +91,139 @@
   <script>
 import NavMenu from "@/components/NavMenu.vue";
 import Hello from "@/components/Hello.vue";
+import { GetChatList, ChatHistory } from "@/api/api";
+
 export default {
-  components: { NavMenu,Hello },
+  components: { NavMenu, Hello },
   data() {
     return {
-      chats: [
-        {
-          id: 1,
-          name: "小明",
-          avatar: "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F34fc045e-0952-4cb8-861c-6f9936449ec6%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1685639440&t=7d108f015d0ed608cd996984fffcb1ff",
-          timestamp: "10:30 AM",
-          lastMessage: "你好，有什么可以帮到你的吗？",
-          messages: [
-            { id: 1, text: "你好，有什么可以帮到你的吗？", fromMe: false },
-            { id: 2, text: "我想了解一下你们的产品信息。", fromMe: true },
-            {
-              id: 3,
-              text: "当然可以，我们有以下产品可供选择...",
-              fromMe: false,
-            },
-            // 其他消息...
-          ],
-        },
-        {
-          id: 2,
-          name: "张三",
-          avatar: "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F34fc045e-0952-4cb8-861c-6f9936449ec6%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1685639440&t=7d108f015d0ed608cd996984fffcb1ff",
-          timestamp: "2:15 PM",
-          lastMessage: "明天见！",
-          messages: [
-            { id: 1, text: "早上好，明天我们见面吧！", fromMe: false },
-            { id: 2, text: "好的，明天见！", fromMe: true },
-            // 其他消息...
-          ],
-        },
-        // 其他聊天...
-      ],
+      chats: [],
       selectedChat: null,
       newMessage: "",
+      tempMessage: "",
+      person_id: "",
+      length: 0,
     };
   },
+
+  mounted() {
+    GetChatList().then((res) => {
+      if (res.data) this.chats = res.data;
+
+      this.chats.forEach((chat) => {
+        chat.messages = [];
+        ChatHistory(chat.person_id).then((chatRes) => {
+          console.log(chatRes);
+          if (chatRes.data) {
+            //历史记录获得的好像不是响应式，我改成这样还是不行
+            chatRes.data.forEach((charres) => {
+              chat.messages.push(charres);
+            });
+            chat.messages.forEach((message) => {
+              if (message.send_id === window.localStorage.getItem("userId"))
+                message.author = "Me";
+              else {
+                message.author = "Other";
+              }
+            });
+          }
+        });
+      });
+      //开始连接websocket并缓存
+      this.$socket.open(); // 开始连接socket
+      this.sockets.listener.subscribe("response", (msg) => {
+        this.tempMessage = msg;
+        console.log("我要接受subscribe未读消息了！检查一下原生数据");
+        console.log(msg);
+        if (this.tempMessage.send_id === window.localStorage.getItem("userId"))
+          this.tempMessage.author = "Me";
+        else {
+          this.tempMessage.author = "Other";
+        }
+        if (this.tempMessage.code === 1 || this.tempMessage.send_id === 6)
+          this.tempMessage.author = "System";
+
+        this.chats.forEach((chat) => {
+          //要么好友发消息我收，要么就是我发消息，好友收
+          if (
+            (chat.person_id === this.tempMessage.send_id &&
+              window.localStorage.getItem("userId") ===
+                this.tempMessage.receive_id) ||
+            (chat.person_id === this.tempMessage.receive_id &&
+              window.localStorage.getItem("userId") ===
+                this.tempMessage.send_id)
+          ) {
+            chat.messages.push(this.tempMessage);
+            chat.last_message = this.tempMessage.message;
+            chat.last_message_time = this.tempMessage.send_time; //这里有个问题，如果我发消息，那么这个时间就是我发的时间，而不是对方收到的时间
+          }
+
+          //确认一下如果当前选中的聊天是这个人，那么就更新一下
+          if (this.person_id === chat.person_id) {
+            console.log("检查一下更新情况");
+            this.selectedChat = chat;
+            this.length = chat.messages.length;
+            this.scrollToBottom(); // 滚动到底部
+          }
+        });
+      });
+    });
+  },
+  beforeDestroy() {
+    this.$socket.close();
+  },
   methods: {
+    scrollToBottom() {
+      this.$nextTick(() => {
+        const container = this.$el.querySelector("#chat-container");
+        container.scrollTop = container.scrollHeight;
+      });
+    },
+    formatTimestamp() {
+      const date = new Date();
+      const formattedTime = date.toLocaleTimeString([], {
+        hour: "numeric",
+        minute: "2-digit",
+      });
+      return formattedTime;
+    },
     selectChat(chat) {
+      console.log(chat);
       this.selectedChat = chat;
+      this.person_id = chat.person_id;
+      this.scrollToBottom();
+      // ChatHistory(chat.person_id).then((chatRes) => {
+      //   console.log(chatRes);
+
+      //   if (chatRes.data) {
+      //     this.messages = chatRes.data;
+      //     this.messages.forEach((message) => {
+      //       if (message.send_id === window.localStorage.getItem("userId"))
+      //         message.author = "Me";
+      //       else {
+      //         message.author = "Other";
+      //       }
+      //     });
+      //   }
+      // });
     },
     sendMessage() {
       if (this.newMessage.trim() !== "") {
         const message = {
-          id: this.selectedChat.messages.length + 1,
-          text: this.newMessage,
-          fromMe: true,
+          receive_id: this.person_id,
+          message: this.newMessage,
+          type: 0,
         };
-        this.selectedChat.messages.push(message);
+        console.log("为什么id一样啊啊啊啊啊");
+        console.log(message);
+        this.selectedChat.messages.push({
+          author: "Me",
+          message: this.newMessage,
+        });
+        this.$socket.send(JSON.stringify(message));
+        this.selectedChat.last_message_time = this.formatTimestamp();
+        this.selectedChat.last_message = this.newMessage; //这里有个问题，如果我发消息，那么这个时间就是我发的时间，而不是对方收到的时间
+        this.scrollToBottom(); // 滚动到底部
         this.newMessage = "";
       }
     },
@@ -248,6 +349,14 @@ export default {
   max-width: 70%;
 }
 
+.message-bubble-system {
+  display: inline-block;
+  background-color: #bfe5a6;
+  color: #000000;
+  border-radius: 10px;
+  padding: 8px 12px;
+  width: 90%;
+}
 
 .message-bubble-white {
   display: inline-block;
@@ -266,8 +375,12 @@ export default {
   text-align: left;
 }
 
+.from-system {
+  text-align: center;
+}
+
 .input-box {
-    margin-top: 1rem;
+  margin-top: 1rem;
   display: flex;
   align-items: center;
 }
@@ -282,14 +395,22 @@ export default {
 }
 
 .input-box button {
-    font-size: 1.5rem;
-    margin-left: 10px;
+  font-size: 1.5rem;
+  margin-left: 10px;
   padding: 8px 12px;
   background-color: #007bff;
   color: #fff;
   border: none;
   border-radius: 10px;
   cursor: pointer;
+}
+.chat-message
+{
+  display: inline-block;
+  max-width: 8rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>
   

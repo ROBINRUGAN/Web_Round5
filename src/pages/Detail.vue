@@ -11,7 +11,10 @@
       </div>
 
       <!-- 消息按钮 -->
-      <button class="messageBtn"></button>
+      <router-link to="/message">
+        <button class="messageBtn"></button>
+      </router-link>
+
       <!-- 一个底部的挡板，使商品描述更清楚 -->
       <img
         src="../assets/detailImage/背景.png"
@@ -132,8 +135,12 @@
       </div>
       <!-- 购买按钮 -->
       <div style="display: inline-flex; width: ">
-        <button class="buybtn" @click="buybtn" v-show="!isMyself">立即购买</button>
-        <button class="addbtn" @click="addbtn" v-show="!isMyself">加入心愿单</button>
+        <button class="buybtn" @click="buybtn" v-show="!isMyself">
+          立即购买
+        </button>
+        <button class="addbtn" @click="addbtn" v-show="!isMyself">
+          加入心愿单
+        </button>
       </div>
 
       <!-- 上架时间 -->
@@ -278,7 +285,7 @@ export default {
       seller_id: "",
       seller_profile_photo: "",
       goodPhotos: null,
-      isMyself:false,
+      isMyself: false,
     };
   },
 
@@ -305,10 +312,13 @@ export default {
       // 获取要删除的元素的引用
       const chatroom = this.$refs.chatroom;
       // 检查元素是否存在
-      if (chatroom&&window.localStorage.getItem("userId")===this.seller_id) {
+      if (
+        chatroom &&
+        window.localStorage.getItem("userId") === this.seller_id
+      ) {
         // 通过父节点调用 removeChild 方法删除元素
         chatroom.parentNode.removeChild(chatroom);
-        this.isMyself=true;
+        this.isMyself = true;
       }
 
       ChatHistory(res.data.seller_id).then((chatRes) => {
@@ -316,7 +326,8 @@ export default {
         if (chatRes.data) {
           this.messages = chatRes.data;
           this.messages.forEach((message) => {
-            if (message.send_id === window.localStorage.getItem("userId")) message.author = "Me";
+            if (message.send_id === window.localStorage.getItem("userId"))
+              message.author = "Me";
             else {
               console.log(message.seller_id);
               console.log(this.seller_id);
@@ -327,6 +338,10 @@ export default {
       });
     });
   },
+  // beforeDestroy()
+  // {
+  //   this.$socket.close();
+  // },
   // created() {
   //   this.$bus.$on("detailInfo", (data) => {
   //          console.log("meww"); // 使用 Vue.set() 更新数据
@@ -358,6 +373,7 @@ export default {
       console.log("socket connected");
     },
     response: (data) => {
+      console.log("我是App")
       console.log(data);
     },
   },
@@ -372,8 +388,6 @@ export default {
         if (this.tempMessage.send_id === window.localStorage.getItem("userId"))
           this.tempMessage.author = "Me";
         else {
-          console.log(this.tempMessage.seller_id);
-          console.log(this.seller_id);
           this.tempMessage.author = "Other";
         }
         if (this.tempMessage.code === 1 || this.tempMessage.send_id === 6)
@@ -549,7 +563,6 @@ button:hover {
   margin-top: 1rem;
   border-width: 0;
   position: absolute;
-
 }
 .addbtn:hover {
   background-color: #ff9523;

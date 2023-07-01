@@ -16,7 +16,7 @@
     "vue-cookies": "^1.8.3",
     "vue-native-websocket": "^2.0.15",
     "vue-router": "^3.5.2",
-    "vue-socket.io": "^3.0.10",
+    "vue-socket.io": "^3.0.9",
     "vue2": "^1.0.0"
   },
   "devDependencies": {
