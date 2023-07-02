@@ -5,10 +5,6 @@ import Home from "../pages/Home"
 import UserCenter from "../pages/UserCenter"
 import MyInfo from "../components/MyInfo"
 import BuyerBidOrder from "../components/BuyerBidOrder"
-import BuyOrder from "../components/BuyOrder"
-import NotPassGoods from "../components/NotPassGoods"
-import NotSoldGoods from "../components/NotSoldGoods"
-import SellerBidOrder from "../components/SellerBidOrder"
 import SoldGoods from "../components/SoldGoods"
 import StarredGoods from "../components/StarredGoods"
 import Sell from "../pages/Sell"
@@ -36,11 +32,7 @@ export default new VueRouter({
                     path: 'myInfo',
                     component: MyInfo
                 },
-                {
-                    path: 'buyOrder',
-                    component: BuyOrder
-
-                }, {
+                 {
                     path: 'starredGoods',
                     component: StarredGoods
 
@@ -51,18 +43,6 @@ export default new VueRouter({
                 }, {
                     path: 'soldGoods',
                     component: SoldGoods
-
-                }, {
-                    path: 'sellerBidOrder',
-                    component: SellerBidOrder
-
-                },{
-                    path: 'notSoldGoods',
-                    component: NotSoldGoods
-
-                },{
-                    path: 'notPassGoods',
-                    component: NotPassGoods
 
                 },
             ],redirect: 'userCenter/myInfo'

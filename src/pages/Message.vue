@@ -50,8 +50,8 @@
           <div class="message-list" id="chat-container">
             <div
               class="message"
-              v-for="message in selectedChat.messages"
-              :key="message.message_id"
+              v-for="(message,index) in selectedChat.messages"
+              :key="index"
               :class="[
                 message.author === 'Me'
                   ? 'from-me'

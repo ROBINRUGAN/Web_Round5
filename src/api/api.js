@@ -227,3 +227,51 @@ export function ReadMessage(data)
         data,
     })
 }
+
+export function GetBuyerBidOrder()
+{
+    console.log("我在api.js,我要获取买家竞拍订单")
+    return javaService.request({
+        method:"get",
+        url:"order/Myorder/buy"
+    })
+}
+
+export function GetFavorite()
+{
+    console.log("我在api.js,我要获取收藏夹")
+    return service.request({
+        method:"get",
+        url:"users/favorites"
+    })
+}
+
+export function GetSellerOrder()
+{
+    console.log("我在api.js,我要获取卖家订单")
+    return javaService.request({
+        method:"get",
+        url:"order/my/sell"
+    })
+}
+
+export function PayBill(id)
+{
+    console.log("我在api.js,我要支付订单")
+    return javaService.request({
+        method:"post",
+        url:`order/pay?id=${id}`
+    })
+}
+export function ProcessOrder(data)
+{
+    console.log("我在api.js,我要处理订单")
+    return javaService.request({
+        method:"put",
+        url:"order/deal",
+        data,
+        headers: {
+            "Content-Type": "multipart/form-data"
+        }
+    })
+}

@@ -90,15 +90,10 @@ export default {
         confirmButtonClass: "usernameBtn",
       })
         .then(({ value }) => {
-          this.username = value;
           let modifyData = {
             username: this.username,
           };
           ModifyUsername(modifyData).then((res) => {
-            alert(res.message);
-            if (res.code == 401) {
-              this.$router.push("/login");
-            }
             //获取用户信息并缓存，提升效率
             UserInfo()
               .then((userRes) => {
@@ -109,7 +104,6 @@ export default {
                     JSON.stringify(userRes.user)
                   );
                   window.localStorage.setItem("userId", userRes.user.id);
-
                 } else {
                   alert("登录已过期，请重新登录...");
                   window.localStorage.removeItem("token");
@@ -123,14 +117,18 @@ export default {
                 console.log(userErr);
                 alert(userErr.message);
               });
-            this.$message({
-              type: "success",
-              message: "你的新用户名是: " + value,
+            alert(res.message);
+            this.username = value;
+            //自动刷新捏
+            this.$nextTick(() => {
+              this.$message.success("修改用户名成功，三秒后将自动刷新...");
+              const timer = setInterval(() => {
+                this.$router.go(0);
+              }, 3000);
             });
           });
         })
         .catch(({ value }) => {
-          this.username = value;
           this.$message({
             type: "info",
             message: "取消修改用户名",
@@ -148,15 +146,10 @@ export default {
         confirmButtonClass: "nicknameBtn",
       })
         .then(({ value }) => {
-          this.nickname = value;
           let modifyData = {
             nickname: this.nickname,
           };
           ModifyNickname(modifyData).then((res) => {
-            alert(res.message);
-            if (res.code == 401) {
-              this.$router.push("/login");
-            }
             //获取用户信息并缓存，提升效率
             UserInfo()
               .then((userRes) => {
@@ -167,7 +160,6 @@ export default {
                     JSON.stringify(userRes.user)
                   );
                   window.localStorage.setItem("userId", userRes.user.id);
-
                 } else {
                   alert("登录已过期，请重新登录...");
                   window.localStorage.removeItem("token");
@@ -181,14 +173,18 @@ export default {
                 console.log(userErr);
                 alert(userErr.message);
               });
-            this.$message({
-              type: "success",
-              message: "你的新昵称是: " + value,
+            alert(res.message);
+            this.nickname = value;
+            //自动刷新捏
+            this.$nextTick(() => {
+              this.$message.success("修改昵称成功，三秒后将自动刷新...");
+              const timer = setInterval(() => {
+                this.$router.go(0);
+              }, 3000);
             });
           });
         })
         .catch(({ value }) => {
-          this.nickname = value;
           this.$message({
             type: "info",
             message: "取消修改昵称",

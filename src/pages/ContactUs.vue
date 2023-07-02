@@ -16,7 +16,7 @@
           (MewStore) 是我们的项目名称，支持网页端和安卓端。本项目为闲猫网页端。
         </div>
         <div style="color: #df0000">
-          我们的团队名为闲猫，由MEWWW、Kikikisum、Arthur.Wang、呼呼狐、LRD.Abner组成。
+          我们的团队名为闲猫，由MEWWW、Kikikisum、呼呼狐、LRD.Abner、Arthur.Wang组成。
         </div>
       </el-collapse-item>
       <el-collapse-item title="分工 Work" name="2">

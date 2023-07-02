@@ -45,18 +45,12 @@
           买家中心
         </span>
 
-        <router-link
-          to="/userCenter/buyOrder"
-          class="leftRecText"
-          style="margin-top: 1rem"
-          active-class="active"
-          >已购买订单</router-link
-        >
 
         <router-link
           to="/userCenter/starredGoods"
           class="leftRecText"
           active-class="active"
+          style="margin-top: 1rem"
           >已收藏商品</router-link
         >
 
@@ -82,27 +76,6 @@
           style="margin-top: 1rem"
           active-class="active"
           >已出售订单</router-link
-        >
-
-        <router-link
-          to="/userCenter/sellerBidOrder"
-          class="leftRecText"
-          active-class="active"
-          >买家的出价</router-link
-        >
-
-        <router-link
-          to="/userCenter/notSoldGoods"
-          class="leftRecText"
-          active-class="active"
-          >未出售商品</router-link
-        >
-
-        <router-link
-          to="/userCenter/notPassGoods"
-          class="leftRecText"
-          active-class="active"
-          >未通过商品</router-link
         >
       </div>
       <!-- 上面的用户基本信息展示矩形 -->
@@ -164,12 +137,40 @@ export default {
             type: "recharge",
             money: value,
           };
+
           Money(moneyData).then((res) => {
+            //获取用户信息并缓存，提升效率
+            UserInfo()
+              .then((userRes) => {
+                console.log(userRes);
+                if (userRes.code == 200) {
+                  window.localStorage.setItem(
+                    "userInfo",
+                    JSON.stringify(userRes.user)
+                  );
+                  window.localStorage.setItem("userId", userRes.user.id);
+                } else {
+                  alert("登录已过期，请重新登录...");
+                  window.localStorage.removeItem("token");
+                  window.localStorage.removeItem("userInfo");
+                  window.localStorage.removeItem("userId");
+
+                  this.$router.push("/login");
+                }
+              })
+              .catch((userErr) => {
+                console.log(userErr);
+                alert(userErr.message);
+              });
             console.log(res);
             alert(res.message);
-            this.$message({
-              type: "success",
-              message: "充值成功，你充值的金额是: " + value,
+            this.money = res.data.money;
+            //自动刷新捏
+            this.$nextTick(() => {
+              this.$message.success("充值成功，三秒后将自动刷新...");
+              const timer = setInterval(() => {
+                this.$router.go(0);
+              }, 3000);
             });
           });
         })
@@ -195,6 +196,29 @@ export default {
             money: value,
           };
           Money(moneyData).then((res) => {
+            //获取用户信息并缓存，提升效率
+            UserInfo()
+              .then((userRes) => {
+                console.log(userRes);
+                if (userRes.code == 200) {
+                  window.localStorage.setItem(
+                    "userInfo",
+                    JSON.stringify(userRes.user)
+                  );
+                  window.localStorage.setItem("userId", userRes.user.id);
+                } else {
+                  alert("登录已过期，请重新登录...");
+                  window.localStorage.removeItem("token");
+                  window.localStorage.removeItem("userInfo");
+                  window.localStorage.removeItem("userId");
+
+                  this.$router.push("/login");
+                }
+              })
+              .catch((userErr) => {
+                console.log(userErr);
+                alert(userErr.message);
+              });
             console.log(res);
             alert(res.message);
             if (res.code == 400) {
@@ -202,12 +226,15 @@ export default {
                 type: "error",
                 message: "提现失败，你没有这么多的mew币！ ",
               });
-            }
-            if(res.code==200)
-            {
-              this.$message({
-                type: "success",
-                message: "提现成功，你提现的金额是: " + value,
+            } 
+            else {
+              this.money = res.data.money;
+              //自动刷新捏
+              this.$nextTick(() => {
+                this.$message.success("提现成功，三秒后将自动刷新...");
+                const timer = setInterval(() => {
+                  this.$router.go(0);
+                }, 3000);
               });
             }
           });
@@ -231,7 +258,6 @@ export default {
         if (userRes.code == 200) {
           window.localStorage.setItem("userInfo", JSON.stringify(userRes.user));
           window.localStorage.setItem("userId", userRes.user.id);
-
         } else {
           alert("登录已过期，请重新登录...");
           window.localStorage.removeItem("token");

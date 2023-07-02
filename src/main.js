@@ -22,7 +22,7 @@ Vue.use(new VueSocketIO({
     extraHeaders:{
       'Access-Control-Allow-Origin': '*',
       'Authorization': token
-    }
+    },
     // transports: ['websocket'],
   }),
 

@@ -51,11 +51,13 @@
     </div>
 
     <div class="order-table">
-      <el-table :data="pagedOrders" style="width: 100%"  @row-click="mewww">
-        <el-table-column prop="name" label="商品名称"></el-table-column>
-        <el-table-column prop="id" label="商品编号"></el-table-column>
-        <el-table-column prop="price" label="价格"></el-table-column>
-      </el-table>
+      <el-table :data="pagedOrders" @row-click="mewww" style="width: 100%">
+  <el-table-column prop="title" label="商品名称"></el-table-column>
+  <el-table-column prop="id" label="商品编号"></el-table-column>
+  <el-table-column prop="price" label="价格"></el-table-column>
+  <el-table-column prop="add_time" label="购买时间"></el-table-column>
+</el-table>
+
       <el-pagination
         v-if="pageCount > 1"
         :total="filteredOrders.length"
@@ -74,6 +76,7 @@
 </template>
     <script>
 import router from '@/router';
+import { GetFavorite } from '@/api/api';
 export default {
   data() {
     return {
@@ -82,81 +85,16 @@ export default {
         keyword: "",
       },
       activeTab: "all",
-      orders: [
-        {
-          name: "商品1",
-          id: "123456",
-          price: 99,
-          time: "2022-01-01",
-          result: "未付款",
-        },
-        {
-          name: "商品2",
-          id: "234567",
-          price: 199,
-          time: "2022-01-02",
-          result: "未确认",
-        },
-        {
-          name: "商品3",
-          id: "345678",
-          price: 299,
-          time: "2022-01-03",
-          result: "已通过",
-        },
-        {
-          name: "商品4",
-          id: "456789",
-          price: 399,
-          time: "2022-01-04",
-          result: "已拒绝",
-        },
-        {
-          name: "商品5",
-          id: "567890",
-          price: 499,
-          time: "2022-01-05",
-          result: "已通过",
-        },
-        {
-          name: "商品6",
-          id: "123456",
-          price: 99,
-          time: "2022-01-01",
-          result: "未确认",
-        },
-        {
-          name: "商品7",
-          id: "234567",
-          price: 199,
-          time: "2022-01-02",
-          result: "未确认",
-        },
-        {
-          name: "商品8",
-          id: "345678",
-          price: 299,
-          time: "2022-01-03",
-          result: "未付款",
-        },
-        {
-          name: "商品9",
-          id: "456789",
-          price: 399,
-          time: "2022-01-04",
-          result: "已拒绝",
-        },
-        {
-          name: "商品10",
-          id: "567890",
-          price: 499,
-          time: "2022-01-05",
-          result: "已通过",
-        },
-      ],
+      orders: [],
       pageSize: 5, // 每页显示的订单数量
       currentPage: 1, // 当前页码
     };
+  },
+  mounted(){
+    GetFavorite().then((res)=>{
+      console.log(res)
+      this.orders=res.data;
+    })
   },
   computed: {
     filteredOrders() {
@@ -166,19 +104,19 @@ export default {
             return true;
         }
       };
-      const searchFn = ({ name, id }) => {
+      const searchFn = ({ title, id }) => {
         const { keyword } = this.searchForm;
         if (keyword) {
-          return name.includes(keyword) || id.includes(keyword);
+          return title.includes(keyword) || id.includes(keyword);
         }
         return true;
       };
-      const dateFn = ({ time }) => {
+      const dateFn = ({ add_time }) => {
         const [start, end] = this.searchForm.dateRange;
         if (start && end) {
           const startTime = start.getTime();
           const endTime = end.getTime() + 24 * 3600 * 1000; // 时间范围包含最后一天
-          const orderTime = new Date(time).getTime();
+          const orderTime = new Date(add_time).getTime();
           return orderTime >= startTime && orderTime <= endTime;
         }
         return true;
@@ -196,8 +134,8 @@ export default {
   },
   methods: {
     mewww(row) {
-      alert("准备进入"+row.name+"的详情页");
-      router.push({ path: '/detail/'+row.id });
+      alert("准备进入" + row.good_title + "的详情页");
+      router.push({ path: "/detail", query: {id:row.good_id} });
     },
     handleSearch() {
       // 执行搜索
