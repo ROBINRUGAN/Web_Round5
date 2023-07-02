@@ -104,11 +104,8 @@ export function Register(data) {
 
     return service.request({
         method: "post",
-        url: `/users/register`,
-        data: JSON.stringify(data), // 将参数转换为JSON字符串
-        headers: {
-            'Content-Type': 'application/json' // 指定请求头的Content-Type为application/json
-        }
+        url: `/users`,
+        data
     })
 }
 //form-data传参

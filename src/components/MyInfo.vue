@@ -91,7 +91,7 @@ export default {
       })
         .then(({ value }) => {
           let modifyData = {
-            username: this.username,
+            username: value,
           };
           ModifyUsername(modifyData).then((res) => {
             //获取用户信息并缓存，提升效率
@@ -147,7 +147,7 @@ export default {
       })
         .then(({ value }) => {
           let modifyData = {
-            nickname: this.nickname,
+            nickname: value,
           };
           ModifyNickname(modifyData).then((res) => {
             //获取用户信息并缓存，提升效率
@@ -180,7 +180,7 @@ export default {
               this.$message.success("修改昵称成功，三秒后将自动刷新...");
               const timer = setInterval(() => {
                 this.$router.go(0);
-              }, 3000);
+              }, 30000);
             });
           });
         })

@@ -127,6 +127,7 @@ export default {
         username: this.account,
         check_password: this.rePassword,
       };
+      console.log(registerData);
       Register(registerData)
       .then((res) => {
         console.log(res);
