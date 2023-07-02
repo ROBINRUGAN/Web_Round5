@@ -275,3 +275,25 @@ export function ProcessOrder(data)
         }
     })
 }
+
+export function AdminGetGood()
+{
+    console.log("我在api.js,管理员获取商品")
+    return service.request({
+        method:"get",
+        url:"admin/goods",
+    })
+}
+
+export function AdminPocessGood(data)
+{
+    console.log("我在api.js,管理员处理商品")
+    return service.request({
+        method:"put",
+        url:"good/verify",
+        data,
+        headers: {
+            "Content-Type": "multipart/form-data"
+        }
+    })
+}

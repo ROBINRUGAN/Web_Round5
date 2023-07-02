@@ -134,8 +134,8 @@ export default {
   },
   methods: {
     mewww(row) {
-      alert("准备进入" + row.good_title + "的详情页");
-      router.push({ path: "/detail", query: {id:row.good_id} });
+      alert("准备进入" + row.title + "的详情页");
+      router.push({ path: "/detail", query: {id:row.id} });
     },
     handleSearch() {
       // 执行搜索
