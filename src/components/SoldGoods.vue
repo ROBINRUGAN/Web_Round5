@@ -112,7 +112,7 @@ export default {
           result: "未付款",
         },
       ],
-      pageSize: 5, // 每页显示的订单数量
+      pageSize: 3, // 每页显示的订单数量
       currentPage: 1, // 当前页码
     };
   },
