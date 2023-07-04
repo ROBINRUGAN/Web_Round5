@@ -245,7 +245,7 @@ export function GetSellerOrder() {
 export function PayBill(id) {
     console.log("我在api.js,我要支付订单")
     return javaService.request({
-        method: "post",
+        method: "put",
         url: `order/pay?id=${id}`
     })
 }
