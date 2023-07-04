@@ -182,7 +182,7 @@ export default {
               this.$message.success("修改昵称成功，三秒后将自动刷新...");
               const timer = setInterval(() => {
                 this.$router.go(0);
-              }, 30000);
+              }, 3000);
             });
           });
         })
