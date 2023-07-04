@@ -238,20 +238,34 @@ export default {
     pass(row) {
       let data = {
         status: 1,
-        id:row.id
+        id: row.id,
       };
       AdminPocessGood(data).then((res) => {
         console.log(res);
         alert(res.msg);
+        //自动刷新捏
+        this.$nextTick(() => {
+          this.$message.success("审核成功，三秒后将自动刷新...");
+          const timer = setInterval(() => {
+            this.$router.go(0);
+          }, 3000);
+        });
       });
     },
     fail(row) {
       let data = {
         status: -1,
-        id:row.id
+        id: row.id,
       };
       AdminPocessGood(data).then((res) => {
         alert(res.msg);
+        //自动刷新捏
+        this.$nextTick(() => {
+          this.$message.success("审核成功，三秒后将自动刷新...");
+          const timer = setInterval(() => {
+            this.$router.go(0);
+          }, 3000);
+        });
       });
     },
     mewww(row) {

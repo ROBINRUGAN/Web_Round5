@@ -183,9 +183,12 @@ export default {
             .then((res) => {
               alert(res.msg);
               console.log(res);
-              this.$message({
-                type: "success",
-                message: "支付成功" + value,
+              //自动刷新捏
+              this.$nextTick(() => {
+                this.$message.success("支付成功，三秒后将自动刷新...");
+                const timer = setInterval(() => {
+                  this.$router.go(0);
+                }, 3000);
               });
             })
             .catch((res) => {
