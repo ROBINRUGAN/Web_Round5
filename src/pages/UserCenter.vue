@@ -45,7 +45,6 @@
           买家中心
         </span>
 
-
         <router-link
           to="/userCenter/starredGoods"
           class="leftRecText"
@@ -226,8 +225,7 @@ export default {
                 type: "error",
                 message: "提现失败，你没有这么多的mew币！ ",
               });
-            } 
-            else {
+            } else {
               this.money = res.data.money;
               //自动刷新捏
               this.$nextTick(() => {

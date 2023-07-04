@@ -13,13 +13,15 @@
         <el-dropdown-item icon="el-icon-user">个人中心</el-dropdown-item>
       </router-link>
 
-      <el-dropdown-item icon="el-icon-switch-button" @click.native="exit">退出登录</el-dropdown-item>
+      <el-dropdown-item icon="el-icon-switch-button" @click.native="exit"
+        >退出登录</el-dropdown-item
+      >
     </el-dropdown-menu>
   </el-dropdown>
 </template>
  
 <script>
-import axios from 'axios';
+import axios from "axios";
 import UserPhoto from "../components/UserPhoto";
 export default {
   components: {
@@ -29,11 +31,10 @@ export default {
     return {};
   },
   methods: {
-    exit()
-    {
+    exit() {
       alert("拜拜~");
-      window.localStorage.removeItem('token');
-      window.localStorage.removeItem('userInfo');
+      window.localStorage.removeItem("token");
+      window.localStorage.removeItem("userInfo");
       this.$router.push("/login");
     },
   },

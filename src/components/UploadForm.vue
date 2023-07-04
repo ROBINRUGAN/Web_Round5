@@ -76,17 +76,17 @@ export default {
   data() {
     return {
       form: {
-            game: "",
+        game: "",
         title: "",
         content: "",
-    
+
         account: "",
         password: "",
         price: null,
         picture: "",
         status: 0,
       },
-      length:0,
+      length: 0,
       dialogImageUrl: "",
       dialogVisible: false,
     };
@@ -108,40 +108,35 @@ export default {
       }
       return true;
     },
-    uploadImage(file,fileList) {
-      console.log("我要上传的照片文件：")
-      console.log(file.file)
+    uploadImage(file, fileList) {
+      console.log("我要上传的照片文件：");
+      console.log(file.file);
       let data = new FormData();
-      data.append("picture",file.file);
+      data.append("picture", file.file);
       return GetPictureUrl(data);
     },
-    onSuccess(res){
+    onSuccess(res) {
       console.log("我成功了");
       console.log(res);
-      if(this.form.picture)
-      {
-        this.form.picture+=',';
-        this.form.picture+=res.data;
+      if (this.form.picture) {
+        this.form.picture += ",";
+        this.form.picture += res.data;
+      } else {
+        this.form.picture = res.data;
       }
-      else {
-        this.form.picture=res.data;
-      }
-      console.log(this.form.picture)
+      console.log(this.form.picture);
     },
     onSubmit() {
-
       console.log(this.form);
       AddGood(this.form)
         .then((res) => {
           console.log(res);
-          alert(res.message)
+          alert(res.message);
           this.$router.push({
             path: "/detail",
-            query:
-            {
-              id: res.data.id
-            }
-
+            query: {
+              id: res.data.id,
+            },
           });
         })
         .catch((err) => {
@@ -156,8 +151,8 @@ export default {
 
     handleChange(file, fileList) {
       if (fileList.length > this.length) {
-       // this.form.picture.push(file.raw);
-       this.length++;
+        // this.form.picture.push(file.raw);
+        this.length++;
       }
       if (this.length >= 9) {
         console.log(this.form.picture);
@@ -168,8 +163,7 @@ export default {
         uploadCard.style.display = "inline-block";
       }
     },
-    beforeRemove(file, fileList) {
-    },
+    beforeRemove(file, fileList) {},
   },
 };
 </script>

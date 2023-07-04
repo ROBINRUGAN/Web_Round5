@@ -15,9 +15,8 @@
       </div>
       <!-- 消息按钮 -->
       <router-link to="/message">
-              <button class="message" @click="onMessageBtn" ></button>
+        <button class="message" @click="onMessageBtn"></button>
       </router-link>
-
 
       <!-- 搜索框 -->
       <div class="searchbox">
@@ -99,16 +98,10 @@
         </div>
         <div class="order-table">
           <el-table :data="pagedOrders" @row-click="mewww" style="width: 100%">
-            <el-table-column
-              prop="title"
-              label="商品名称"
-            ></el-table-column>
+            <el-table-column prop="title" label="商品名称"></el-table-column>
             <el-table-column prop="id" label="商品编号"></el-table-column>
             <el-table-column prop="price" label="价格"></el-table-column>
-            <el-table-column
-              prop="add_time"
-              label="购买时间"
-            ></el-table-column>
+            <el-table-column prop="add_time" label="上架时间"></el-table-column>
             <el-table-column prop="result" label="商品状态"></el-table-column>
             <el-table-column label="操作">
               <template slot-scope="scope">
@@ -153,8 +146,13 @@
 <script>
 import NavMenu from "../components/NavMenu.vue";
 import Hello from "../components/Hello.vue";
-import router from '@/router';
-import { AdminGetGood, AdminPocessGood, GetSellerOrder, ProcessOrder } from '@/api/api';
+import router from "@/router";
+import {
+  AdminGetGood,
+  AdminPocessGood,
+  GetSellerOrder,
+  ProcessOrder,
+} from "@/api/api";
 export default {
   data() {
     return {
@@ -180,28 +178,25 @@ export default {
     NavMenu,
     Hello,
   },
-  mounted(){
-    AdminGetGood().then((res)=>
-    {
-      this.orders=res.data;
-      this.orders.forEach(order => {
-        if(order.status===0)
-        order.result="你未确认";
-        if(order.status===1||order.status===3)
-        order.result="你已通过";
-        if(order.status===-1||order.status===2)
-        order.result="你已拒绝";
+  mounted() {
+    AdminGetGood().then((res) => {
+      this.orders = res.data;
+      this.orders.forEach((order) => {
+        if (order.status === 0) order.result = "你未确认";
+        if (order.status === 1 || order.status === 3) order.result = "你已通过";
+        if (order.status === -1 || order.status === 2)
+          order.result = "你已拒绝";
       });
-    })
+    });
   },
   computed: {
     filteredOrders() {
       const filterFn = ({ status }) => {
         switch (this.activeTab) {
           case "success":
-            return (status === 1||status===3);
+            return status === 1 || status === 3;
           case "fail":
-            return (status===-1||status===2);
+            return status === -1 || status === 2;
           case "unknown":
             return status === 0;
           default:
@@ -240,28 +235,28 @@ export default {
     onMessageBtn() {
       this.$cookies.set("activeNum", "0");
     },
-    pass(row)
-    {
-      let data={
-        status:1
-      }
-      AdminPocessGood(data).then((res)=>{
+    pass(row) {
+      let data = {
+        status: 1,
+        id:row.id
+      };
+      AdminPocessGood(data).then((res) => {
         console.log(res);
         alert(res.msg);
-      })
+      });
     },
-    fail(row)
-    {
-      let data={
-        status:-1
-      }
-      AdminPocessGood(data).then((res)=>{
+    fail(row) {
+      let data = {
+        status: -1,
+        id:row.id
+      };
+      AdminPocessGood(data).then((res) => {
         alert(res.msg);
-      })
+      });
     },
     mewww(row) {
-      alert("准备进入" + row.good_title + "的详情页");
-      router.push({ path: "/detail", query: {id:row.good_id} });
+      alert("准备进入" + row.title + "的详情页");
+      router.push({ path: "/detail", query: { id: row.id } });
     },
     handleSearch() {
       // 执行搜索
@@ -339,38 +334,31 @@ button:hover {
 
   margin-left: 15rem;
   margin-top: 7rem;
-
 }
 ::v-deep .el-tabs__item {
   font-size: 1.5rem;
 }
 
-
-::v-deep .el-input__inner
-{
-    height: 3rem !important;
-    font-size: 1.4rem !important;
-
+::v-deep .el-input__inner {
+  height: 3rem !important;
+  font-size: 1.4rem !important;
 }
-::v-deep .el-date-editor .el-range-input
-{
-    font-size: 1.4rem !important;
+::v-deep .el-date-editor .el-range-input {
+  font-size: 1.4rem !important;
 }
-::v-deep .el-date-editor .el-range-separator
-{
-    margin-top: 0.5rem;
-    font-size: 1.4rem !important;
+::v-deep .el-date-editor .el-range-separator {
+  margin-top: 0.5rem;
+  font-size: 1.4rem !important;
 }
 ::v-deep .el-table th.el-table__cell {
-  background-color: rgb(252, 246, 233) ;
+  background-color: rgb(252, 246, 233);
 }
 ::v-deep .el-table--enable-row-transition .el-table__body td.el-table__cell {
-  background-color: rgb(252, 246, 233) ;
+  background-color: rgb(252, 246, 233);
   cursor: pointer;
 }
 .order-menu {
-    display: flex;
-    justify-content: center;
-  }
-
+  display: flex;
+  justify-content: center;
+}
 </style>

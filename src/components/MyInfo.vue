@@ -52,9 +52,9 @@ import { ModifyUsername, ModifyNickname, UserInfo } from "@/api/api";
 export default {
   data() {
     return {
-      id_card: "",
+      id_card: "尚未实名认证",
       money: "114514.00",
-      name: "",
+      name: "尚未实名认证",
       nickname: "昵称样例",
       phone_number: "",
       profile_photo: "",
@@ -73,7 +73,9 @@ export default {
       this.nickname = userInfo.nickname;
       this.username = userInfo.username;
       this.money = userInfo.money;
+      if(userInfo.id_card)
       this.id_card = userInfo.id_card;
+      if(userInfo.name)
       this.name = userInfo.name;
       this.phone_number = userInfo.phone_number;
       this.accountStatus = userInfo.status;

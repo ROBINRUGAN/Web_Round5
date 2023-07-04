@@ -265,7 +265,13 @@
 import NavMenu from "../components/NavMenu.vue";
 import Hello from "../components/Hello.vue";
 import Vue from "vue";
-import { BidOrder, ChatHistory, DetailInfo, Like,ReadMessage } from "@/api/api";
+import {
+  BidOrder,
+  ChatHistory,
+  DetailInfo,
+  Like,
+  ReadMessage,
+} from "@/api/api";
 export default {
   data() {
     return {

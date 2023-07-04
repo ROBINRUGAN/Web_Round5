@@ -1,4 +1,7 @@
-import {service,javaService} from "@/utils/request";
+import {
+    service,
+    javaService
+} from "@/utils/request";
 
 export function LoginByUsername(data) {
     console.log('我在api.js，用户名登录表单发送', data)
@@ -26,7 +29,7 @@ export function UserInfo() {
         url: `/users`,
     })
 }
-export function HomeInfo(page,size) {
+export function HomeInfo(page, size) {
     console.log('我在api.js，获取首页商品列表')
     return service.request({
         method: "get",
@@ -40,7 +43,7 @@ export function DetailInfo(queryParams) {
         url: `/goods?id=${queryParams}`,
     })
 }
-export function HomeSearch(page,size,keywords) {
+export function HomeSearch(page, size, keywords) {
     console.log('我在api.js，获取首页搜索信息')
     return service.request({
         method: "get",
@@ -52,11 +55,11 @@ export function Like(data) {
     return service.request({
         method: "post",
         url: `/users/favorites`,
-        data, 
+        data,
     });
 }
 export function ChatHistory(cid) {
-    console.log('我在api.js，获取悬浮聊天室历史记录'+cid)
+    console.log('我在api.js，获取悬浮聊天室历史记录' + cid)
     return service.request({
         method: "get",
         url: `/chat/history?send_id=${cid}`,
@@ -74,7 +77,7 @@ export function LoginGetCode(data) {
         }
     })
 }
-export function RegisterGetCode(data) {  
+export function RegisterGetCode(data) {
     console.log('我在api.js，注册获取验证码')
 
     return service.request({
@@ -121,70 +124,63 @@ export function AddGood(data) {
     });
 }
 
-export function Money(data)
-{
+export function Money(data) {
     console.log("我在api.js，充值或提现金额");
     return service.request({
-        method:"put",
-        url:"users/money",
+        method: "put",
+        url: "users/money",
         data,
     })
 }
 
-export function Guess()
-{
+export function Guess() {
     console.log("我在api.js,准备猜你喜欢");
     return service.request({
-        method:"get",
-        url:"guess"
+        method: "get",
+        url: "guess"
     })
 }
 
-export function ModifyPhoto()
-{
+export function ModifyPhoto() {
     console.log("我在api.js，准备修改头像")
     return service.request({
-        method:"put",
-        url:"users/profile-photo"
+        method: "put",
+        url: "users/profile-photo"
     })
 }
 
-export function ModifyNickname(data)
-{
+export function ModifyNickname(data) {
     console.log("我在api.js，准备修改昵称")
     return service.request({
-        method:"put",
-        url:"users/nickname",
+        method: "put",
+        url: "users/nickname",
         data,
     })
 }
 
-export function ModifyUsername(data)
-{
+export function ModifyUsername(data) {
     console.log("我在api.js，准备修改用户名")
     return service.request({
-        method:"put",
-        url:"users/username",
+        method: "put",
+        url: "users/username",
         data,
     })
 }
 
-export function ModifyTelephone(data)
-{
+export function ModifyTelephone(data) {
     console.log("我在api.js，准备修改手机号")
     return service.request({
-        method:"put",
-        url:"users/phone-number",
+        method: "put",
+        url: "users/phone-number",
         data,
     })
 }
 
-export function GetPictureUrl(data)
-{
+export function GetPictureUrl(data) {
     console.log("我在api.js，发送图片文件获取对应url")
     return service.request({
-        method:"post",
-        url:"picture",
+        method: "post",
+        url: "picture",
         data,
         headers: {
             "Content-Type": "multipart/form-data"
@@ -192,12 +188,11 @@ export function GetPictureUrl(data)
     })
 }
 
-export function BidOrder(data)
-{
+export function BidOrder(data) {
     console.log("我在api.js，准备生成订单")
     return javaService.request({
-        method:"post",
-        url:"order/bid",
+        method: "post",
+        url: "order/bid",
         data,
         headers: {
             "Content-Type": "multipart/form-data"
@@ -206,66 +201,59 @@ export function BidOrder(data)
     })
 }
 
-export function GetChatList()
-{
+export function GetChatList() {
     console.log("我在api.js，准备获取聊天列表")
     return service.request({
-        method:"get",
-        url:"chat/list"
+        method: "get",
+        url: "chat/list"
     })
 }
 
-export function ReadMessage(data)
-{
+export function ReadMessage(data) {
     console.log("我在api.js,我要把消息置为已读")
     return service.request({
-        method:"put",
-        url:"chat/read",
+        method: "put",
+        url: "chat/read",
         data,
     })
 }
 
-export function GetBuyerBidOrder()
-{
+export function GetBuyerBidOrder() {
     console.log("我在api.js,我要获取买家竞拍订单")
     return javaService.request({
-        method:"get",
-        url:"order/Myorder/buy"
+        method: "get",
+        url: "order/Myorder/buy"
     })
 }
 
-export function GetFavorite()
-{
+export function GetFavorite() {
     console.log("我在api.js,我要获取收藏夹")
     return service.request({
-        method:"get",
-        url:"users/favorites"
+        method: "get",
+        url: "users/favorites"
     })
 }
 
-export function GetSellerOrder()
-{
+export function GetSellerOrder() {
     console.log("我在api.js,我要获取卖家订单")
     return javaService.request({
-        method:"get",
-        url:"order/my/sell"
+        method: "get",
+        url: "order/my/sell"
     })
 }
 
-export function PayBill(id)
-{
+export function PayBill(id) {
     console.log("我在api.js,我要支付订单")
     return javaService.request({
-        method:"post",
-        url:`order/pay?id=${id}`
+        method: "post",
+        url: `order/pay?id=${id}`
     })
 }
-export function ProcessOrder(data)
-{
+export function ProcessOrder(data) {
     console.log("我在api.js,我要处理订单")
     return javaService.request({
-        method:"put",
-        url:"order/deal",
+        method: "put",
+        url: "order/deal",
         data,
         headers: {
             "Content-Type": "multipart/form-data"
@@ -273,21 +261,19 @@ export function ProcessOrder(data)
     })
 }
 
-export function AdminGetGood()
-{
+export function AdminGetGood() {
     console.log("我在api.js,管理员获取商品")
     return service.request({
-        method:"get",
-        url:"admin/goods",
+        method: "get",
+        url: "admin/goods",
     })
 }
 
-export function AdminPocessGood(data)
-{
+export function AdminPocessGood(data) {
     console.log("我在api.js,管理员处理商品")
-    return service.request({
-        method:"put",
-        url:"good/verify",
+    return javaService.request({
+        method: "put",
+        url: "good/verify",
         data,
         headers: {
             "Content-Type": "multipart/form-data"

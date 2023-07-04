@@ -17,8 +17,7 @@ export default {
     };
   },
   mounted() {
-
-    console.log("你好")
+    console.log("你好");
 
     UserInfo()
       .then((userRes) => {
@@ -26,7 +25,6 @@ export default {
         if (userRes.code == 200) {
           window.localStorage.setItem("userInfo", JSON.stringify(userRes.user));
           window.localStorage.setItem("userId", userRes.user.id);
-
         } else {
           alert("登录已过期，请重新登录...");
           window.localStorage.removeItem("token");
@@ -41,12 +39,12 @@ export default {
         alert(userErr.message);
       });
     const userInfoString = window.localStorage.getItem("userInfo");
-    
+
     if (userInfoString) {
       const userInfo = JSON.parse(userInfoString);
       this.nickname = userInfo.username;
       this.circleUrl = userInfo.profile_photo;
-    } 
+    }
   },
 };
 </script>

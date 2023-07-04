@@ -52,11 +52,11 @@
 
     <div class="order-table">
       <el-table :data="pagedOrders" @row-click="mewww" style="width: 100%">
-  <el-table-column prop="title" label="商品名称"></el-table-column>
-  <el-table-column prop="id" label="商品编号"></el-table-column>
-  <el-table-column prop="price" label="价格"></el-table-column>
-  <el-table-column prop="add_time" label="购买时间"></el-table-column>
-</el-table>
+        <el-table-column prop="title" label="商品名称"></el-table-column>
+        <el-table-column prop="id" label="商品编号"></el-table-column>
+        <el-table-column prop="price" label="价格"></el-table-column>
+        <el-table-column prop="add_time" label="上架时间"></el-table-column>
+      </el-table>
 
       <el-pagination
         v-if="pageCount > 1"
@@ -75,8 +75,8 @@
   </div>
 </template>
     <script>
-import router from '@/router';
-import { GetFavorite } from '@/api/api';
+import router from "@/router";
+import { GetFavorite } from "@/api/api";
 export default {
   data() {
     return {
@@ -90,11 +90,11 @@ export default {
       currentPage: 1, // 当前页码
     };
   },
-  mounted(){
-    GetFavorite().then((res)=>{
-      console.log(res)
-      this.orders=res.data;
-    })
+  mounted() {
+    GetFavorite().then((res) => {
+      console.log(res);
+      this.orders = res.data;
+    });
   },
   computed: {
     filteredOrders() {
@@ -135,7 +135,7 @@ export default {
   methods: {
     mewww(row) {
       alert("准备进入" + row.title + "的详情页");
-      router.push({ path: "/detail", query: {id:row.id} });
+      router.push({ path: "/detail", query: { id: row.id } });
     },
     handleSearch() {
       // 执行搜索
@@ -184,11 +184,10 @@ export default {
   font-size: 1.4rem !important;
 }
 ::v-deep .el-table th.el-table__cell {
-  background-color: rgb(252, 246, 233) ;
+  background-color: rgb(252, 246, 233);
 }
 ::v-deep .el-table--enable-row-transition .el-table__body td.el-table__cell {
-  background-color: rgb(252, 246, 233) ;
+  background-color: rgb(252, 246, 233);
   cursor: pointer;
 }
-
 </style>

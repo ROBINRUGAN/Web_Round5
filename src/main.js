@@ -19,7 +19,7 @@ Vue.use(new VueSocketIO({
   debug: true,
   connection: SocketIO('ws://api.mewtopia.cn:5000/chat', {
     autoConnect: false,
-    extraHeaders:{
+    extraHeaders: {
       'Access-Control-Allow-Origin': '*',
       'Authorization': token
     },

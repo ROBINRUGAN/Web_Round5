@@ -201,7 +201,7 @@ export default {
     },
     mewww(row) {
       alert("准备进入" + row.good_title + "的详情页");
-      router.push({ path: "/detail", query: {id:row.good_id} });
+      router.push({ path: "/detail", query: { id: row.good_id } });
     },
     handleSearch() {
       // 执行搜索

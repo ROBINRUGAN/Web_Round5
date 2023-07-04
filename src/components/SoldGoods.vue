@@ -9,8 +9,7 @@
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
-      
-    :picker-options="{
+            :picker-options="{
               shortcuts: [
                 {
                   text: '最近一周',
@@ -38,14 +37,15 @@
           <el-input
             v-model="searchForm.keyword"
             placeholder="请输入商品名称或编号"
-
           ></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" @click="handleSearch"
             >搜索</el-button
           >
-          <el-button @click="handleReset" icon="el-icon-refresh-left">重置</el-button>
+          <el-button @click="handleReset" icon="el-icon-refresh-left"
+            >重置</el-button
+          >
         </el-form-item>
       </el-form>
     </div>
@@ -63,14 +63,27 @@
         <el-table-column prop="good_title" label="商品名称"></el-table-column>
         <el-table-column prop="good_id" label="商品编号"></el-table-column>
         <el-table-column prop="price" label="价格"></el-table-column>
-        <el-table-column prop="generate_time" label="购买时间"></el-table-column>
+        <el-table-column
+          prop="generate_time"
+          label="购买时间"
+        ></el-table-column>
         <el-table-column prop="result" label="订单状态"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" v-if="scope.row.status===0" @click.native.stop="pass(scope.row)">
+            <el-button
+              type="primary"
+              size="mini"
+              v-if="scope.row.status === 0"
+              @click.native.stop="pass(scope.row)"
+            >
               通过
             </el-button>
-            <el-button type="primary" size="mini" v-if="scope.row.status===0" @click.native.stop="fail(scope.row)">
+            <el-button
+              type="primary"
+              size="mini"
+              v-if="scope.row.status === 0"
+              @click.native.stop="fail(scope.row)"
+            >
               驳回
             </el-button>
           </template>
@@ -93,8 +106,8 @@
   </div>
 </template>
   <script>
-  import router from '@/router';
-import { GetSellerOrder, ProcessOrder } from '@/api/api';
+import router from "@/router";
+import { GetSellerOrder, ProcessOrder } from "@/api/api";
 export default {
   data() {
     return {
@@ -116,21 +129,16 @@ export default {
       currentPage: 1, // 当前页码
     };
   },
-  mounted(){
-    GetSellerOrder().then((res)=>
-    {
-      this.orders=res.data;
-      this.orders.forEach(order => {
-        if(order.status==0)
-        order.result="你未确认";
-        if(order.status==1)
-        order.result="你已通过";
-        if(order.status==-1)
-        order.result="你已拒绝";
-        if(order.status==2)
-        order.result="买家未付款";
+  mounted() {
+    GetSellerOrder().then((res) => {
+      this.orders = res.data;
+      this.orders.forEach((order) => {
+        if (order.status == 0) order.result = "你未确认";
+        if (order.status == 1) order.result = "你已通过";
+        if (order.status == -1) order.result = "你已拒绝";
+        if (order.status == 2) order.result = "买家未付款";
       });
-    })
+    });
   },
   computed: {
     filteredOrders() {
@@ -140,7 +148,7 @@ export default {
             return status === 1;
           case "fail":
             return status === -1;
-            case "notpay":
+          case "notpay":
             return status === 2;
           case "unknown":
             return status === 0;
@@ -177,30 +185,28 @@ export default {
     },
   },
   methods: {
-    pass(row)
-    {
-      let data={
-        id:row.id,
-        status:1
-      }
-      ProcessOrder(data).then((res)=>{
+    pass(row) {
+      let data = {
+        id: row.id,
+        status: 1,
+      };
+      ProcessOrder(data).then((res) => {
         console.log(res);
         alert(res.msg);
-      })
+      });
     },
-    fail(row)
-    {
-      let data={
-        id:row.id,
-        status:-1
-      }
-      ProcessOrder(data).then((res)=>{
+    fail(row) {
+      let data = {
+        id: row.id,
+        status: -1,
+      };
+      ProcessOrder(data).then((res) => {
         alert(res.msg);
-      })
+      });
     },
     mewww(row) {
       alert("准备进入" + row.good_title + "的详情页");
-      router.push({ path: "/detail", query: {id:row.good_id} });
+      router.push({ path: "/detail", query: { id: row.good_id } });
     },
     handleSearch() {
       // 执行搜索
@@ -237,27 +243,22 @@ export default {
   font-size: 1.5rem;
 }
 
-
-::v-deep .el-input__inner
-{
-    height: 3rem !important;
-    font-size: 1.4rem !important;
-
+::v-deep .el-input__inner {
+  height: 3rem !important;
+  font-size: 1.4rem !important;
 }
-::v-deep .el-date-editor .el-range-input
-{
-    font-size: 1.4rem !important;
+::v-deep .el-date-editor .el-range-input {
+  font-size: 1.4rem !important;
 }
-::v-deep .el-date-editor .el-range-separator
-{
-    margin-top: 0.5rem;
-    font-size: 1.4rem !important;
+::v-deep .el-date-editor .el-range-separator {
+  margin-top: 0.5rem;
+  font-size: 1.4rem !important;
 }
 ::v-deep .el-table th.el-table__cell {
-  background-color: rgb(252, 246, 233) ;
+  background-color: rgb(252, 246, 233);
 }
 ::v-deep .el-table--enable-row-transition .el-table__body td.el-table__cell {
-  background-color: rgb(252, 246, 233) ;
+  background-color: rgb(252, 246, 233);
   cursor: pointer;
 }
 </style>

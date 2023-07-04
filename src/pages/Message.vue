@@ -12,8 +12,11 @@
         height="100%"
       />
     </div>
-    <!-- 消息按钮 -->
-    <button class="messageBtn"></button>
+    <router-link to="/message">
+      <!-- 消息按钮 -->
+      <button class="messageBtn"></button>
+    </router-link>
+
     <div class="inbox-wrapper">
       <!-- 旁边的聊天列表 -->
       <div class="sidebar">
@@ -50,7 +53,7 @@
           <div class="message-list" id="chat-container">
             <div
               class="message"
-              v-for="(message,index) in selectedChat.messages"
+              v-for="(message, index) in selectedChat.messages"
               :key="index"
               :class="[
                 message.author === 'Me'
