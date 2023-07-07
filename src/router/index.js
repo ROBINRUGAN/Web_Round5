@@ -12,6 +12,7 @@ import Detail from "../pages/Detail"
 import ContactUs from "../pages/ContactUs"
 import Admin from "../pages/Admin"
 import Message from "../pages/Message"
+import Download from "../pages/Download"
 export default new VueRouter({
     routes: [{
             path: '/login',
@@ -32,7 +33,7 @@ export default new VueRouter({
                     path: 'myInfo',
                     component: MyInfo
                 },
-                 {
+                {
                     path: 'starredGoods',
                     component: StarredGoods
 
@@ -45,7 +46,8 @@ export default new VueRouter({
                     component: SoldGoods
 
                 },
-            ],redirect: 'userCenter/myInfo'
+            ],
+            redirect: 'userCenter/myInfo'
         },
         {
             path: '/sell',
@@ -66,6 +68,10 @@ export default new VueRouter({
         {
             path: '/message',
             component: Message
-        }
+        },
+        {
+            path: '/download',
+            component: Download
+        },
     ]
 })

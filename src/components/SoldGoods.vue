@@ -156,10 +156,10 @@ export default {
             return true;
         }
       };
-      const searchFn = ({ name, id }) => {
+      const searchFn = ({ good_title, id }) => {
         const { keyword } = this.searchForm;
         if (keyword) {
-          return name.includes(keyword) || id.includes(keyword);
+          return good_title.includes(keyword) || id.includes(keyword);
         }
         return true;
       };

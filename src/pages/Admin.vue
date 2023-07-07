@@ -161,15 +161,7 @@ export default {
         keyword: "",
       },
       activeTab: "all",
-      orders: [
-        {
-          name: "商品1",
-          id: "123456",
-          price: 99,
-          time: "2022-01-01",
-          result: "未付款",
-        },
-      ],
+      orders: [],
       pageSize: 5, // 每页显示的订单数量
       currentPage: 1, // 当前页码
     };
@@ -203,10 +195,10 @@ export default {
             return true;
         }
       };
-      const searchFn = ({ name, id }) => {
+      const searchFn = ({ title, id }) => {
         const { keyword } = this.searchForm;
         if (keyword) {
-          return name.includes(keyword) || id.includes(keyword);
+          return title.includes(keyword) || id.includes(keyword);
         }
         return true;
       };

@@ -35,6 +35,14 @@ new Vue({
   beforeCreate() {
     Vue.prototype.$bus = this //安装全局事件总线
   },
+  router,
+  beforeMount(){
+    if (/Mobi|Android/i.test(navigator.userAgent)) {
+      // 手机端访问，执行跳转操作
+      alert("mewww!!我们有对应的App辣，为你跳转...")
+      this.$router.push('/download')
+    }
+  },
   // sockets: {
   //   connecting() {
   //     console.log("正在连接");
@@ -53,5 +61,5 @@ new Vue({
   //     console.log(data);
   //   },
   // },
-  router,
+  
 }).$mount('#app')
